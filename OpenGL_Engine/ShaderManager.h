@@ -25,7 +25,7 @@ public:
 	~ShaderManager();
 	static ShaderManager* Instance();
 	
-	GLuint CompileShader(GLenum type, const char* file) const;
+	GLuint CompileShader(const GLenum type, const char* file) const;
 	GLuint AttachShader(const GLuint vertShader, const GLuint fragShader) const;
 	
 	void SetUniformMat4x4(const GLuint core_program, const string name, const glm::mat4 value) const;

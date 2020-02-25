@@ -12,6 +12,10 @@ Vertex::Vertex(glm::vec3 position, glm::vec3 colour, glm::vec2 UV, glm::vec3 nor
 	this->normal = normal;
 }
 
+Vertex::~Vertex()
+{
+}
+
 glm::vec3 Vertex::getPosition() const
 {
 	return position;

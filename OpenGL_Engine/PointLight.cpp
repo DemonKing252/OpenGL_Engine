@@ -2,7 +2,7 @@
 
 PointLight::PointLight()
 {
-	index++;
+
 }
 
 PointLight::~PointLight()
@@ -18,7 +18,7 @@ PointLight::PointLight(glm::vec3 position, glm::vec3 colour, float strength)
 
 }
 
-void PointLight::updateBuffers(GLuint core_program)
+void PointLight::updateBuffers(const GLuint core_program)
 {
 	// Catch an index number not being initialized
 	assert(index != -1);
@@ -62,17 +62,17 @@ float PointLight::getStrength() const
 	return strength;
 }
 
-void PointLight::setPosition(glm::vec3 position)
+void PointLight::setPosition(const glm::vec3 position)
 {
 	this->position = position;
 }
 
-void PointLight::setColour(glm::vec3 colour)
+void PointLight::setColour(const glm::vec3 colour)
 {
 	this->colour = colour;
 }
-
-void PointLight::setStrength(float strength)
+ 
+void PointLight::setStrength(const float strength)
 {
 	this->strength = strength;
 }

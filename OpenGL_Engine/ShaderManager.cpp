@@ -18,7 +18,7 @@ ShaderManager * ShaderManager::Instance()
 	}
 	return s_pInstance;
 }
-GLuint ShaderManager::CompileShader(GLenum type, const char * file) const
+GLuint ShaderManager::CompileShader(const GLenum type, const char * file) const
 {
 	bool loadSuccess = true;
 	char infoLog[512];
@@ -56,7 +56,7 @@ GLuint ShaderManager::CompileShader(GLenum type, const char * file) const
 	return shader;
 }
 
-GLuint ShaderManager::AttachShader(GLuint vertShader, GLuint fragShader) const
+GLuint ShaderManager::AttachShader(const GLuint vertShader, const GLuint fragShader) const
 {
 	char infoLog[512];
 	GLuint core_program;

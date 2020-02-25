@@ -8,7 +8,10 @@ void Application::Update()
 	}
 	lasttime += 1.0 / mUserInterface->fps;
 
-	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+	glClearColor(mUserInterface->clear_color.x, 
+				 mUserInterface->clear_color.y, 
+				 mUserInterface->clear_color.z, 
+				 mUserInterface->clear_color.w);
 
 	// Clear buffers (ie: Color, Depth, and Stencil) to prepare to swap the back and front buffers
 	// The concept of swapping buffers is important because the front buffer is being shown to the screen
@@ -27,6 +30,7 @@ void Application::Update()
 	// Camera can see 45 degrees left/right, with a minimum vocal range of (0.1 - 300)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
 	Util::projMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
+
 }
 void Application::PollEvents()const
 {

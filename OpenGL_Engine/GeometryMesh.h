@@ -19,14 +19,12 @@ public:
 	void bindVAO();
 	void unBindVAO();
 
-	void setNumVertices(GLint verticies);
-	void setNumIndicies(GLint indicies);
-
-	void generateText();
+	void setNumVertices(const GLint verticies);
+	void setNumIndicies(const GLint indicies);
 
 
-	GLint getNumVertices();
-	GLint getNumIndicies();
+	GLint getNumVertices() const;
+	GLint getNumIndicies() const;
 private:
 	GLuint mVAO;
 	GLint numVerticies = 0;

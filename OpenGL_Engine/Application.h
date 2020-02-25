@@ -12,7 +12,6 @@
 class Application
 {
 public:
-	ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);//ImVec4(135.0f/255.f, 206.0f/255.f, 235.0f/255.f, 1);
 	GLfloat angleDelta = 0.0f;
 	GLfloat strength = 0.0f;
 	double lasttime = 0.0f;
@@ -36,6 +35,9 @@ public:
 	void Clean() const;
 
 	GLFWwindow* getWindow() const;
+
+	
+
 private:
 
 	GLuint core_program;

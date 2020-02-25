@@ -60,27 +60,24 @@ void GeometryMesh::unBindVAO()
 {
 	glBindVertexArray(0);
 }
-
-void GeometryMesh::setNumVertices(GLint verticies)
+ 
+void GeometryMesh::setNumVertices(const GLint verticies)
 {
 	this->numVerticies = verticies;
 }
 
-void GeometryMesh::setNumIndicies(GLint indicies)
+void GeometryMesh::setNumIndicies(const GLint indicies)
 {
 	this->numIndicies = indicies;
 }
 
-void GeometryMesh::generateText()
-{
-}
 
-GLint GeometryMesh::getNumVertices()
+GLint GeometryMesh::getNumVertices()const
 {
 	return numVerticies;
 }
 
-GLint GeometryMesh::getNumIndicies()
+GLint GeometryMesh::getNumIndicies()const
 {
 	return numIndicies;
 }

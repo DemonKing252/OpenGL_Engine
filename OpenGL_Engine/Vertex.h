@@ -10,7 +10,8 @@ private:
 public:
 	Vertex();
 	Vertex(glm::vec3 position, glm::vec3 colour = glm::vec3(1), glm::vec2 UV = glm::vec2(0), glm::vec3 normal = glm::vec3(0));
-		
+	~Vertex();
+
 	glm::vec3 getPosition() const;
 	glm::vec3 getColour() const;
 	glm::vec2 getUV() const;

@@ -1,0 +1,6 @@
+﻿  3dApp.cpp
+  Application.cpp
+c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(91): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
+c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(212): warning C4715: 'Application::Init': not all control paths return a value
+  OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

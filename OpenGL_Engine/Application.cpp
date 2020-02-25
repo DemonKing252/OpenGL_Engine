@@ -61,6 +61,11 @@ void Application::Draw()
 
 	mMaterialMap["stoneBrick"].bindTexture();
 
+	geoGen.mGeometry[GeometryGenerator::PLANE]->bindVAO();
+	Util::Transform(core_program, glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	geoGen.draw(GeometryGenerator::PLANE);
+
+	geoGen.mGeometry[GeometryGenerator::SPHEAR]->bindVAO();
 	Util::Transform(core_program, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
@@ -101,10 +106,9 @@ void Application::Draw()
 
 	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement)
 	{
-		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
-
 		Camera::UpdateCameraPosition();
 		Camera::UpdateCameraFacing(window);
+		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
 	}
 
 	mUserInterface->Render(pLights);
@@ -185,6 +189,9 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 
 	geoGen.createMesh(GeometryGenerator::SPHEAR);
 	geoGen.mGeometry[GeometryGenerator::SPHEAR]->generateBuffers();
+
+	geoGen.createMesh(GeometryGenerator::PLANE);
+	geoGen.mGeometry[GeometryGenerator::PLANE]->generateBuffers();
 
 	Camera::UpdateCameraFacing(window);
 	Camera::UpdateCameraPosition();

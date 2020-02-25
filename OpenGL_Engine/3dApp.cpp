@@ -3,7 +3,7 @@
 #define HEIGHT 768
 using namespace std;
 //***************************************************************************
-// OpenGLEngine::Application::3dApp.cpp by Liam Blake (C) 2020 All Rights Reserved.
+// OpenGL_Engine::Application::3dApp.cpp by Liam Blake (C) 2020 All Rights Reserved.
 //
 // Created:  2020-02-10	
 // Modified: 2020-02-21

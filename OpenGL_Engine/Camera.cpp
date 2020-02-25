@@ -55,7 +55,7 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 	}
 	else if (btnR == GLFW_PRESS)
 	{
-		if (deltaY > 0 && mRadius <= 10.0f)
+		if (deltaY > 0 && mRadius <= 20.0f)
 		{
 			mRadius += 0.25f;
 		}

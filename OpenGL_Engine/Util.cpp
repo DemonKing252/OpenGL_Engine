@@ -20,7 +20,7 @@ double Util::RadToDeg()
 	return 180.0f / 3.1415926535f;
 }
 
-void Util::Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle, glm::vec3 offSet)
+void Util::Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle)
 {
 	glm::mat4 Model;
 

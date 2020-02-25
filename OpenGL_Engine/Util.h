@@ -19,6 +19,6 @@ public:
 	static double DegToRad();
 	static double RadToDeg();
 
-	static void Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle, glm::vec3 offSet = glm::vec3(1));
+	static void Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle);
 };
 

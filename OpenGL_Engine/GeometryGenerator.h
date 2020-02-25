@@ -5,7 +5,7 @@ class GeometryGenerator
 public:
 	std::vector <GeometryMesh*> mGeometry;
 
-	enum Mesh { PYRAMID, SPHEAR };
+	enum Mesh { PYRAMID, SPHEAR, PLANE };
 
 	GeometryGenerator()
 	{

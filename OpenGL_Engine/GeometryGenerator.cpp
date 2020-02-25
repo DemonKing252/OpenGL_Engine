@@ -106,10 +106,52 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			
 		};
 	}
+	else if (mesh == PLANE)
+	{
+		const int rows = 64;
+		const int cols = 64;
+		mGeometry.back()->setNumIndicies(rows * cols * 4);
+		mGeometry.back()->setNumVertices(rows * cols * 4);
+		mGeometry.back()->verticies = new Vertex[mGeometry.back()->getNumVertices()];
+		float x = 0.0f;
+		float z = 0.0f;
+		for (int i = 0; i < rows * cols * 4; i += 4)
+		{
+		
+			mGeometry.back()->verticies[i].setPosition    (glm::vec3((0.5f * -cols) + x, 0.0f, (0.5f * -rows) + z));
+			mGeometry.back()->verticies[i + 1].setPosition(glm::vec3((0.5f * -cols) + x + 1.0f, 0.0f, (0.5f * -rows) + z));
+			mGeometry.back()->verticies[i + 2].setPosition(glm::vec3((0.5f * -cols) + x + 1.0f, 0.0f, (0.5f * -rows) + z + 1.0f));
+			mGeometry.back()->verticies[i + 3].setPosition(glm::vec3((0.5f * -cols) + x, 0.0f, (0.5f * -rows) + z + 1.0f));
+
+			mGeometry.back()->verticies[i].setNormal(glm::vec3(0.0f, 1.0f, 0.0f));
+			mGeometry.back()->verticies[i + 1].setNormal(glm::vec3(0.0f, 1.0f, 0.0f));
+			mGeometry.back()->verticies[i + 2].setNormal(glm::vec3(0.0f, 1.0f, 0.0f));
+			mGeometry.back()->verticies[i + 3].setNormal(glm::vec3(0.0f, 1.0f, 0.0f));
+
+			mGeometry.back()->verticies[i].setUV(    glm::vec2(0.0f, 0.0f));
+			mGeometry.back()->verticies[i + 1].setUV(glm::vec2(1.0f, 0.0f));
+			mGeometry.back()->verticies[i + 2].setUV(glm::vec2(1.0f, 1.0f));
+			mGeometry.back()->verticies[i + 3].setUV(glm::vec2(0.0f, 1.0f));
+
+			x += 1.0f;
+			if (x == cols)
+			{
+				z += 1.0f;
+				x = 0.0f;
+			}
+			
+		}
+		mGeometry.back()->indicies = new GLuint[mGeometry.back()->getNumIndicies()];
+		for (int i = 0; i < cols * rows * 4; i++)
+		{
+			mGeometry.back()->indicies[i] = i;
+		}
+
+	}
 }
 
 void GeometryGenerator::draw(Mesh type)
 {
 	//glDrawArrays(GL_QUADS, 0, mGeometry[type]->getNumVertices());
-	glDrawElements(type == SPHEAR ? GL_QUADS : GL_TRIANGLES, mGeometry[type]->getNumIndicies(), GL_UNSIGNED_INT, 0);
+	glDrawElements(type == SPHEAR || type == PLANE ? GL_QUADS : GL_TRIANGLES, mGeometry[type]->getNumIndicies(), GL_UNSIGNED_INT, 0);
 }

@@ -1,4 +1,14 @@
-﻿  Application.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(95): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(216): warning C4715: 'Application::Init': not all control paths return a value
+﻿  GeometryGenerator.cpp
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(21): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(23): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(34): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(41): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(42): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(43): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(51): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(52): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(53): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

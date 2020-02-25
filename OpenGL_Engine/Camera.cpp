@@ -75,5 +75,5 @@ void Camera::UpdateCameraPosition()
 	position.x = mRadius * sin(mPhi * 3.141f / 180.0f) * cos(mTheta * 3.141f / 180.0f);
 	position.z = mRadius * sin(mPhi * 3.141f / 180.0f) * sin(mTheta * 3.141f / 180.0f);
 	position.y = mRadius * cos(mPhi * 3.141f / 180.0f);
-
+	
 }

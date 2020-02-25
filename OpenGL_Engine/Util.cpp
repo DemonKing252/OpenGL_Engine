@@ -4,6 +4,9 @@
 
 glm::mat4 Util::viewMatrix = glm::mat4(1);
 glm::mat4 Util::projMatrix = glm::mat4(1);
+GLenum Util::wireType1 = GL_QUADS;
+GLenum Util::wireType2 = GL_TRIANGLES;
+
 
 double Util::Pi()
 {

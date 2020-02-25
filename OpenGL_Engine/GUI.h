@@ -4,6 +4,7 @@
 #include "ImGui/imgui_impl_opengl3.h"
 #include "MainHeaders.h"
 #include "PointLight.h"
+#include "Util.h"
 #include <vector>
 class GUI
 {
@@ -13,9 +14,11 @@ public:
 	GLuint core_program;
 	GLFWwindow* window;
 
+
 	float lflickerRange = 0.7f;
 	float lFactor = 3.0f;
 	int fps = 60;
+	bool wireFrameEnabled = false;
 	bool updateLight = true;
 	bool allowCameraMovement = true;
 

@@ -64,6 +64,19 @@ void GUI::Render(std::vector <PointLight*> pLights)
 		allowCameraMovement = (allowCameraMovement ? false : true);
 	}
 	ImGui::Checkbox("Lights should altername", &updateLight);
+	if (ImGui::Checkbox("Wire frame enabled", &wireFrameEnabled))
+	{
+		if (wireFrameEnabled)
+		{
+			Util::wireType1 = GL_LINE_LOOP;
+			Util::wireType2 = GL_LINE_LOOP;
+		}
+		else
+		{
+			Util::wireType1 = GL_QUADS;
+			Util::wireType2 = GL_TRIANGLES;
+		}
+	}
 
 	ImGui::SliderFloat3("Light #1 colour", lightColour1, 0.0f, 1.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 

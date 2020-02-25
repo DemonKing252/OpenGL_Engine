@@ -13,6 +13,7 @@ using namespace std;
 class Util
 {
 public:
+	static GLenum wireType1, wireType2;
 	static glm::mat4 projMatrix, viewMatrix;
 
 	static double Pi();

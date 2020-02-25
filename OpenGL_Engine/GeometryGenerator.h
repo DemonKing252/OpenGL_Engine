@@ -1,14 +1,17 @@
 #pragma once
 #include "GeometryMesh.h"
+#include "Util.h"
 class GeometryGenerator
 {
 public:
+
 	std::vector <GeometryMesh*> mGeometry;
 
 	enum Mesh { PYRAMID, SPHEAR, PLANE };
 
 	GeometryGenerator()
 	{
+		
 	}
 	~GeometryGenerator()
 	{

@@ -59,12 +59,15 @@ void Application::Draw()
 	Util::Transform(core_program, glm::vec3(+0.5f, -0.5f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
-	mMaterialMap["stoneBrick"].bindTexture();
+	mMaterialMap["grass"].bindTexture();
+	TheShaderManager::Instance()->SetFragmentAllTypes(core_program);
 
 	geoGen.mGeometry[GeometryGenerator::PLANE]->bindVAO();
 	Util::Transform(core_program, glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::PLANE);
 
+	mMaterialMap["stoneBrick"].bindTexture();
+	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
 	geoGen.mGeometry[GeometryGenerator::SPHEAR]->bindVAO();
 	Util::Transform(core_program, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
@@ -203,7 +206,9 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	mMaterialMap["brick"].load("Brick5.png");
 	mMaterialMap["theSims"].load("TheSims.jfif");
 	mMaterialMap["fence"].load("Fence.png");
+	mMaterialMap["grass"].load("tile.png");
 	mMaterialMap["stoneBrick"].load("StoneBrick.jpg");
+
 
 	mUserInterface->core_program = core_program;
 	mUserInterface->Init(window);

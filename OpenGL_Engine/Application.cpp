@@ -17,9 +17,9 @@ void Application::Update()
 	// The concept of swapping buffers is important because the front buffer is being shown to the screen
 	// while the back buffer is still being drawn to
 
-	glClear(GL_COLOR_BUFFER_BIT |
-		GL_DEPTH_BUFFER_BIT |
-		GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT |			// Clear colour buffers
+			GL_DEPTH_BUFFER_BIT |			// Clear depth buffers (ie: Only whats in front is shown to the camera)
+			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet)
 
 	Util::viewMatrix = glm::lookAt(
 		Camera::getPosition(),		// Camera position in world space
@@ -39,6 +39,7 @@ void Application::PollEvents()const
 
 void Application::Draw()
 {
+	// Bind a texture ID (an unsigned integer that points to a texture buffer)
 	mMaterialMap["theSims"].bindTexture();
 
 	// Important Order: Scale-Rotate-Translate
@@ -62,6 +63,7 @@ void Application::Draw()
 	mMaterialMap["grass"].bindTexture();
 	TheShaderManager::Instance()->SetFragmentAllTypes(core_program);
 
+
 	geoGen.mGeometry[GeometryGenerator::PLANE]->bindVAO();
 	Util::Transform(core_program, glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::PLANE);
@@ -73,7 +75,7 @@ void Application::Draw()
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
 	// Set a texture ID to be the active one in memory
-	mMaterialMap["theSims"].bindTexture();
+	mMaterialMap["theSims"].bindTexture(); 
 
 	// Tell the fragment shader to only map out vertex colours
 	TheShaderManager::Instance()->SetFragmentColourOnly(core_program);
@@ -148,6 +150,7 @@ Application * Application::Instance()
 
 bool Application::Init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
 {
+	srand((unsigned)time(NULL));
 	///* Initialize the library */
 	/* Initialize the library */
 	//ImGui::SameLine();
@@ -168,6 +171,8 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	{
 		return false;
 	}
+
+	// Read the code from each shader file and link them to the core program
 	vert_shader = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
 	frag_shader = TheShaderManager::Instance()->CompileShader(GL_FRAGMENT_SHADER, fragShader);
 
@@ -200,6 +205,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	Camera::UpdateCameraPosition();
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -1,13 +1,17 @@
 #pragma once
 #include "MainHeaders.h"
+#define FLOAT1_MEMORY_SIZE 4
+#define FLOAT2_MEMORY_SIZE 8
+#define FLOAT3_MEMORY_SIZE 12
 class Vertex
 {
 private:
 	glm::vec3 position;
 	glm::vec3 colour;
-	glm::vec2 UV;			// Not needed yet
-	glm::vec3 normal;		// Not needed yet
+	glm::vec2 UV;			
+	glm::vec3 normal;		
 public:
+
 	Vertex();
 	Vertex(glm::vec3 position, glm::vec3 colour = glm::vec3(1), glm::vec2 UV = glm::vec2(0), glm::vec3 normal = glm::vec3(0));
 	~Vertex();

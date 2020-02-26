@@ -20,8 +20,7 @@ public:
 	void unBindVAO();
 
 	void setNumVertices(const GLint verticies);
-	void setNumIndicies(const GLint indicies);
-
+	void setNumIndicies(const GLint indicies);	
 
 	GLint getNumVertices() const;
 	GLint getNumIndicies() const;

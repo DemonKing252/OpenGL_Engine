@@ -20,16 +20,16 @@ using namespace std;
 //*****************************************************************************
 int main(int argc, char** argv)
 {
-	assert(Application::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT));
+	assert(TheApp::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT));
 
-	while (!glfwWindowShouldClose(Application::Instance()->getWindow()))
+	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
 	{
-		Application::Instance()->PollEvents();
+		TheApp::Instance()->PollEvents();
 
-		Application::Instance()->Update();
-		Application::Instance()->Draw();
+		TheApp::Instance()->Update();
+		TheApp::Instance()->Draw();
 
-		Application::Instance()->SwapBuffers();
+		TheApp::Instance()->SwapBuffers();
 	}
 	
 	return 0;

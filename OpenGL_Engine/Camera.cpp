@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "ShaderManager.h"
-double Camera::mRadius = 4.0f;
+double Camera::mRadius = 30.0f;
 double Camera::mTheta = 0.0f;
 double Camera::mPhi = 90.0f;
 double Camera::deltaX = 0.0f;
@@ -55,7 +55,7 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 	}
 	else if (btnR == GLFW_PRESS)
 	{
-		if (deltaY > 0 && mRadius <= 20.0f)
+		if (deltaY > 0 && mRadius <= 50.0f)
 		{
 			mRadius += 0.25f;
 		}

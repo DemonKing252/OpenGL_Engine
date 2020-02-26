@@ -85,12 +85,12 @@ void GUI::Render(std::vector <PointLight*> pLights)
 	ImGui::NewLine();
 
 	ImGui::PushItemWidth(165.0f);
-	ImGui::SliderFloat("Light #1 strength", &lStrength1, 0, 20.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
-	ImGui::SliderFloat("Light #2 strength", &lStrength2, 0, 20.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::SliderFloat("Light #1 strength", &lStrength1, 0, 100.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::SliderFloat("Light #2 strength", &lStrength2, 0, 100.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 
 	ImGui::Separator();
 
-	ImGui::SliderFloat("Light factor", &lFactor, 0, 20.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::SliderFloat("Light factor", &lFactor, 0, 100.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 
 	ImGui::SliderFloat("Light factor range", &lflickerRange, 0.0f, 5.0f, "%.1f");
 	ImGui::PopItemWidth();

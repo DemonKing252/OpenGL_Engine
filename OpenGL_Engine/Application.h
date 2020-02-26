@@ -8,8 +8,10 @@
 #include "Util.h"
 #include <unordered_map>
 #include <vector>
+#include <ctime>
+#include <cstdlib>
 
-class Application
+typedef class Application
 {
 public:
 	GLfloat angleDelta = 0.0f;
@@ -17,7 +19,7 @@ public:
 	double lasttime = 0.0f;
 
 	std::vector <PointLight*> pLights;
-	std::unordered_map <string, Material> mMaterialMap;
+	std::unordered_map <std::string, Material> mMaterialMap;
 	GeometryGenerator geoGen;
 
 	GLFWwindow* window;
@@ -46,4 +48,4 @@ private:
 	GLuint frag_shader;
 
 	static Application* p_sInstance;
-};
+} TheApp;

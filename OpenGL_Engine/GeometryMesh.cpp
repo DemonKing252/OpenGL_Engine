@@ -38,13 +38,13 @@ void GeometryMesh::generateBuffers()
 	glEnableVertexAttribArray(0);
 
 	// Describe the data set -> Vec3 at layout location 1 in the vertex shader. 3 floats for colour.
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)FLOAT3_MEMORY_SIZE);
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * FLOAT3_MEMORY_SIZE));
 	glEnableVertexAttribArray(2);
 
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)32);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE));
 	glEnableVertexAttribArray(3);
 
 	// De-select all vertex attributes
@@ -70,7 +70,6 @@ void GeometryMesh::setNumIndicies(const GLint indicies)
 {
 	this->numIndicies = indicies;
 }
-
 
 GLint GeometryMesh::getNumVertices()const
 {

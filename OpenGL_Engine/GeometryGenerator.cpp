@@ -111,7 +111,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		const int rows = 64;
 		const int cols = 64;
 
-		const glm::vec3 mountainPos = glm::vec3(-15.0f, 0.0f, 0.0f);
+		const glm::vec3 mountainPos = glm::vec3(0.0f, 0.0f, 0.0f);
 		
 
 		mGeometry.back()->setNumIndicies(rows * cols * 4);
@@ -125,23 +125,23 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		{
 			tempVertex[0] = glm::vec3((0.5f * -cols) + x, 0.0f, (0.5f * -rows) + z);
 			distance[0] = glm::length(tempVertex[0] - mountainPos);
-			if (distance[0] <= 10.0f)
-				tempVertex[0].y = 2.0f / 0.2f * sin(15.0f*distance[0] * Util::DegToRad());
+			//if (distance[0] <= 10.0f)
+				tempVertex[0].y = 2.0f / 0.2f * sin(30.0f*distance[0] * Util::DegToRad());
 
 			tempVertex[1] = glm::vec3((0.5f * -cols) + x + 1.0f, 0.0f, (0.5f * -rows) + z);
 			distance[1] = glm::length(tempVertex[1] - mountainPos);
-			if (distance[1] <= 10.0f)
-				tempVertex[1].y = 2.0f / 0.2f * sin(15.0f * distance[1] * Util::DegToRad());
+			//if (distance[1] <= 10.0f)
+				tempVertex[1].y = 2.0f / 0.2f * sin(30.0f * distance[1] * Util::DegToRad());
 
 			tempVertex[2] = glm::vec3((0.5f * -cols) + x + 1.0f, 0.0f, (0.5f * -rows) + z + 1.0f);
 			distance[2] = glm::length(tempVertex[2] - mountainPos);
-			if (distance[2] <= 10.0f)
-				tempVertex[2].y = 2.0f / 0.2f * sin(15.0f * distance[2] * Util::DegToRad());
+			//if (distance[2] <= 10.0f)
+				tempVertex[2].y = 2.0f / 0.2f * sin(30.0f * distance[2] * Util::DegToRad());
 
 			tempVertex[3] = glm::vec3(glm::vec3((0.5f * -cols) + x, 0.0f, (0.5f * -rows) + z + 1.0f));
 			distance[3] = glm::length(tempVertex[3] - mountainPos);
-			if (distance[3] <= 10.0f)
-				tempVertex[3].y = 2.0f / 0.2f * sin(15.0f * distance[3] * Util::DegToRad());
+			//if (distance[3] <= 10.0f)
+				tempVertex[3].y = 2.0f / 0.2f * sin(30.0f * distance[3] * Util::DegToRad());
 
 			mGeometry.back()->verticies[i].setPosition(tempVertex[0]);
 			mGeometry.back()->verticies[i + 1].setPosition(tempVertex[1]);

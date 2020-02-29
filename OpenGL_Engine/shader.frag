@@ -18,10 +18,10 @@ struct PointLight
 
 };
 uniform int fragStyle;
+uniform float alpha;
 uniform PointLight pLight[MAX_LIGHTS];
 
 uniform vec3 mCameraFacing;
-
 void main()
 {
 	vec3 ambient = vec3(0.3, 0.3, 0.3);	
@@ -53,22 +53,23 @@ void main()
 		result = (ambient + specular + diffuse);	
 		
 	}
+	
+
 	if (fragStyle == 0)
 		fragColour = vec4(0);
 	else if (fragStyle == 1)
-		fragColour = texture(texture0, vs_texture) * vec4(vs_colour, 1.0f);
+		fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha);
 	else if (fragStyle == 2)
-		fragColour =  vec4(vs_colour, 1.0f);
+		fragColour =  vec4(vs_colour, alpha);
 	else if (fragStyle == 3)
-		fragColour = texture(texture0, vs_texture);
+		fragColour = texture(texture0, vs_texture) * vec4(1,1,1,alpha);
 	else if (fragStyle == 4)
-		fragColour = texture(texture0, vs_texture) * vec4(result, 1.0f);
+		fragColour = texture(texture0, vs_texture) * vec4(result, alpha);
 	else if (fragStyle == 5)
-		fragColour = vec4(vs_colour, 1.0f) * vec4(result, 1.0f);
+		fragColour = vec4(vs_colour, alpha) * vec4(result, 1.0f);
 	else if (fragStyle == 6)
-		fragColour = vec4(result, 1.0f);
+		fragColour = vec4(result, alpha);
 	else if (fragStyle == 7)
-		fragColour = texture(texture0, vs_texture) * vec4(vs_colour, 1.0f) * vec4(result, 1.0f);
-
+		fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha) * vec4(result, 1.0f);
 	
 }

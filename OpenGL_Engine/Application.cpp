@@ -23,7 +23,7 @@ void Application::Update()
 
 	Util::viewMatrix = glm::lookAt(
 		Camera::getPosition(),		// Camera position in world space
-		glm::vec3(0, 0, 0),			// Camera look at 
+		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
 		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
 	);
 
@@ -43,21 +43,21 @@ void Application::Draw()
 	mMaterialMap["theSims"].bindTexture();
 
 	// Important Order: Scale-Rotate-Translate
-	Util::Transform(core_program, glm::vec3(0.0f, 0.5f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	Util::Transform(core_program, glm::vec3(0.0f, 0.5f - 0.12f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 
 	geoGen.mGeometry[GeometryGenerator::SPHEAR]->bindVAO();
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
-	Util::Transform(core_program, glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	Util::Transform(core_program, glm::vec3(-0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
-	Util::Transform(core_program, glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	Util::Transform(core_program, glm::vec3(-0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
-	Util::Transform(core_program, glm::vec3(+0.5f, -0.5f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	Util::Transform(core_program, glm::vec3(+0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
-	Util::Transform(core_program, glm::vec3(+0.5f, -0.5f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	Util::Transform(core_program, glm::vec3(+0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::SPHEAR);
 
 	mMaterialMap["grass"].bindTexture();
@@ -91,11 +91,28 @@ void Application::Draw()
 
 	// Set a vertex vao to be the active one in memory
 	geoGen.mGeometry[GeometryGenerator::PYRAMID]->bindVAO();
-	Util::Transform(core_program, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	Util::Transform(core_program, glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::PYRAMID);
 
+	TheShaderManager::Instance()->SetFragmentBlend(core_program, 0.4f);
+
+	mMaterialMap["ice"].bindTexture();
+
+	geoGen.mGeometry[GeometryGenerator::CUBE]->bindVAO();
+	
+	Util::Transform(core_program, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	geoGen.draw(GeometryGenerator::CUBE);
+
+	mMaterialMap["stoneBrick"].bindTexture();
+	TheShaderManager::Instance()->SetFragmentBlend(core_program, 1.0f);
+	
+	Util::Transform(core_program, glm::vec3(0.0f, -0.65f*1.2, 0.0f), glm::vec3(1.2f, 0.3f, 1.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	geoGen.draw(GeometryGenerator::CUBE);
+
 	mMaterialMap["fence"].bindTexture();
-	Util::Transform(core_program, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	geoGen.mGeometry[GeometryGenerator::PYRAMID]->bindVAO();
+	
+	Util::Transform(core_program, glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::PYRAMID);
 
 	for (PointLight* light : pLights) {
@@ -109,15 +126,13 @@ void Application::Draw()
 	if (mUserInterface->updateLight)
 		angleDelta += 3;
 
-	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement)
-	{
+	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement) {
 		Camera::UpdateCameraPosition();
 		Camera::UpdateCameraFacing(window);
 		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
 	}
 
 	mUserInterface->Render(pLights);
-
 }
 
 void Application::SwapBuffers() const
@@ -155,14 +170,15 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	/* Initialize the library */
 	//ImGui::SameLine();
 
-	assert(glfwInit() != 0);
+	if (glfwInit() == 0)
+		return false;
+
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(width, height, titleName, NULL, NULL);
+
 	if (!window)
-	{
-		glfwTerminate();
 		return false;
-	}
+
 	mUserInterface = new GUI();
 
 	/* Make the window's context current */
@@ -172,14 +188,17 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 		return false;
 	}
 
-	// Read the code from each shader file and link them to the core program
+	// Read the instructions from each shader and link them to the core program
 	vert_shader = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
 	frag_shader = TheShaderManager::Instance()->CompileShader(GL_FRAGMENT_SHADER, fragShader);
 
 	core_program = TheShaderManager::Instance()->AttachShader(vert_shader, frag_shader);
 
+	// Delete unused memory
 	glDeleteShader(vert_shader);
 	glDeleteShader(frag_shader);
+
+	// Our pipeline is now setup
 	glUseProgram(core_program);
 
 	// Point Light
@@ -192,11 +211,15 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	pLights.back()->index = pLights.size() - 1;
 	pLights.back()->updateBuffers(core_program);
 
+	geoGen.createMesh(GeometryGenerator::CUBE);
+	geoGen.mGeometry[GeometryGenerator::CUBE]->generateBuffers();
+
 	geoGen.createMesh(GeometryGenerator::PYRAMID);
 	geoGen.mGeometry[GeometryGenerator::PYRAMID]->generateBuffers();
 
 	geoGen.createMesh(GeometryGenerator::SPHEAR);
 	geoGen.mGeometry[GeometryGenerator::SPHEAR]->generateBuffers();
+
 
 	geoGen.createMesh(GeometryGenerator::PLANE);
 	geoGen.mGeometry[GeometryGenerator::PLANE]->generateBuffers();
@@ -209,6 +232,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	mMaterialMap["ice"].load("ice.png");
 	mMaterialMap["brick"].load("Brick5.png");
 	mMaterialMap["theSims"].load("TheSims.jfif");
 	mMaterialMap["fence"].load("Fence.png");
@@ -216,10 +240,8 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	mMaterialMap["stoneBrick"].load("StoneBrick.jpg");
 
 
-	mUserInterface->core_program = core_program;
+	mUserInterface->core_program = this->core_program;
 	mUserInterface->Init(window);
-
-	glUniform1i(glGetUniformLocation(core_program, "flag"), 1);
 
 	float lFactor = 3.0f;
 	float lflickerRange = 0.7f;

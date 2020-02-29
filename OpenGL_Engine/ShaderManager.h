@@ -49,6 +49,8 @@ public:
 	void SetFragmentLightAndColourOnly(const GLuint core_program) const;
 	void SetFragmentLightOnly(const GLuint core_program) const;
 
+	// Blending
+	void SetFragmentBlend(const GLuint core_program, const GLfloat alpha) const;
 
 
 

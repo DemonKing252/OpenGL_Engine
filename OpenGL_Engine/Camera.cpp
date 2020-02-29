@@ -1,6 +1,6 @@
 #include "Camera.h"
 #include "ShaderManager.h"
-double Camera::mRadius = 30.0f;
+double Camera::mRadius = 7.0f;
 double Camera::mTheta = 0.0f;
 double Camera::mPhi = 90.0f;
 double Camera::deltaX = 0.0f;

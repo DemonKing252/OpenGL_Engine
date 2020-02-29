@@ -152,3 +152,8 @@ void ShaderManager::SetFragmentLightOnly(const GLuint core_program) const
 	SetUniformi(core_program, "fragStyle", 6);
 }
 
+void ShaderManager::SetFragmentBlend(const GLuint core_program, const GLfloat alpha) const
+{
+	SetUniformf(core_program, "alpha", alpha);
+}
+

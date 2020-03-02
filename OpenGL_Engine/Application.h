@@ -10,7 +10,7 @@
 #include <vector>
 #include <ctime>
 #include <cstdlib>
-
+#include "Scene.h"
 typedef class Application
 {
 public:
@@ -18,11 +18,10 @@ public:
 	GLfloat strength = 0.0f;
 	double lasttime = 0.0f;
 
-	std::vector <PointLight*> pLights;
-	std::unordered_map <std::string, Material> mMaterialMap;
-	GeometryGenerator geoGen;
+	// Multiplayer System
+	Scene* mPlayerScene;
+	Scene* mGuestScene;
 
-	GLFWwindow* window;
 	GUI* mUserInterface;
 
 	static Application* Instance();
@@ -37,11 +36,11 @@ public:
 	void Clean() const;
 
 	GLFWwindow* getWindow() const;
-
+	GLuint getCoreProgram() const;
 	
 
 private:
-
+	GLFWwindow* window;
 	GLuint core_program;
 
 	GLuint vert_shader;

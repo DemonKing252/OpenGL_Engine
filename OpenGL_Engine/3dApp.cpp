@@ -25,8 +25,7 @@ int main(int argc, char** argv)
 	while (!glfwWindowShouldClose(Application::Instance()->getWindow()))
 	{
 		Application::Instance()->PollEvents();
-		glViewport(0, 0, WIDTH, HEIGHT);
-		
+	
 		Application::Instance()->Update();
 		Application::Instance()->Draw();
 

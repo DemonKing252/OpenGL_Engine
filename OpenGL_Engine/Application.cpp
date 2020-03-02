@@ -1,10 +1,22 @@
 #include "Application.h"
 Application* Application::p_sInstance = nullptr;
+
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+	if ((button == GLFW_MOUSE_BUTTON_LEFT || button == GLFW_MOUSE_BUTTON_RIGHT) && action == GLFW_PRESS)
+	{
+		cout << "Mouse down called back" << endl;
+	
+		glfwGetCursorPos(window, &Camera::mouseX, &Camera::mouseY);
+	}
+}
 void Application::Update()
 {
 	while (glfwGetTime() < lasttime + 1.0 / mUserInterface->fps) {
-		// Put the thread to sleep :)
+		// Put the thread to sleep.
+		// -> 1000.0f / 60.0f => 16.666 milliseconds perframe
 		// Reminder that OpenGL only works on one thread.
+
 	}
 	lasttime += 1.0 / mUserInterface->fps;
 
@@ -12,6 +24,31 @@ void Application::Update()
 				 mUserInterface->clear_color.y, 
 				 mUserInterface->clear_color.z, 
 				 mUserInterface->clear_color.w);
+	// Light will increase and decrease intensity (look at this equation in desmos for the pattern)
+	
+	// light.strength = flickerRange * cos(strength * 3.14159f / 180.0f) + factor
+	
+	// Cosf supposedly accepts an angle in degrees but it was giving me rounding issues so I reverted back here.
+	// Same thing happened when I used it for the sphear (cartesian coordinates)
+	
+	for (PointLight* light : pLights) {
+		if (mUserInterface->updateLight) {
+			strength += 1.5f;
+			
+			light->setStrength((mUserInterface->lflickerRange * cos(strength * Util::DegToRad())) + mUserInterface->lFactor);
+		}
+		light->setPosition(glm::vec3(3 * cos((angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), light->getPosition().y, 3 * sin((angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
+	}
+	if (mUserInterface->updateLight)
+		angleDelta += 3.0f;
+
+	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement) {
+		Camera::UpdateCameraPosition();
+		Camera::UpdateCameraFacing(window);
+
+		// Update the camera facing vector 
+		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
+	}
 
 	// Clear buffers (ie: Color, Depth, and Stencil) to prepare to swap the back and front buffers
 	// The concept of swapping buffers is important because the front buffer is being shown to the screen
@@ -39,6 +76,7 @@ void Application::PollEvents()const
 
 void Application::Draw()
 {
+	
 	// Bind a texture ID (an unsigned integer that points to a texture buffer)
 	mMaterialMap["theSims"].bindTexture();
 
@@ -62,7 +100,6 @@ void Application::Draw()
 
 	mMaterialMap["grass"].bindTexture();
 	TheShaderManager::Instance()->SetFragmentAllTypes(core_program);
-
 
 	geoGen.mGeometry[GeometryGenerator::PLANE]->bindVAO();
 	Util::Transform(core_program, glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
@@ -114,23 +151,6 @@ void Application::Draw()
 	
 	Util::Transform(core_program, glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 	geoGen.draw(GeometryGenerator::PYRAMID);
-
-	for (PointLight* light : pLights) {
-		if (mUserInterface->updateLight) {
-			strength += 1.5f;
-			// Light will increase and decrease intensity (look at this equation in desmos for the pattern)
-			light->setStrength((mUserInterface->lflickerRange * cos(strength * Util::DegToRad())) + mUserInterface->lFactor);
-		}
-		light->setPosition(glm::vec3(3 * cos((angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), light->getPosition().y, 3 * sin((angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
-	}
-	if (mUserInterface->updateLight)
-		angleDelta += 3;
-
-	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement) {
-		Camera::UpdateCameraPosition();
-		Camera::UpdateCameraFacing(window);
-		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
-	}
 
 	mUserInterface->Render(pLights);
 }
@@ -198,7 +218,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	glDeleteShader(vert_shader);
 	glDeleteShader(frag_shader);
 
-	// Our pipeline is now setup
+	// Our pipeline is setup
 	glUseProgram(core_program);
 
 	// Point Light
@@ -227,6 +247,8 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	Camera::UpdateCameraFacing(window);
 	Camera::UpdateCameraPosition();
 
+
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
@@ -243,14 +265,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	mUserInterface->core_program = this->core_program;
 	mUserInterface->Init(window);
 
-	float lFactor = 3.0f;
-	float lflickerRange = 0.7f;
-	ImVec4 clear_color = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);//ImVec4(135.0f/255.f, 206.0f/255.f, 235.0f/255.f, 1);
-	GLfloat angleDelta = 0.0f;
-
-
-	double lasttime = glfwGetTime();
-
+		
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
 
 }

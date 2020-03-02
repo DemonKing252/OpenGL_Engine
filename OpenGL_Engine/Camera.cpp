@@ -38,30 +38,31 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 
 	glfwGetCursorPos(window, &mouseX, &mouseY);
 
-	deltaX = mouseX - back_x;
-	deltaY = mouseY - back_y;
+	// Sensitivity 60% could use a ImGui::SliderFloat for that?
+	deltaX = (mouseX - back_x) * 0.6f;
+	deltaY = (mouseY - back_y) * 0.6f;
 
 	if (btnL == GLFW_PRESS)
 	{
 		if (deltaX > 0)
-			mTheta += 4.0f;
+			mTheta += deltaX;
 		else if (deltaX < 0)
-			mTheta -= 4.0f;
-
-		if (deltaY > 0 && mPhi <= 176.0f)
-			mPhi += 3.0f;
-		else if (deltaY < 0 && mPhi >= 5.0f)
-			mPhi -= 3.0f;
+			mTheta -= -deltaX;
+	
+		if (deltaY > 0 && mPhi <= 180.0f - deltaY)
+			mPhi += deltaY;
+		else if (deltaY < 0 && mPhi >= deltaY)
+			mPhi -= -deltaY;
 	}
 	else if (btnR == GLFW_PRESS)
 	{
 		if (deltaY > 0 && mRadius <= 50.0f)
 		{
-			mRadius += 0.25f;
+			mRadius += deltaY * 0.05f;
 		}
 		else if (deltaY < 0 && mRadius >= 1.0f)
 		{
-			mRadius -= 0.25f;
+			mRadius -= -deltaY * 0.05f;
 		}
 	}
 }

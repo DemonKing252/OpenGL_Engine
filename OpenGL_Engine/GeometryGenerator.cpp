@@ -1,7 +1,6 @@
 #include "GeometryGenerator.h"
 void GeometryGenerator::createMesh(Mesh mesh)
 {
-	const float toRad = 3.14159f / 180.0f;
 	mGeometry.push_back(new GeometryMesh());
 	if (mesh == CUBE)
 	{
@@ -96,9 +95,13 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		for (int i = 0; i < sliceCount * stackCount; i += 4)
 		{
 			// #1 
-			float tempX = (0.5f * cos(y * toRad)) * cos(xz * toRad);
-			float tempY = (0.5f * cos(y * toRad)) * sin(xz * toRad);
-			float tempZ = 0.5f * sin(y * toRad);
+			
+			// 3D Cartesian coordinates (Calculus III)
+			// Helpful link -> http://tutorial.math.lamar.edu/Classes/CalcIII/3DCoords.aspx
+			float tempX = (0.5f * cos(y * Util::DegToRad())) * cos(xz * Util::DegToRad());
+			float tempY = (0.5f * cos(y * Util::DegToRad())) * sin(xz * Util::DegToRad());
+			float tempZ = 0.5f * sin(y * Util::DegToRad());
+
 			// first theta - y, second theta [x/z] -> cos(theta) * sin(theta)
 			mGeometry.back()->verticies[i].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometry.back()->verticies[i].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
@@ -107,18 +110,18 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			//cout << 0.5f + (tempX * 1.5f) << endl;
 
 			// #2
-			tempX = (0.5f * cos(y * toRad)) * cos((xz + 10.0f) * toRad);
-			tempY = (0.5f * cos(y * toRad)) * sin((xz + 10.0f) * toRad);
-			tempZ = 0.5f * sin(y * toRad);
+			tempX = (0.5f * cos(y * Util::DegToRad())) * cos((xz + 10.0f) * Util::DegToRad());
+			tempY = (0.5f * cos(y * Util::DegToRad())) * sin((xz + 10.0f) * Util::DegToRad());
+			tempZ = 0.5f * sin(y * Util::DegToRad());
 			mGeometry.back()->verticies[i + 1].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometry.back()->verticies[i + 1].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
 			mGeometry.back()->verticies[i + 1].setUV(glm::vec2(((xz + 10.0f) / 360.0f) + 0.5f, y / 180.0f));
 			mGeometry.back()->verticies[i + 1].setNormal(glm::vec3(tempX, tempY, tempZ));
 
 			// #3
-			tempX = (0.5f * cos((y - 10.0f) * toRad)) * cos((xz + 10.0f) * toRad);
-			tempY = (0.5f * cos((y - 10.0f) * toRad)) * sin((xz + 10.0f) * toRad);
-			tempZ = 0.5f * sin((y - 10.0f) * toRad);
+			tempX = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * cos((xz + 10.0f) * Util::DegToRad());
+			tempY = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * sin((xz + 10.0f) * Util::DegToRad());
+			tempZ = 0.5f * sin((y - 10.0f) * Util::DegToRad());
 
 			mGeometry.back()->verticies[i + 2].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometry.back()->verticies[i + 2].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
@@ -126,9 +129,9 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometry.back()->verticies[i + 2].setNormal(glm::vec3(tempX, tempY, tempZ));
 
 			// #4
-			tempX = (0.5f * cos((y - 10.0f) * toRad)) * cos((xz)* toRad);
-			tempY = (0.5f * cos((y - 10.0f) * toRad)) * sin((xz)* toRad);
-			tempZ = 0.5f * sin((y - 10.0f) * toRad);
+			tempX = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * cos((xz)* Util::DegToRad());
+			tempY = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * sin((xz)* Util::DegToRad());
+			tempZ = 0.5f * sin((y - 10.0f) * Util::DegToRad());
 
 			mGeometry.back()->verticies[i + 3].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometry.back()->verticies[i + 3].setColour(glm::vec3(1.0f, 1.0f, 0.0f));

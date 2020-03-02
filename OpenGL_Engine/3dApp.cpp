@@ -20,16 +20,18 @@ using namespace std;
 //*****************************************************************************
 int main(int argc, char** argv)
 {
-	assert(TheApp::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT));
+	assert(Application::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT) != false);
 
-	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
+	while (!glfwWindowShouldClose(Application::Instance()->getWindow()))
 	{
-		TheApp::Instance()->PollEvents();
+		Application::Instance()->PollEvents();
+		glViewport(0, 0, WIDTH, HEIGHT);
+		
+		Application::Instance()->Update();
+		Application::Instance()->Draw();
 
-		TheApp::Instance()->Update();
-		TheApp::Instance()->Draw();
-
-		TheApp::Instance()->SwapBuffers();
+		// The back buffer is being drawn too while the front buffer is being shown on the view port.
+		Application::Instance()->SwapBuffers();
 	}
 	
 	return 0;

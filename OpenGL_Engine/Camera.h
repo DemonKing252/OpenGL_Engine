@@ -10,19 +10,17 @@ class Camera
 {
 private:
 	static glm::vec3 position;
-	static double mouseX, mouseY;
-	static double back_x, back_y;
 	static double mPhi, mTheta;
 	static double mRadius;
 public:
+	static double mouseX, mouseY;
+	static double back_x, back_y;
+
 	static glm::vec3 getPosition();
 	static double deltaX, deltaY;
 
 	static bool EventMouseClick(GLFWwindow* window);
 	static void UpdateCameraFacing(GLFWwindow* window);
 	static void UpdateCameraPosition();
-
-	
-
 };
 

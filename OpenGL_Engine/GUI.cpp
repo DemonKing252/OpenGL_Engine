@@ -63,7 +63,7 @@ void GUI::Render(std::vector <PointLight*> pLights)
 	{
 		allowCameraMovement = (allowCameraMovement ? false : true);
 	}
-	ImGui::Checkbox("Lights should altername", &updateLight);
+	ImGui::Checkbox("Lights should alternate", &updateLight);
 	if (ImGui::Checkbox("Wire frame enabled", &wireFrameEnabled))
 	{
 		if (wireFrameEnabled)

@@ -22,8 +22,18 @@ uniform float alpha;
 uniform PointLight pLight[MAX_LIGHTS];
 
 uniform vec3 mCameraFacing;
+
+//	float fog_fallOffEnd = 8.0;
+//	float fog_fallOffStart = 0.1;
+//	vec4 fog_colour = vec4(0.4, 0.4, 0.4, 1.0);
+
+uniform float fog_fallOffEnd;
+uniform float fog_fallOffStart;
+uniform vec4 fog_colour;
+
 void main()
 {
+	
 	vec3 ambient = vec3(0.3, 0.3, 0.3);	
 	vec3 result = vec3(0);
 	vec3 specular = vec3(0);
@@ -55,8 +65,9 @@ void main()
 	}
 	
 
+
 	if (fragStyle == 0)
-		fragColour = vec4(0);
+		fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	else if (fragStyle == 1)
 		fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha);
 	else if (fragStyle == 2)
@@ -71,5 +82,25 @@ void main()
 		fragColour = vec4(result, alpha);
 	else if (fragStyle == 7)
 		fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha) * vec4(result, 1.0f);
+	
+	// Linear fog
+
+
+	
+	if (fragStyle != 0)
+	{
+		float distance = length(fragPos - mCameraFacing);
+		float fog_factor = (fog_fallOffEnd - distance) /
+		                  (fog_fallOffEnd - fog_fallOffStart);
+
+		fog_factor = clamp(fog_factor, 0.0, 1.0);
+
+		/*********************************************************
+		// Interpolate each property of the fragmnet
+		// IE: Lighting, Colour, Texture Sampler, and Fog
+		*********************************************************/
+
+		fragColour = mix(fog_colour, fragColour, fog_factor);
+	}
 	
 }

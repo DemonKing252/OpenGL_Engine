@@ -4,14 +4,14 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
 	if ((button == GLFW_MOUSE_BUTTON_LEFT || button == GLFW_MOUSE_BUTTON_RIGHT) && action == GLFW_PRESS)
 	{
-		cout << "Mouse down called back" << endl;
+		//cout << "Mouse down called back" << endl;
 
 		glfwGetCursorPos(window, &Camera::mouseX, &Camera::mouseY);
 	}
 }
 void window_resize_callback(GLFWwindow* window, int x, int y)
 {
-	cout << "Window resized" << endl;
+	//cout << "Window resized" << endl;
 }
 Scene::Scene()
 {
@@ -24,7 +24,7 @@ Scene::~Scene()
 void Scene::Update()
 {
 	for (PointLight* light : pLights) {
-		if (Application::Instance()->mUserInterface->updateLight) {
+		if (Application::Instance()->mUserInterface->mLightShouldUpdate) {
 			Application::Instance()->strength += 1.5f;
 
 			light->setStrength((Application::Instance()->mUserInterface->lflickerRange * cos(Application::Instance()->strength * Util::DegToRad())) + Application::Instance()->mUserInterface->lFactor);

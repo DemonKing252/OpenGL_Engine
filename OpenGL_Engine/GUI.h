@@ -5,6 +5,7 @@
 #include "MainHeaders.h"
 #include "PointLight.h"
 #include "Util.h"
+#include "ShaderManager.h"
 #include <vector>
 class GUI
 {
@@ -15,11 +16,15 @@ public:
 	GLFWwindow* window;
 
 
+	float fogFallOffStart = 0.1f;
+	float fogFallOffEnd = 24.0f;
+	glm::vec4 fogColour = glm::vec4(0.0, 0.0f, 1.0f, 1.0f);
+
 	float lflickerRange = 0.7f;
-	float lFactor = 3.0f;
+	float lFactor = 15.0f;
 	int fps = 60;
 	bool wireFrameEnabled = false;
-	bool updateLight = true;
+	bool mLightShouldUpdate = true;
 	bool allowCameraMovement = true;
 
 	int display_w, display_h;

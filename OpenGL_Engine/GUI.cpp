@@ -23,6 +23,10 @@ void GUI::Init(GLFWwindow* window)
 	ImGui::StyleColorsDark();
 	//ImGui::StyleColorsClassic();
 	
+	TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffStart", fogFallOffStart);
+	TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffEnd", fogFallOffEnd);
+	TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", fogColour);
+
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
@@ -49,7 +53,7 @@ void GUI::Render(std::vector <PointLight*> pLights)
 	ImGui::Begin("3D Graphics Engine");                          // Create a window called "Hello, world!" and append into it.
 
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f), 0);
-	ImGui::ColorEdit3("Background Colour", (float*)&clear_color); // Edit 3 floats representing a color
+	ImGui::ColorEdit3("Background colour", (float*)&clear_color); // Edit 3 floats representing a color
 
 	ImGui::PushItemWidth(150.0f);
 	ImGui::SliderInt("Max FPS", &fps, 1.0f, 60.0f);
@@ -63,7 +67,7 @@ void GUI::Render(std::vector <PointLight*> pLights)
 	{
 		allowCameraMovement = (allowCameraMovement ? false : true);
 	}
-	ImGui::Checkbox("Lights should alternate", &updateLight);
+	ImGui::Checkbox("Lights should alternate", &mLightShouldUpdate);
 	if (ImGui::Checkbox("Wire frame enabled", &wireFrameEnabled))
 	{
 		if (wireFrameEnabled)
@@ -88,16 +92,42 @@ void GUI::Render(std::vector <PointLight*> pLights)
 	ImGui::SliderFloat("Light #1 strength", &lStrength1, 0, 100.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 	ImGui::SliderFloat("Light #2 strength", &lStrength2, 0, 100.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 
-	ImGui::Separator();
+	//ImGui::Separator();
 
 	ImGui::SliderFloat("Light factor", &lFactor, 0, 100.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 
 	ImGui::SliderFloat("Light factor range", &lflickerRange, 0.0f, 5.0f, "%.1f");
 	ImGui::PopItemWidth();
 
+	ImGui::Separator();
 	ImGui::NewLine();
-	int display_w, display_h;
 
+	float fog[3] = { fogColour.x, fogColour.y, fogColour.z };
+	
+
+	if (ImGui::SliderFloat3("Fog colour", fog, 0.0f, 1.0f, "%.1f"))
+	{
+		fogColour = glm::vec4(
+			fog[0],
+			fog[1],
+			fog[2],
+			1.0f
+		);
+		TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", glm::vec4(fogColour.x, fogColour.y, fogColour.z, 1.0f));
+	}
+	
+	ImGui::PushItemWidth(165.0f);
+
+	if (ImGui::SliderFloat("Fog fall off start", &fogFallOffStart, 0.0f, 100.0f, "%.1f"))
+		TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffStart", fogFallOffStart);
+
+	if (ImGui::SliderFloat("Fog fall off end", &fogFallOffEnd, 0.0f, 100.0f, "%.1f"))
+		TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffEnd", fogFallOffEnd);
+
+	ImGui::PopItemWidth();
+
+	ImGui::NewLine();
+	
 	glfwGetFramebufferSize(window, &display_w, &display_h);
 	ImGui::Separator();
 

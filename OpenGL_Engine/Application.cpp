@@ -22,7 +22,7 @@ void Application::Update()
 	mPlayerScene->Update();
 	mGuestScene->Update();
 	
-	if (mUserInterface->updateLight)
+	if (mUserInterface->mLightShouldUpdate)
 		angleDelta += 3.0f;
 
 	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement) {
@@ -39,13 +39,9 @@ void Application::Update()
 
 	glClear(GL_COLOR_BUFFER_BIT |			// Clear colour buffers
 			GL_DEPTH_BUFFER_BIT |			// Clear depth buffers (ie: Only whats in front is shown to the camera)
-			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet)
+			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet))
 
-	Util::viewMatrix = glm::lookAt(
-		Camera::getPosition(),		// Camera position in world space
-		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
-		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
-	);
+	
 
 	// Camera can see 45 degrees left/right, with a minimum vocal range of (0.1 - 300)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
@@ -59,16 +55,26 @@ void Application::PollEvents()const
 
 void Application::Draw()
 {
+
 	// Player #1
+	Util::viewMatrix = glm::lookAt(
+		glm::vec3(0, 1, 6),		// Camera position in world space
+		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
+		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
+	);
 	glViewport(0, 0, 1024, 384);
 	mPlayerScene->Render();
 	mUserInterface->Render(mPlayerScene->pLights);
 
 
 	// Player #2
+	Util::viewMatrix = glm::lookAt(
+		Camera::getPosition(),		// Camera position in world space
+		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
+		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
+	);
 	glViewport(0, 384, 1024, 384);
 	mGuestScene->Render();
-	
 	mUserInterface->Render(mGuestScene->pLights);
 
 }
@@ -108,8 +114,7 @@ Application * Application::Instance()
 
 bool Application::Init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
 {
-	mPlayerScene = new Scene();
-	mGuestScene = new Scene();
+	
 	srand((unsigned)time(NULL));
 	///* Initialize the library */
 	/* Initialize the library */
@@ -124,12 +129,14 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	if (!window)
 		return false;
 
-	mUserInterface = new GUI();
-
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
 	if (glewInit() != GLEW_OK)
 		return false;
+
+	mPlayerScene = new Scene();
+	mGuestScene = new Scene();
+	mUserInterface = new GUI();
 
 	// Read the instructions from each shader and link them to the core program
 	vert_shader = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
@@ -149,12 +156,13 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	mGuestScene->Init();
 
 	mUserInterface->core_program = this->core_program;
-	mUserInterface->Init(Application::Instance()->getWindow());
+	mUserInterface->Init(window);
 	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glStencilFunc(GL_ALWAYS, 0, 1);
 		
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
 

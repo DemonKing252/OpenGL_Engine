@@ -7,6 +7,7 @@ layout(location = 3) in vec3 vertex_normal;
 out vec3 vs_colour;
 out vec2 vs_texture;
 out vec3 vs_normal;
+out vec3 fragPos;
 
 uniform mat4 M;
 uniform mat4 V;
@@ -18,5 +19,7 @@ void main()
 	vs_normal = mat3(M) * vertex_normal;
 	vs_texture = vertex_texture;
 	vs_colour = vertex_colour;	
+	fragPos = vertex_position;
+
 	gl_Position = P * V * M * vec4(vertex_position, 1.0f);
 }

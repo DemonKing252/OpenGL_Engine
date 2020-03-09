@@ -2,19 +2,20 @@
 #include "MainHeaders.h"
 #include "ShaderManager.h"
 #include <cstdio>
-class PointLight
+typedef class Light
 {
-private:
+protected:
 	glm::vec3 position;
 	glm::vec3 colour;
 	float strength;
 public:
 	int index = -1;
-	PointLight();
-	~PointLight();
-	PointLight(glm::vec3 position, glm::vec3 colour = glm::vec3(1, 1, 1), float strenth = 1.0f);
+	Light();
+	~Light();
+	Light(glm::vec3 position, glm::vec3 colour = glm::vec3(1, 1, 1), float strenth = 1.0f);
 	
-	void updateBuffers(const GLuint core_program);
+	virtual void updateBuffers(const GLuint core_program) = 0;
+	virtual void clean(const GLuint core_program) = 0;
 
 	glm::vec3 getPosition() const;
 	glm::vec3 getColour() const;
@@ -23,5 +24,16 @@ public:
 	void setPosition(const glm::vec3 position);
 	void setColour(const glm::vec3 colour);
 	void setStrength(const float strength);
-};
+} Light;
+typedef class PointLight : public Light
+{
+private:
 
+public:
+	PointLight();
+	PointLight(glm::vec3 position, glm::vec3 colour = glm::vec3(1, 1, 1), float strenth = 1.0f);
+	~PointLight();
+
+	void updateBuffers(const GLuint core_program)override;
+	void clean(const GLuint core_program)override;
+} PointLight;

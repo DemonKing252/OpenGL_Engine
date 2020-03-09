@@ -14,7 +14,7 @@ class Util
 {
 public:
 	static GLenum wireType1, wireType2;
-	static glm::mat4 projMatrix, viewMatrix;
+	static glm::mat4 m_4x4ProjMatrix, m_4x4ViewMatrix;
 
 	static double Pi();
 	static double DegToRad();

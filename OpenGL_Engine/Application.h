@@ -47,4 +47,4 @@ private:
 	GLuint frag_shader;
 
 	static Application* p_sInstance;
-} Application;
+} Application, TheApp;

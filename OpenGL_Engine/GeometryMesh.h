@@ -29,8 +29,3 @@ private:
 	GLint numVerticies = 0;
 	GLint numIndicies = 0;
 };
-
-
-
-
-

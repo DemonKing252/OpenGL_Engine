@@ -5,8 +5,8 @@ Application* Application::p_sInstance = nullptr;
 void Application::Update()
 {
 	while (glfwGetTime() < lasttime + 1.0 / mUserInterface->fps) {
-		// Put the thread to sleep.
-		// -> 1000.0f / 60.0f => 16.666 milliseconds perframe
+		// Put the thread to sleep : )
+		// -> 1000.0f / 60.0f => 16.66667 milliseconds perframe
 		// Reminder that OpenGL only works on one thread.
 
 	}
@@ -45,7 +45,7 @@ void Application::Update()
 
 	// Camera can see 45 degrees left/right, with a minimum vocal range of (0.1 - 300)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
-	Util::projMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
+	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
 
 }
 void Application::PollEvents()const
@@ -57,26 +57,26 @@ void Application::Draw()
 {
 
 	// Player #1
-	Util::viewMatrix = glm::lookAt(
+	Util::m_4x4ViewMatrix = glm::lookAt(
 		glm::vec3(0, 1, 6),		// Camera position in world space
 		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
 		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
 	);
 	glViewport(0, 0, 1024, 384);
 	mPlayerScene->Render();
-	mUserInterface->Render(mPlayerScene->pLights);
+	mUserInterface->Render(mPlayerScene->m_vPointLights);
 
 
 	// Player #2
-	Util::viewMatrix = glm::lookAt(
+	Util::m_4x4ViewMatrix = glm::lookAt(
 		Camera::getPosition(),		// Camera position in world space
 		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
 		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
 	);
 	glViewport(0, 384, 1024, 384);
 	mGuestScene->Render();
-	mUserInterface->Render(mGuestScene->pLights);
 
+	mUserInterface->Render(mGuestScene->m_vPointLights);
 }
 
 void Application::SwapBuffers() const
@@ -87,6 +87,10 @@ void Application::SwapBuffers() const
 void Application::Clean() const
 {
 	mUserInterface->Clean();
+
+	mPlayerScene->Clean();
+	mGuestScene->Clean();
+	
 	glfwTerminate();
 
 	glDeleteProgram(core_program);
@@ -152,18 +156,18 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	// Pipeline is setup
 	glUseProgram(core_program);
 
-	mPlayerScene->Init();
-	mGuestScene->Init();
+	mPlayerScene->Setup();
+	mGuestScene->Setup();
 
 	mUserInterface->core_program = this->core_program;
 	mUserInterface->Init(window);
+
 	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glStencilFunc(GL_ALWAYS, 0, 1);
-		
+
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
 
 }

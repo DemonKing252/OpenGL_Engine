@@ -85,8 +85,6 @@ void main()
 	
 	// Linear fog
 
-
-	
 	if (fragStyle != 0)
 	{
 		float distance = length(fragPos - mCameraFacing);

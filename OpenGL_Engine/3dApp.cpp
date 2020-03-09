@@ -6,7 +6,7 @@ using namespace std;
 // OpenGL_Engine::Application::3dApp.cpp by Liam Blake (C) 2020 All Rights Reserved.
 //
 // Created:  2020-02-10	
-// Modified: 2020-02-21
+// Modified: 2020-03-05
 //
 // Description:
 // A 3D graphics engine I developed with the knowlege I learned in semester 3.
@@ -20,17 +20,17 @@ using namespace std;
 //*****************************************************************************
 int main(int argc, char** argv)
 {
-	assert(Application::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT) != false);
+	assert(TheApp::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT) != false);
 
-	while (!glfwWindowShouldClose(Application::Instance()->getWindow()))
+	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
 	{
-		Application::Instance()->PollEvents();
+		TheApp::Instance()->PollEvents();
 	
-		Application::Instance()->Update();
-		Application::Instance()->Draw();
+		TheApp::Instance()->Update();
+		TheApp::Instance()->Draw();
 
 		// The back buffer is being drawn too while the front buffer is being shown on the view port.
-		Application::Instance()->SwapBuffers();
+		TheApp::Instance()->SwapBuffers();
 	}
 	
 	return 0;

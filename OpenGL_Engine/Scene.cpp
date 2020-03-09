@@ -23,7 +23,7 @@ Scene::~Scene()
 
 void Scene::Update()
 {
-	for (PointLight* light : pLights) {
+	for (PointLight* light : m_vPointLights) {
 		if (Application::Instance()->mUserInterface->mLightShouldUpdate) {
 			Application::Instance()->strength += 1.5f;
 
@@ -74,7 +74,7 @@ void Scene::Render()
 
 	// Tell the fragment shader to only map out vertex colours
 	TheShaderManager::Instance()->SetFragmentColourOnly(Application::Instance()->getCoreProgram());
-	for (PointLight* light : pLights)
+	for (PointLight* light : m_vPointLights)
 	{
 		Util::Transform(Application::Instance()->getCoreProgram(), light->getPosition(), glm::vec3(0.5), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 		geoGen.draw(GeometryGenerator::SPHEAR);
@@ -113,17 +113,17 @@ void Scene::Render()
 	
 }
 
-void Scene::Init()
+void Scene::Setup()
 {
 	// Point Light
-	pLights.push_back(new PointLight(glm::vec3(2, 0, 0), glm::vec3(1, 1, 0), 1.5f));
-	pLights.back()->index = pLights.size() - 1;
-	pLights.back()->updateBuffers(Application::Instance()->getCoreProgram());
+	m_vPointLights.push_back(new PointLight(glm::vec3(2, 0, 0), glm::vec3(1, 1, 0), 1.5f));
+	m_vPointLights.back()->index = m_vPointLights.size() - 1;
+	m_vPointLights.back()->updateBuffers(Application::Instance()->getCoreProgram());
 
 	// Point Light
-	pLights.push_back(new PointLight(glm::vec3(2, 0, 0), glm::vec3(1, 1, 0), 1.5f));
-	pLights.back()->index = pLights.size() - 1;
-	pLights.back()->updateBuffers(Application::Instance()->getCoreProgram());
+	m_vPointLights.push_back(new PointLight(glm::vec3(2, 0, 0), glm::vec3(1, 1, 0), 1.5f));
+	m_vPointLights.back()->index = m_vPointLights.size() - 1;
+	m_vPointLights.back()->updateBuffers(Application::Instance()->getCoreProgram());
 
 	geoGen.createMesh(GeometryGenerator::CUBE);
 	geoGen.mGeometry[GeometryGenerator::CUBE]->generateBuffers();
@@ -156,4 +156,15 @@ void Scene::Init()
 
 
 	
+}
+
+void Scene::Clean()
+{
+	for (auto iter : m_vPointLights)
+	{
+		iter->clean(TheApp::Instance()->getCoreProgram());
+		delete iter;
+		iter = nullptr;
+	}
+	m_vPointLights.shrink_to_fit();
 }

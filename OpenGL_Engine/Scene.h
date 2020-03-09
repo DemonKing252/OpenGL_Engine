@@ -9,7 +9,7 @@ class Scene
 private:
 	
 public:
-	std::vector <PointLight*> pLights;
+	std::vector <PointLight*> m_vPointLights;
 	std::unordered_map <std::string, Material> mMaterialMap;
 	GeometryGenerator geoGen;
 
@@ -18,7 +18,8 @@ public:
 
 	void Update();
 	void Render();
-	void Init();
+	void Setup();
+	void Clean();
 
 };
 

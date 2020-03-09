@@ -2,8 +2,8 @@
 #include "ShaderManager.h"
 
 
-glm::mat4 Util::viewMatrix = glm::mat4(1);
-glm::mat4 Util::projMatrix = glm::mat4(1);
+glm::mat4 Util::m_4x4ViewMatrix = glm::mat4(1);
+glm::mat4 Util::m_4x4ProjMatrix = glm::mat4(1);
 GLenum Util::wireType1 = GL_QUADS;
 GLenum Util::wireType2 = GL_TRIANGLES;
 
@@ -34,7 +34,7 @@ void Util::Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm
 
 	// Communicate with the fragment shader to update the models position (relative to the camera) and translation
 	TheShaderManager::Instance()->SetUniformMat4x4(program, "M", Model);
-	TheShaderManager::Instance()->SetUniformMat4x4(program, "V", viewMatrix);
-	TheShaderManager::Instance()->SetUniformMat4x4(program, "P", projMatrix);
+	TheShaderManager::Instance()->SetUniformMat4x4(program, "V", m_4x4ViewMatrix);
+	TheShaderManager::Instance()->SetUniformMat4x4(program, "P", m_4x4ProjMatrix);
 	
 }

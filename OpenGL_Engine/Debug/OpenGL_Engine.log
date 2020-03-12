@@ -1,17 +1,3 @@
 ﻿  Application.cpp
-  GeometryGenerator.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(101): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(102): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(103): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(113): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(114): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(115): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(122): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(123): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(124): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(132): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(133): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(134): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
-c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(173): warning C4715: 'Application::Init': not all control paths return a value
+c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(160): warning C4715: 'Application::Init': not all control paths return a value
   OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

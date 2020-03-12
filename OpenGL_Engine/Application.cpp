@@ -20,18 +20,19 @@ void Application::Update()
 	// Cosf supposedly accepts an angle in degrees but it was giving me rounding issues so I reverted back here.
 	// Same thing happened when I used it for the sphear (cartesian coordinates)
 	mPlayerScene->Update();
-	mGuestScene->Update();
 	
 	if (mUserInterface->mLightShouldUpdate)
 		angleDelta += 3.0f;
 
-	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement) {
-		Camera::UpdateCameraPosition();
+	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement)
+	{
 		Camera::UpdateCameraFacing(window);
+		Camera::CheckEvents(window);
 
 		// Update the camera facing vector 
 		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
 	}
+
 
 	// Clear buffers (ie: Color, Depth, and Stencil) to prepare to swap the back and front buffers
 	// The concept of swapping buffers is important because the front buffer is being shown to the screen
@@ -56,27 +57,16 @@ void Application::PollEvents()const
 void Application::Draw()
 {
 
-	// Player #1
-	Util::m_4x4ViewMatrix = glm::lookAt(
-		glm::vec3(0, 1, 6),		// Camera position in world space
-		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
-		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
-	);
-	glViewport(0, 0, 1024, 384);
-	mPlayerScene->Render();
-	mUserInterface->Render(mPlayerScene->m_vPointLights);
-
-
 	// Player #2
-	Util::m_4x4ViewMatrix = glm::lookAt(
-		Camera::getPosition(),		// Camera position in world space
-		glm::vec3(0, 0, 0),			// Camera is looking at (0, 0, 0) 
-		glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
-	);
-	glViewport(0, 384, 1024, 384);
-	mGuestScene->Render();
+	//Util::m_4x4ViewMatrix = glm::lookAt(
+	//	Camera::getPosition(),		// Camera position in world space
+	//	Camera::getLookAt(),			// Camera is looking at (0, 0, 0) 
+	//	glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
+	//);
 
-	mUserInterface->Render(mGuestScene->m_vPointLights);
+	mPlayerScene->Render();
+
+	mUserInterface->Render(mPlayerScene->m_vPointLights);
 }
 
 void Application::SwapBuffers() const
@@ -89,7 +79,6 @@ void Application::Clean() const
 	mUserInterface->Clean();
 
 	mPlayerScene->Clean();
-	mGuestScene->Clean();
 	
 	glfwTerminate();
 
@@ -139,7 +128,6 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 		return false;
 
 	mPlayerScene = new Scene();
-	mGuestScene = new Scene();
 	mUserInterface = new GUI();
 
 	// Read the instructions from each shader and link them to the core program
@@ -157,7 +145,6 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	glUseProgram(core_program);
 
 	mPlayerScene->Setup();
-	mGuestScene->Setup();
 
 	mUserInterface->core_program = this->core_program;
 	mUserInterface->Init(window);

@@ -94,7 +94,7 @@ void main()
 		fog_factor = clamp(fog_factor, 0.0, 1.0);
 
 		/*********************************************************
-		// Interpolate each property of the fragmnet
+		// Interpolate each property of the fragment
 		// IE: Lighting, Colour, Texture Sampler, and Fog
 		*********************************************************/
 

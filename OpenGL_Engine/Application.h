@@ -20,7 +20,6 @@ public:
 
 	// Multiplayer System
 	Scene* mPlayerScene;
-	Scene* mGuestScene;
 
 	GUI* mUserInterface;
 

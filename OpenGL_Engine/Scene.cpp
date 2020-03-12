@@ -139,7 +139,6 @@ void Scene::Setup()
 	geoGen.mGeometry[GeometryGenerator::PLANE]->generateBuffers();
 
 	Camera::UpdateCameraFacing(Application::Instance()->getWindow());
-	Camera::UpdateCameraPosition();
 
 
 	glfwSetMouseButtonCallback(Application::Instance()->getWindow(), mouse_button_callback);

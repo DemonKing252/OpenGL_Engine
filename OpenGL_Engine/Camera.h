@@ -5,11 +5,14 @@
 #include <vec3.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <iostream>
+#include "Util.h"
 using namespace std;
 class Camera
 {
 private:
 	static glm::vec3 position;
+	static glm::vec3 lookAt;
+
 	static double mPhi, mTheta;
 	static double mRadius;
 public:
@@ -17,10 +20,13 @@ public:
 	static double back_x, back_y;
 
 	static glm::vec3 getPosition();
+	static glm::vec3 getLookAt();
+
+
 	static double deltaX, deltaY;
 
 	static bool EventMouseClick(GLFWwindow* window);
 	static void UpdateCameraFacing(GLFWwindow* window);
-	static void UpdateCameraPosition();
+	static void CheckEvents(GLFWwindow* window);
 };
 

@@ -9,26 +9,46 @@ double Camera::mouseX = 0;
 double Camera::mouseY = 0;
 double Camera::back_x = 0;
 double Camera::back_y = 0;
-glm::vec3 Camera::position = glm::vec3(0, 0, 4);
+glm::vec3 Camera::position = glm::vec3(0, 0, 3);
+glm::vec3 Camera::lookAt = glm::vec3(0, 0, 0);
+
 
 glm::vec3 Camera::getPosition()
 {
 	return position;
 }
 
+glm::vec3 Camera::getLookAt()
+{
+	return lookAt;
+}
+
 bool Camera::EventMouseClick(GLFWwindow* window)
 {
+	int keyW = glfwGetKey(window, GLFW_KEY_W);
+	int keyA = glfwGetKey(window, GLFW_KEY_A);
+	int keyS = glfwGetKey(window, GLFW_KEY_S);
+	int keyD = glfwGetKey(window, GLFW_KEY_D);
 	int btnL = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 	int btnR = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
 	
-	if (btnL == GLFW_PRESS || btnR == GLFW_PRESS)
+	if ( (btnL | btnR | keyW | keyA | keyS | keyD) == GLFW_PRESS)
 	{
 		return true;
 	}
 	return false;
 }
+float m_Roll = 0.0f;
+float m_Pitch = 0.0f;
+float m_Yaw = -90.0f;
+
+glm::vec3 frontVec = glm::vec3(0, 0, -1);
+glm::vec3 rightVec;
+glm::vec3 worldUp = glm::vec3(0, 1, 0);
+
 void Camera::UpdateCameraFacing(GLFWwindow* window)
 {
+
 	int btnL = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
 	int btnR = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
 	
@@ -45,37 +65,44 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 
 	if (btnL == GLFW_PRESS)
 	{
-		if (deltaX > 0)
-			mTheta += deltaX;
-		else if (deltaX < 0)
-			mTheta -= -deltaX;
-	
-		if (deltaY > 0 && mPhi <= 180.0f - deltaY)
-			mPhi += deltaY;
-		else if (deltaY < 0 && mPhi >= deltaY)
-			mPhi -= -deltaY;
-	}
-	else if (btnR == GLFW_PRESS)
-	{
-		if (deltaY > 0 && mRadius <= 50.0f)
-		{
-			mRadius += deltaY * 0.05f;
-		}
-		else if (deltaY < 0 && mRadius >= 1.0f)
-		{
-			mRadius -= -deltaY * 0.05f;
-		}
+		m_Yaw += deltaX * 0.5f;
+		m_Pitch -= deltaY * 0.5f;
 	}
 }
 
-
-void Camera::UpdateCameraPosition()
+void Camera::CheckEvents(GLFWwindow * window)
 {
+	bool m_bMovement = false;
 
-	cout << deltaX << " " << deltaY << endl;
+	int keyW = glfwGetKey(window, GLFW_KEY_W);
+	int keyA = glfwGetKey(window, GLFW_KEY_A);
+	int keyS = glfwGetKey(window, GLFW_KEY_S);
+	int keyD = glfwGetKey(window, GLFW_KEY_D);
 
-	position.x = mRadius * sin(mPhi * 3.141f / 180.0f) * cos(mTheta * 3.141f / 180.0f);
-	position.z = mRadius * sin(mPhi * 3.141f / 180.0f) * sin(mTheta * 3.141f / 180.0f);
-	position.y = mRadius * cos(mPhi * 3.141f / 180.0f);
+	if (keyW == GLFW_PRESS) {
+		position += frontVec * 0.1f;
+	}
+	if (keyA == GLFW_PRESS) {
+		position -= rightVec * 0.1f;
+	}
+	if (keyS == GLFW_PRESS) {
+		position -= frontVec * 0.1f;
+	}
+	if (keyD == GLFW_PRESS) {
+		position += rightVec * 0.1f;
+	}
+
+	frontVec.x = cos(m_Yaw * Util::DegToRad()) * cos(m_Pitch * Util::DegToRad());
+	frontVec.y = sin(m_Pitch * Util::DegToRad());
+	frontVec.z = sin(m_Yaw * Util::DegToRad()) * cos(m_Pitch * Util::DegToRad());
+	frontVec = glm::normalize(frontVec);
+	rightVec = glm::normalize(glm::cross(frontVec, worldUp));
 	
+	lookAt = position + frontVec;
+
+	Util::m_4x4ViewMatrix = glm::lookAt(
+		position, 
+		lookAt, 
+		glm::vec3(0,1,0));
+
 }

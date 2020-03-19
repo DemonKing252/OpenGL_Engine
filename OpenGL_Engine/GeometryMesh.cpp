@@ -36,15 +36,16 @@ void GeometryMesh::generateBuffers()
 	// Note: sizeof() will return the size of an array in bytes (4 bytes per float -> 4 * 5 = 20 bytes, you could alternatively put 20)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glEnableVertexAttribArray(0);
-
+	
 	// Describe the data set -> Vec3 at layout location 1 in the vertex shader. 3 floats for colour.
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)FLOAT3_MEMORY_SIZE);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * FLOAT3_MEMORY_SIZE));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(2);
 
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE));
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE)));
 	glEnableVertexAttribArray(3);
 
 	// De-select all vertex attributes

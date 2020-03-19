@@ -26,7 +26,6 @@ GLuint ShaderManager::CompileShader(const GLenum type, const char * file) const
 	string temp;
 	string src;
 	fstream inFile;
-
 	// Vertex Shader
 	inFile.open(file);
 

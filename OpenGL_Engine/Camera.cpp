@@ -1,5 +1,6 @@
 #include "Camera.h"
 #include "ShaderManager.h"
+#include "Application.h"
 double Camera::mRadius = 7.0f;
 double Camera::mTheta = 0.0f;
 double Camera::mPhi = 90.0f;
@@ -42,6 +43,7 @@ float m_Roll = 0.0f;
 float m_Pitch = 0.0f;
 float m_Yaw = -90.0f;
 
+glm::vec3 outerCamera = glm::vec3(0);
 glm::vec3 frontVec = glm::vec3(0, 0, -1);
 glm::vec3 rightVec;
 glm::vec3 worldUp = glm::vec3(0, 1, 0);
@@ -68,30 +70,36 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 		m_Yaw += deltaX * 0.5f;
 		m_Pitch -= deltaY * 0.5f;
 	}
+	if (btnR == GLFW_PRESS)
+	{
+		if (deltaY < 0.0f && mRadius >= /*(-deltaY)*/2.0f)
+			mRadius += deltaY * 0.25f;
+
+		else if (deltaY > 0.0f && mRadius <= 40.0f - deltaY)
+			mRadius += deltaY * 0.25f;
+	}
 }
 
 void Camera::CheckEvents(GLFWwindow * window)
 {
-	bool m_bMovement = false;
-
 	int keyW = glfwGetKey(window, GLFW_KEY_W);
 	int keyA = glfwGetKey(window, GLFW_KEY_A);
 	int keyS = glfwGetKey(window, GLFW_KEY_S);
 	int keyD = glfwGetKey(window, GLFW_KEY_D);
 
 	if (keyW == GLFW_PRESS) {
-		position += frontVec * 0.1f;
+		position += frontVec * SPEED;
 	}
 	if (keyA == GLFW_PRESS) {
-		position -= rightVec * 0.1f;
+		position -= rightVec * SPEED;
 	}
 	if (keyS == GLFW_PRESS) {
-		position -= frontVec * 0.1f;
+		position -= frontVec * SPEED;
 	}
 	if (keyD == GLFW_PRESS) {
-		position += rightVec * 0.1f;
+		position += rightVec * SPEED;
 	}
-
+	// First person camera
 	frontVec.x = cos(m_Yaw * Util::DegToRad()) * cos(m_Pitch * Util::DegToRad());
 	frontVec.y = sin(m_Pitch * Util::DegToRad());
 	frontVec.z = sin(m_Yaw * Util::DegToRad()) * cos(m_Pitch * Util::DegToRad());
@@ -100,9 +108,26 @@ void Camera::CheckEvents(GLFWwindow * window)
 	
 	lookAt = position + frontVec;
 
+
+	outerCamera = glm::vec3(mRadius * frontVec.x, mRadius * frontVec.y, mRadius * frontVec.z);
+	
+	// FPS Camera
+
+	/*
 	Util::m_4x4ViewMatrix = glm::lookAt(
 		position, 
 		lookAt, 
 		glm::vec3(0,1,0));
+		TheShaderManager::Instance()->SetUniform3f(TheApp::Instance()->getCoreProgram(), "mCameraFacing", position);
+	*/
 
+	// Spinner camera (similar to hoomans template)
+	
+	Util::m_4x4ViewMatrix = glm::lookAt(
+	    outerCamera,
+	    glm::vec3(0, 0, 0),
+	    glm::vec3(0, 1, 0));
+	TheShaderManager::Instance()->SetUniform3f(TheApp::Instance()->getCoreProgram(), "mCameraFacing", outerCamera);
+	
+	
 }

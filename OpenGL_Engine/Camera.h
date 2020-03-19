@@ -6,6 +6,7 @@
 #include <gtc/matrix_transform.hpp>
 #include <iostream>
 #include "Util.h"
+#define SPEED 0.1f
 using namespace std;
 class Camera
 {

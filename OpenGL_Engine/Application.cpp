@@ -2,10 +2,11 @@
 Application* Application::p_sInstance = nullptr;
 
 
+
 void Application::Update()
 {
 	while (glfwGetTime() < lasttime + 1.0 / mUserInterface->fps) {
-		// Put the thread to sleep : )
+		// Put the thread to sleep.
 		// -> 1000.0f / 60.0f => 16.66667 milliseconds perframe
 		// Reminder that OpenGL only works on one thread.
 
@@ -30,7 +31,6 @@ void Application::Update()
 		Camera::CheckEvents(window);
 
 		// Update the camera facing vector 
-		TheShaderManager::Instance()->SetUniform3f(core_program, "mCameraFacing", Camera::getPosition());
 	}
 
 
@@ -42,7 +42,6 @@ void Application::Update()
 			GL_DEPTH_BUFFER_BIT |			// Clear depth buffers (ie: Only whats in front is shown to the camera)
 			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet))
 
-	
 
 	// Camera can see 45 degrees left/right, with a minimum vocal range of (0.1 - 300)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
@@ -56,21 +55,13 @@ void Application::PollEvents()const
 
 void Application::Draw()
 {
-
-	// Player #2
-	//Util::m_4x4ViewMatrix = glm::lookAt(
-	//	Camera::getPosition(),		// Camera position in world space
-	//	Camera::getLookAt(),			// Camera is looking at (0, 0, 0) 
-	//	glm::vec3(0, 1, 0)			// Head is up (0, -1, 0) to look upside down
-	//);
-
 	mPlayerScene->Render();
-
 	mUserInterface->Render(mPlayerScene->m_vPointLights);
 }
 
 void Application::SwapBuffers() const
 {
+	// The back buffer is being drawn too while the front buffer is being shown on the view port.
 	glfwSwapBuffers(window);
 }
 
@@ -130,7 +121,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	mPlayerScene = new Scene();
 	mUserInterface = new GUI();
 
-	// Read the instructions from each shader and link them to the core program
+	// Read the instructions from each shader and link them to the core program.
 	vert_shader = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
 	frag_shader = TheShaderManager::Instance()->CompileShader(GL_FRAGMENT_SHADER, fragShader);
 
@@ -149,12 +140,15 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	mUserInterface->core_program = this->core_program;
 	mUserInterface->Init(window);
 
-	
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_STENCIL_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	frameBufferW = width;
+	frameBufferH = height;
+
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
 
+	Camera::UpdateCameraFacing(window);
 }

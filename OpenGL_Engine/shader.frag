@@ -1,3 +1,10 @@
+/*****************************
+File: shader.vert (Fragment Shader)
+Author: Liam Blake
+Created: 2020-02-12
+Modified: 2020-03-12
+*****************************/
+
 #version 430 core
 #define MAX_LIGHTS 2
 
@@ -22,11 +29,6 @@ uniform float alpha;
 uniform PointLight pLight[MAX_LIGHTS];
 
 uniform vec3 mCameraFacing;
-
-//	float fog_fallOffEnd = 8.0;
-//	float fog_fallOffStart = 0.1;
-//	vec4 fog_colour = vec4(0.4, 0.4, 0.4, 1.0);
-
 uniform float fog_fallOffEnd;
 uniform float fog_fallOffStart;
 uniform vec4 fog_colour;

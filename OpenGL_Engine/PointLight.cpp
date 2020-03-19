@@ -67,7 +67,7 @@ PointLight::~PointLight()
 void PointLight::updateBuffers(const GLuint core_program)
 {
 	// Catch an index number not being initialized
-		assert(index != -1);
+	assert(index != -1);
 
 	string front = "pLight[" + to_string(index) + "]";
 

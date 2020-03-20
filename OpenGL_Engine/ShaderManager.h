@@ -8,6 +8,8 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <iosfwd>
+#include <vector>
 using namespace std;
 class ShaderManager
 {

@@ -1,10 +1,9 @@
 #include "Application.h"
-#define WIDTH 1024
-#define HEIGHT 768
+#define SIZE_WIDTH 1024
+#define SIZE_HEIGHT 768
 using namespace std;
 //***************************************************************************
 // OpenGL_Engine::Application::3dApp.cpp by Liam Blake (C) 2020 All Rights Reserved.
-//
 // Created:  2020-02-10	
 // Modified: 2020-03-12
 //
@@ -19,20 +18,24 @@ using namespace std;
 // template too, which you can modify in the user interface I have.
 // You can find out how these are calculated in the fragment shader -> "shader.frag"
 //*****************************************************************************
+// GL Returns an error as an unsigned integer.If there is an error, set a break point and check the hexadecimal value
+// of the error, then use Ctrl+F to search for the error in glew.h.
 int main(int argc, char** argv)
 {
-	assert(TheApp::Instance()->Init("3D Graphics Engine", "shader.vert", "shader.frag", WIDTH, HEIGHT) != false);
-
-	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
+	_STL_VERIFY(TheApp::GetInstance()->Initialize("3D Graphics Engine",
+		"shader.vert", "shader.frag",
+		SIZE_WIDTH, SIZE_HEIGHT) != false,
+	("Engine could not initialize due to: " + to_string(glGetError())).c_str());
+	
+	while (!glfwWindowShouldClose(TheApp::GetInstance()->getWindow()))
 	{
-		TheApp::Instance()->PollEvents();
-	
-		TheApp::Instance()->Update();
-		TheApp::Instance()->Draw();
+		TheApp::GetInstance()->PollEvents();
 
-		TheApp::Instance()->SwapBuffers();
+		TheApp::GetInstance()->Update();
+		TheApp::GetInstance()->Draw();
 		
+		TheApp::GetInstance()->SwapBuffers();	
 	}
-	
+
 	return 0;
 }

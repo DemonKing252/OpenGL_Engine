@@ -18,14 +18,14 @@ public:
 	GLfloat strength = 0.0f;
 	double lasttime = 0.0f;
 
-	// Multiplayer System
+	// Multiplayer System (removed).
 	Scene* mPlayerScene;
 
 	GUI* mUserInterface;
 
-	static Application* Instance();
+	static Application* GetInstance();
 
-	bool Init(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
+	bool Initialize(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
 
 	void Update();
 	void PollEvents() const;

@@ -86,7 +86,7 @@ GLuint Application::getCoreProgram() const
 	return core_program;
 }
 
-Application * Application::Instance()
+Application * Application::GetInstance()
 {
 	if (p_sInstance == nullptr)
 	{
@@ -96,7 +96,7 @@ Application * Application::Instance()
 	return p_sInstance;
 }
 
-bool Application::Init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
+bool Application::Initialize(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
 {
 	
 	srand((unsigned)time(NULL));
@@ -104,7 +104,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 	/* Initialize the library */
 	//ImGui::SameLine();
 
-	if (glfwInit() == 0)
+	if (glfwInit() == GLFW_FALSE)
 		return false;
 
 	/* Create a windowed mode window and its OpenGL context */
@@ -115,6 +115,7 @@ bool Application::Init(const char * titleName, const char * vertShader, const ch
 
 	/* Make the window's context current */
 	glfwMakeContextCurrent(window);
+	
 	if (glewInit() != GLEW_OK)
 		return false;
 

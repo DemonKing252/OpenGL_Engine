@@ -1,6 +1,22 @@
 #include "ShaderManager.h"
 ShaderManager* ShaderManager::s_pInstance = nullptr;
+#ifndef NDEBUG
+#   define M_Assert(Expr, Msg) \
+    __M_Assert(#Expr, Expr, __FILE__, __LINE__, Msg)
+#else
+#   define M_Assert(Expr, Msg) ;
+#endif
 
+void __M_Assert(const char* expr_str, bool expr, const char* file, int line, const char* msg)
+{
+	if (!expr)
+	{
+		std::cerr << "Assert failed:\t" << msg << "\n"
+			<< "Expected:\t" << expr_str << "\n"
+			<< "Source:\t\t" << file << ", line " << line << "\n";
+		abort();
+	}
+}
 ShaderManager::ShaderManager()
 {
 }
@@ -28,8 +44,7 @@ GLuint ShaderManager::CompileShader(const GLenum type, const char * file) const
 	fstream inFile;
 	// Vertex Shader
 	inFile.open(file);
-
-	assert(inFile.is_open());
+	_STL_VERIFY(inFile.is_open(), "Error loading file!");
 
 	while (getline(inFile, temp))
 	{
@@ -47,6 +62,7 @@ GLuint ShaderManager::CompileShader(const GLenum type, const char * file) const
 		glGetShaderInfoLog(shader, 512, NULL, infoLog);
 		cout << infoLog << endl;
 	}
+	_STL_VERIFY(success, "Could not compile one of your shaders!");
 	inFile.close();
 	// Fragment Shader
 	temp.clear();

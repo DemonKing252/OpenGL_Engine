@@ -78,5 +78,20 @@ void RenderItem::draw(Scene * scene) const
 	scene->mMaterialMap[material].bindTexture();
 	scene->geoGen.mGeometry[mMeshType]->bindVAO();
 	scene->geoGen.draw(mMeshType);
+
+	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(0.0f));
 }
+
+void RenderItem::update(Scene * scene) const
+{
+	scene->uv += 0.0002f;
+
+	if (scene->uv >= 1.0f)
+	{
+		scene->uv = 0.0f;
+	}
+	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, scene->uv * 0.5f));
+}
+
+
 

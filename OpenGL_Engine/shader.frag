@@ -28,7 +28,6 @@ uniform int fragStyle;
 uniform float alpha;
 uniform PointLight pLight[MAX_LIGHTS];
 uniform vec2 uvMapping;
-uniform int shouldAnimate;
 
 uniform vec3 mCameraFacing;
 uniform float fog_fallOffEnd;
@@ -68,31 +67,25 @@ void main()
 		
 	}
 	
-	if (shouldAnimate == 0)
-	{
+	
 
-		if (fragStyle == 0)
-			fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		else if (fragStyle == 1)
-			fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha);
-		else if (fragStyle == 2)
-			fragColour = vec4(vs_colour, alpha);
-		else if (fragStyle == 3)
-			fragColour = texture(texture0, vs_texture) * vec4(1,1,1, alpha);
-		else if (fragStyle == 4)
-			fragColour = texture(texture0, vs_texture) * vec4(1,1,1, alpha) * vec4(result, 1.0f);
-		else if (fragStyle == 5)
-			fragColour = vec4(vs_colour, alpha) * vec4(result, 1.0f);
-		else if (fragStyle == 6)
-			fragColour = vec4(result, alpha);
-		else if (fragStyle == 7)
-			fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha) * vec4(result, 1.0f);
-			
-	}
-	else
-	{
+	if (fragStyle == 0)
+		fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
+	else if (fragStyle == 1)
+		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_colour, alpha);
+	else if (fragStyle == 2)
+		fragColour = vec4(vs_colour, alpha);
+	else if (fragStyle == 3)
+		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(1,1,1, alpha);
+	else if (fragStyle == 4)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(1,1,1, alpha) * vec4(result, 1.0f);
-	}
+	else if (fragStyle == 5)
+		fragColour = vec4(vs_colour, alpha) * vec4(result, 1.0f);
+	else if (fragStyle == 6)
+		fragColour = vec4(result, alpha);
+	else if (fragStyle == 7)
+		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_colour, alpha) * vec4(result, 1.0f);
+	
 
 	// Linear fog
 

@@ -25,14 +25,14 @@ public:
 
 	static Application* Instance();
 
-	bool Initialize(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
+	bool init(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
 
-	void Update();
-	void PollEvents() const;
-	void Draw();
-	void SwapBuffers() const;
+	void update();
+	void pollEvents() const;
+	void draw();
+	void swapBuffers() const;
 
-	void Clean() const;
+	void clean() const;
 
 	GLFWwindow* getWindow() const;
 	GLuint getCoreProgram() const;

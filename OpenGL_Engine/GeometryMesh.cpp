@@ -43,15 +43,15 @@ void GeometryMesh::generateBuffers()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glEnableVertexAttribArray(0);
 
-	// Vertex Layout #1 --> Colors vertex attribute -> Vec3()
+	// Vertex Layout #1 --> Color -> Vec3()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(1);
 
-	// Vertex Layout #2 --> Texture coordinate vertex attribute -> Vec2()
+	// Vertex Layout #2 --> Texture coordinate -> Vec2()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(2);
 
-	// Vertex Layout #3 --> Normals vertex attribute (for diffuse/specular lighting) -> Vec3()
+	// Vertex Layout #3 --> Normal (for diffuse/specular lighting) -> Vec3()
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE)));
 	glEnableVertexAttribArray(3);
 

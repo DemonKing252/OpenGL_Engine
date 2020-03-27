@@ -2,24 +2,6 @@
 #include "GeometryGenerator.h"
 
 class Scene;
-/*
-if (fragStyle == 0)
-			fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
-		else if (fragStyle == 1)
-			fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha);
-		else if (fragStyle == 2)
-			fragColour = vec4(vs_colour, alpha);
-		else if (fragStyle == 3)
-			fragColour = texture(texture0, vs_texture) * vec4(1,1,1, alpha);
-		else if (fragStyle == 4)
-			fragColour = texture(texture0, vs_texture) * vec4(1,1,1, alpha) * vec4(result, 1.0f);
-		else if (fragStyle == 5)
-			fragColour = vec4(vs_colour, alpha) * vec4(result, 1.0f);
-		else if (fragStyle == 6)
-			fragColour = vec4(result, alpha);
-		else if (fragStyle == 7)
-			fragColour = texture(texture0, vs_texture) * vec4(vs_colour, alpha) * vec4(result, 1.0f);
-*/
 enum FragmentStyle
 {
 	NONE,
@@ -31,6 +13,7 @@ enum FragmentStyle
 	LIGHT_ONLY,
 	ALL_TYPES
 };
+
 
 class RenderItem
 {
@@ -47,7 +30,7 @@ private:
 	FragmentStyle fragStyle;
 
 public:
-
+	bool m_bShouldAnimate = false;
 	float alphaTest;
 	std::string material;
 
@@ -66,4 +49,5 @@ public:
 	float getAngle() const;
 
 	void draw(Scene * scene) const;
+	void update(Scene * scene) const;
 };

@@ -8,8 +8,13 @@
 class Scene
 {
 private:
-	GLfloat uvX = 0.0f;
+
+
 public:
+	// Component thats part of the scene. A different scene may have different animate effects.
+	// For example, a lava land would have lava animating much slower.
+	GLfloat uv = 0.0f;
+
 	std::vector <PointLight*> m_vPointLights;
 	std::vector <RenderItem*> m_vRenderItems;
 	std::unordered_map <std::string, Material> mMaterialMap;

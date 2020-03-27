@@ -23,19 +23,19 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	// Check for link errors in glfw or glew.
-	_STL_VERIFY(TheApp::Instance()->Initialize("OpenGL Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
+	_STL_VERIFY(TheApp::Instance()->init("OpenGL Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
 	("Engine could not initialize due to: " + to_string(glGetError())).c_str());
 
 	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
 	{
-		TheApp::Instance()->PollEvents();
+		TheApp::Instance()->pollEvents();
 
-		TheApp::Instance()->Update();
-		TheApp::Instance()->Draw();
+		TheApp::Instance()->update();
+		TheApp::Instance()->draw();
 		
-		TheApp::Instance()->SwapBuffers();	
+		TheApp::Instance()->swapBuffers();	
 	}
-	TheApp::Instance()->Clean();
+	TheApp::Instance()->clean();
 
 	return 0;
 }

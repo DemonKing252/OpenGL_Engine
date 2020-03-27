@@ -3,7 +3,7 @@ Application* Application::p_sInstance = nullptr;
 
 
 
-void Application::Update()
+void Application::update()
 {
 	while (glfwGetTime() < lasttime + 1.0 / mUserInterface->fps) {
 		// Put the thread to sleep.
@@ -48,24 +48,24 @@ void Application::Update()
 	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
 
 }
-void Application::PollEvents()const
+void Application::pollEvents()const
 {
 	glfwPollEvents();
 }
 
-void Application::Draw()
+void Application::draw()
 {
 	mPlayerScene->Render();
 	mUserInterface->Render(mPlayerScene->m_vPointLights);
 }
 
-void Application::SwapBuffers() const
+void Application::swapBuffers() const
 {
 	// The back buffer is being drawn too while the front buffer is being shown on the view port.
 	glfwSwapBuffers(window);
 }
 
-void Application::Clean() const
+void Application::clean() const
 {
 	mUserInterface->Clean();
 
@@ -96,7 +96,7 @@ Application * Application::Instance()
 	return p_sInstance;
 }
 
-bool Application::Initialize(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
+bool Application::init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
 {
 	
 	srand((unsigned)time(NULL));

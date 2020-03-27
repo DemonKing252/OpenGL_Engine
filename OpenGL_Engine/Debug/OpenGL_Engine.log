@@ -1,3 +1,2 @@
-﻿  Scene.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\scene.cpp(40): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
+﻿  RenderItem.cpp
   OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

@@ -1,4 +1,5 @@
 #include "GeometryGenerator.h"
+#include "Application.h"
 void GeometryGenerator::createMesh(Mesh mesh)
 {
 	mGeometry.push_back(new GeometryMesh());
@@ -47,6 +48,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometry.back()->indicies[i] = i;
 		}
 
+		mGeometry.back()->setPrimitiveType(GL_QUADS);
 	}
 	else if (mesh == PYRAMID)
 	{
@@ -55,17 +57,17 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		mGeometry.back()->verticies = new Vertex[mGeometry.back()->getNumVertices()]
 		{
 			//					Positions				 Colours					Texture UVs		-> (Refer to the vertex shader)
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(-0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.5f, -0.5f, +0.5f)),
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),  glm::vec3(-0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),   glm::vec3(-0.5f, -0.5f, -0.5f )),
+			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),   glm::vec3(0.5f, -0.5f, -0.5f  )),
+			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),   glm::vec3(0.5f, -0.5f, +0.5f  )),
+			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),   glm::vec3(-0.5f, -0.5f, +0.5f )),
 
-			Vertex(glm::vec3(0.0f, +0.5f, 0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.5f, 1.0f),   glm::vec3(0.0f, +0.5f, 0.0f)),
+			Vertex(glm::vec3(0.0f, +0.5f, 0.0f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.5f, 1.0f),    glm::vec3(0.0f, +0.5f, 0.0f)),
 
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),   glm::vec3(-0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),  glm::vec3(0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),  glm::vec3(0.5f, -0.5f, +0.5f)),
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),   glm::vec3(-0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),   glm::vec3(-0.5f, -0.5f, -0.5f )),
+			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),   glm::vec3(0.5f, -0.5f, -0.5f  )),
+			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),   glm::vec3(0.5f, -0.5f, +0.5f  )),
+			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),   glm::vec3(-0.5f, -0.5f, +0.5f )),
 		};
 		mGeometry.back()->indicies = new GLuint[mGeometry.back()->getNumIndicies()]
 		{
@@ -80,6 +82,8 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			3, 0, 4
 
 		};
+
+		mGeometry.back()->setPrimitiveType(GL_TRIANGLES);
 	}
 	else if (mesh == SPHEAR)
 	{
@@ -153,6 +157,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometry.back()->indicies[i] = i;
 		}
 
+		mGeometry.back()->setPrimitiveType(GL_QUADS);
 	}
 	
 	else if (mesh == PLANE)
@@ -160,7 +165,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		const int rows = 64;
 		const int cols = 64;
 
-		const glm::vec3 mountainPos = glm::vec3(-10.0f, 0.0f, -10.0f);
+		const glm::vec3 mountainPos = glm::vec3(0.0f, 0.0f, 0.0f);
 		
 		mGeometry.back()->setNumIndicies(rows * cols * 4);
 		mGeometry.back()->setNumVertices(rows * cols * 4);
@@ -237,11 +242,64 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometry.back()->indicies[i] = i;
 		}
 
+		mGeometry.back()->setPrimitiveType(GL_QUADS);
+	}
+	else if (mesh == SKULL)
+	{
+		fstream inFile;
+		inFile.open("skull.txt");
+
+		_STL_VERIFY(inFile.is_open(), "Could not open skull data base!");
+
+		int vertexCount, triangleCount;
+		string ignoreThis;
+
+		inFile >> ignoreThis >> vertexCount;
+		inFile >> ignoreThis >> triangleCount;
+		inFile >> ignoreThis >> ignoreThis >> ignoreThis >> ignoreThis;
+		
+		mGeometry.back()->setNumIndicies(3 * triangleCount);
+		mGeometry.back()->setNumVertices(vertexCount);
+
+		mGeometry.back()->verticies = new Vertex[mGeometry.back()->getNumVertices()];
+		mGeometry.back()->indicies = new GLuint[mGeometry.back()->getNumIndicies()];
+
+		glm::vec3 tempVertex;
+		glm::vec3 tempNormal;
+
+		for (int i = 0; i < vertexCount; i++)
+		{
+			inFile >> tempVertex.x >> tempVertex.y >> tempVertex.z;
+			inFile >> tempNormal.x >> tempNormal.y >> tempNormal.z;
+
+			mGeometry.back()->verticies[i].setPosition(glm::vec3(tempVertex));
+			mGeometry.back()->verticies[i].setNormal(glm::vec3(tempNormal));
+			mGeometry.back()->verticies[i].setColour(glm::vec3(0.6f, 0.6f, 0.6f));
+
+			mGeometry.back()->verticies[i].setUV(glm::vec2(0.0f, 0.0f));
+		}
+
+		inFile >> ignoreThis;
+		inFile >> ignoreThis;
+		inFile >> ignoreThis;
+
+		for (int i = 0; i < triangleCount; i++)
+		{
+			inFile >> mGeometry.back()->indicies[i * 3 + 0];
+			inFile >> mGeometry.back()->indicies[i * 3 + 1];
+			inFile >> mGeometry.back()->indicies[i * 3 + 2];
+		}
+
+		inFile.close();
+		mGeometry.back()->setPrimitiveType(GL_TRIANGLES);
 	}
 }
 
 void GeometryGenerator::draw(Mesh type)
 {
-	//glDrawArrays(GL_QUADS, 0, mGeometry[type]->getNumVertices());
-	glDrawElements(type == SPHEAR || type == PLANE || type == CUBE ? Util::wireType1 : Util::wireType2, mGeometry[type]->getNumIndicies(), GL_UNSIGNED_INT, 0);
+
+	glDrawElements(TheApp::Instance()->mUserInterface->wireFrameEnabled ? GL_LINE_LOOP : mGeometry[type]->getPrimitiveType(),
+		mGeometry[type]->getNumIndicies(),
+		GL_UNSIGNED_INT,
+		0);
 }

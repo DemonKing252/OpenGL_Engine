@@ -52,7 +52,10 @@ public:
 	void SetFragmentLightOnly(const GLuint core_program) const;
 
 	// Blending
-	void SetFragmentBlend(const GLuint core_program, const GLfloat alpha) const;
+	void SetFragmentAlphaBlend(const GLuint core_program, const GLfloat alpha) const;
+
+	// Animating Textures.
+	void SetUVMapping(const GLint core_program, const glm::vec2 map, const bool shouldAnimate) const;
 
 
 

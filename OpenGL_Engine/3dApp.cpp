@@ -20,22 +20,22 @@ using namespace std;
 //*****************************************************************************
 // GL Returns an error as an unsigned integer.If there is an error, set a break point and check the hexadecimal value
 // of the error, then use Ctrl+F to search for the error in glew.h.
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
-	_STL_VERIFY(TheApp::GetInstance()->Initialize("3D Graphics Engine",
-		"shader.vert", "shader.frag",
-		SIZE_WIDTH, SIZE_HEIGHT) != false,
+	// Check for link errors in glfw or glew.
+	_STL_VERIFY(TheApp::Instance()->Initialize("OpenGL Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
 	("Engine could not initialize due to: " + to_string(glGetError())).c_str());
-	
-	while (!glfwWindowShouldClose(TheApp::GetInstance()->getWindow()))
-	{
-		TheApp::GetInstance()->PollEvents();
 
-		TheApp::GetInstance()->Update();
-		TheApp::GetInstance()->Draw();
+	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
+	{
+		TheApp::Instance()->PollEvents();
+
+		TheApp::Instance()->Update();
+		TheApp::Instance()->Draw();
 		
-		TheApp::GetInstance()->SwapBuffers();	
+		TheApp::Instance()->SwapBuffers();	
 	}
+	TheApp::Instance()->Clean();
 
 	return 0;
 }

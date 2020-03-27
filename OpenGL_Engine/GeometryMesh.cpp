@@ -27,29 +27,36 @@ void GeometryMesh::generateBuffers()
 	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
 
-	// Send our data to OpenGLs VRAM
+	// NOTE:
+	// Our buffer is now bound, we can now write data to it.
+
+	// Send our data to OpenGLs V-RAM
 	// Note: If we want an index buffer then we would use GL_ELEMENT_ARRAY_BUFFER.
 	// GL_STATIC_DRAW is a gl Hint that these verticies will not change, the alternative would be GL_DYNAMIC_DRAW
 	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVerticies * 11, verticies, GL_STATIC_DRAW);
 
 	// Describe the data set -> Vec2 at layout location 0 in the vertex shader. 2 floats for vertex positions.
 	// Note: sizeof() will return the size of an array in bytes (4 bytes per float -> 4 * 5 = 20 bytes, you could alternatively put 20)
+	
+
+	// Vertex Layout #0 --> Vertex positions -> Vec3()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
 	glEnableVertexAttribArray(0);
-	
-	// Describe the data set -> Vec3 at layout location 1 in the vertex shader. 3 floats for colour.
 
+	// Vertex Layout #1 --> Colors vertex attribute -> Vec3()
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(1);
 
+	// Vertex Layout #2 --> Texture coordinate vertex attribute -> Vec2()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(2);
 
+	// Vertex Layout #3 --> Normals vertex attribute (for diffuse/specular lighting) -> Vec3()
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE)));
 	glEnableVertexAttribArray(3);
 
-	// De-select all vertex attributes
-	glEnableVertexAttribArray(0);
+	// Un-bind vertex array to prevent possible data corruption.
+	glBindVertexArray(0);
 }
 
 void GeometryMesh::bindVAO()
@@ -72,6 +79,11 @@ void GeometryMesh::setNumIndicies(const GLint indicies)
 	this->numIndicies = indicies;
 }
 
+void GeometryMesh::setPrimitiveType(const GLenum type)
+{
+	this->primitiveType = type;
+}
+
 GLint GeometryMesh::getNumVertices()const
 {
 	return numVerticies;
@@ -80,4 +92,9 @@ GLint GeometryMesh::getNumVertices()const
 GLint GeometryMesh::getNumIndicies()const
 {
 	return numIndicies;
+}
+
+GLenum GeometryMesh::getPrimitiveType() const
+{
+	return primitiveType;
 }

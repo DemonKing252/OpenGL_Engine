@@ -13,8 +13,8 @@ void window_resize_callback(GLFWwindow* window, int x, int y)
 	GLint _height;
 	glfwGetWindowSize(window, &_width, &_height);
 
-	TheApp::GetInstance()->frameBufferW = _width;
-	TheApp::GetInstance()->frameBufferH = _height;
+	TheApp::Instance()->frameBufferW = _width;
+	TheApp::Instance()->frameBufferH = _height;
 
 	// Change the view port size respective to the new window size.
 	glViewport(0, 0, _width, _height);
@@ -31,107 +31,40 @@ Scene::~Scene()
 
 void Scene::Update()
 {
-	for (PointLight* light : m_vPointLights) {
-		if (TheApp::GetInstance()->mUserInterface->mLightShouldUpdate) {
-			TheApp::GetInstance()->strength += 1.5f;
+	// Not sure what to do about these yet.
 
-			light->setStrength((TheApp::GetInstance()->mUserInterface->lflickerRange * cos(TheApp::GetInstance()->strength * Util::DegToRad())) + TheApp::GetInstance()->mUserInterface->lFactor);
+	for (auto light : m_vPointLights) {
+		if (TheApp::Instance()->mUserInterface->mLightShouldUpdate) {
+			TheApp::Instance()->strength += 1.5f;
+	
+			light->setStrength((TheApp::Instance()->mUserInterface->lflickerRange * cos(TheApp::Instance()->strength * Util::DegToRad())) + TheApp::Instance()->mUserInterface->lFactor);
 		}
-		light->setPosition(glm::vec3(3 * cos((TheApp::GetInstance()->angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), light->getPosition().y, 3 * sin((TheApp::GetInstance()->angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
+		light->setPosition(glm::vec3(3 * cos((TheApp::Instance()->angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), light->getPosition().y, 3 * sin((TheApp::Instance()->angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
 	}
 }
 
 void Scene::Render()
 {
-	// Bind a texture ID (an unsigned integer that points to a texture buffer)
-	mMaterialMap["theSims"].bindTexture();
-
-	// Important Order: Scale-Rotate-Translate
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, 0.5f - 0.12f, 0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-
-	geoGen.mGeometry[GeometryGenerator::SPHEAR]->bindVAO();
-	geoGen.draw(GeometryGenerator::SPHEAR);
-
-	Util::Transform(Application::GetInstance()->getCoreProgram(), glm::vec3(-0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::SPHEAR);
-
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(-0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::SPHEAR);
-
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(+0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::SPHEAR);
-
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(+0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::SPHEAR);
-
-	mMaterialMap["grass"].bindTexture();
-	TheShaderManager::Instance()->SetFragmentAllTypes(TheApp::GetInstance()->getCoreProgram());
-
-	geoGen.mGeometry[GeometryGenerator::PLANE]->bindVAO();
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, -2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::PLANE);
-
-	mMaterialMap["stoneBrick"].bindTexture();
-	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(TheApp::GetInstance()->getCoreProgram());
-	geoGen.mGeometry[GeometryGenerator::SPHEAR]->bindVAO();
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::SPHEAR);
-
-	// Set a texture ID to be the active one in memory
-	mMaterialMap["theSims"].bindTexture();
-
-	// Tell the fragment shader to only map out vertex colours
-	TheShaderManager::Instance()->SetFragmentColourOnly(TheApp::GetInstance()->getCoreProgram());
-	for (PointLight* light : m_vPointLights)
-	{
-		Util::Transform(TheApp::GetInstance()->getCoreProgram(), light->getPosition(), glm::vec3(0.5), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-		geoGen.draw(GeometryGenerator::SPHEAR);
-	}
-	// Tell the fragment shader to only map out lighting and vertex textures
-	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(TheApp::GetInstance()->getCoreProgram());
-
-	mMaterialMap["brick"].bindTexture();
-
-	// Set a vertex vao to be the active one in memory
-	geoGen.mGeometry[GeometryGenerator::PYRAMID]->bindVAO();
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(0.8f, 0.8f, 0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::PYRAMID);
-
-	TheShaderManager::Instance()->SetFragmentBlend(TheApp::GetInstance()->getCoreProgram(), 0.4f);
-
-	mMaterialMap["ice"].bindTexture();
-
-	geoGen.mGeometry[GeometryGenerator::CUBE]->bindVAO();
-
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::CUBE);
-
-	mMaterialMap["stoneBrick"].bindTexture();
-	TheShaderManager::Instance()->SetFragmentBlend(TheApp::GetInstance()->getCoreProgram(), 1.0f);
-
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, -0.65f*1.2, 0.0f), glm::vec3(1.2f, 0.3f, 1.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::CUBE);
-
-	mMaterialMap["fence"].bindTexture();
-	geoGen.mGeometry[GeometryGenerator::PYRAMID]->bindVAO();
-
-	Util::Transform(TheApp::GetInstance()->getCoreProgram(), glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-	geoGen.draw(GeometryGenerator::PYRAMID);
-
+	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(TheApp::Instance()->getCoreProgram());
 	
+	for (auto ri : m_vRenderItems)
+	{
+		ri->draw(this);
+	}
+
 }
 
 void Scene::Setup()
 {
 	// Point Light
-	m_vPointLights.push_back(new PointLight(glm::vec3(2, 0, 0), glm::vec3(1, 1, 0), 1.5f));
+	m_vPointLights.push_back(new PointLight(glm::vec3(3, 0, 0), glm::vec3(1), 2.5f));
 	m_vPointLights.back()->index = m_vPointLights.size() - 1;
-	m_vPointLights.back()->updateBuffers(TheApp::GetInstance()->getCoreProgram());
+	m_vPointLights.back()->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	// Point Light
-	m_vPointLights.push_back(new PointLight(glm::vec3(2, 0, 0), glm::vec3(1, 1, 0), 1.5f));
+	m_vPointLights.push_back(new PointLight(glm::vec3(-3, 0, 0), glm::vec3(1), 2.5f));
 	m_vPointLights.back()->index = m_vPointLights.size() - 1;
-	m_vPointLights.back()->updateBuffers(TheApp::GetInstance()->getCoreProgram());
+	m_vPointLights.back()->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	geoGen.createMesh(GeometryGenerator::CUBE);
 	geoGen.mGeometry[GeometryGenerator::CUBE]->generateBuffers();
@@ -142,17 +75,13 @@ void Scene::Setup()
 	geoGen.createMesh(GeometryGenerator::SPHEAR);
 	geoGen.mGeometry[GeometryGenerator::SPHEAR]->generateBuffers();
 
-
 	geoGen.createMesh(GeometryGenerator::PLANE);
 	geoGen.mGeometry[GeometryGenerator::PLANE]->generateBuffers();
 
-	Camera::UpdateCameraFacing(TheApp::GetInstance()->getWindow());
+	geoGen.createMesh(GeometryGenerator::SKULL);
+	geoGen.mGeometry[GeometryGenerator::SKULL]->generateBuffers();
 
-
-	glfwSetMouseButtonCallback(TheApp::GetInstance()->getWindow(), mouse_btn_down_callback);
-	glfwSetWindowSizeCallback(TheApp::GetInstance()->getWindow(), window_resize_callback);
-
-
+	TheShaderManager::Instance()->SetFragmentAlphaBlend(TheApp::Instance()->getCoreProgram(), 1.0f);
 
 	mMaterialMap["ice"].load("ice.png");
 	mMaterialMap["brick"].load("Brick5.png");
@@ -160,18 +89,48 @@ void Scene::Setup()
 	mMaterialMap["fence"].load("Fence.png");
 	mMaterialMap["grass"].load("tile.png");
 	mMaterialMap["stoneBrick"].load("StoneBrick.jpg");
+	mMaterialMap["water"].load("water.png");
+
+	// Render Item:
+	// Mesh type, Fragment style, material, translation, scale, rotationAxis, angle.s
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::PLANE, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "grass", 1.0f, glm::vec3(0.0f, -3.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CUBE , FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "water", 0.2f, glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, 0.0f), glm::vec3(65.f, 0.01f, 65.f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(-0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(-0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(-0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(+0.5f, -0.5f - 0.03f, +0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(+0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(+0.0f, +0.5f - 0.03f, +0.0f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::PYRAMID, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "stoneBrick", 1.0f, glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(0.8f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::PYRAMID, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "fence", 1.0f, glm::vec3(0.0f, -0.12f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CUBE, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "stoneBrick", 1.0f, glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f), 0.0f), glm::vec3(2.4f, 1.2f, 2.4f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SKULL, FragmentStyle::LIGHT_AND_COLOR_ONLY, "null", 1.0f, glm::vec3(-0.85f, -0.62f, 0.0f), glm::vec3(0.1f), glm::vec3(0.0f, 1.0f, 0.0f), 90.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SKULL, FragmentStyle::LIGHT_AND_COLOR_ONLY, "null", 1.0f, glm::vec3(+0.85f, -0.62f, 0.0f), glm::vec3(0.1f), glm::vec3(0.0f, 1.0f, 0.0f), 270.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SKULL, FragmentStyle::LIGHT_AND_COLOR_ONLY, "null", 1.0f, glm::vec3(0.0f, -0.62f, +0.85f), glm::vec3(0.1f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SKULL, FragmentStyle::LIGHT_AND_COLOR_ONLY, "null", 1.0f, glm::vec3(0.0f, -0.62f, -0.85f), glm::vec3(0.1f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "stoneBrick", 1.0f, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CUBE, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "ice", 0.5f, glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
 
-	
+	Camera::UpdateCameraFacing(TheApp::Instance()->getWindow());
+
+	glfwSetMouseButtonCallback(TheApp::Instance()->getWindow(), mouse_btn_down_callback);
+	glfwSetWindowSizeCallback(TheApp::Instance()->getWindow(), window_resize_callback);
+
 }
 
 void Scene::Clean()
 {
-	for (auto iter : m_vPointLights)
+	for (auto it : m_vPointLights)
 	{
-		iter->clean(TheApp::GetInstance()->getCoreProgram());
-		delete iter;
-		iter = nullptr;
+		it->clean(TheApp::Instance()->getCoreProgram());
+		delete it;
+		it = nullptr;
 	}
 	m_vPointLights.shrink_to_fit();
 }

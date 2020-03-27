@@ -127,7 +127,7 @@ void Camera::CheckEvents(GLFWwindow * window)
 	    outerCamera,
 	    glm::vec3(0, 0, 0),
 	    glm::vec3(0, 1, 0));
-	TheShaderManager::Instance()->SetUniform3f(TheApp::GetInstance()->getCoreProgram(), "mCameraFacing", outerCamera);
+	TheShaderManager::Instance()->SetUniform3f(TheApp::Instance()->getCoreProgram(), "mCameraFacing", outerCamera);
 	
 	
 }

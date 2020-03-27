@@ -23,7 +23,7 @@ public:
 
 	GUI* mUserInterface;
 
-	static Application* GetInstance();
+	static Application* Instance();
 
 	bool Initialize(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
 

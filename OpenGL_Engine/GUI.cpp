@@ -50,7 +50,7 @@ void GUI::Render(std::vector <PointLight*> pLights)
 	float lStrength1 = pLights[0]->getStrength();
 	float lStrength2 = pLights[1]->getStrength();
 
-	ImGui::Begin("3D Graphics Engine");                          // Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("OpenGL Engine");                          // Create a window called "Hello, world!" and append into it.
 
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f), 0);
 	ImGui::ColorEdit3("Background colour", (float*)&clear_color); // Edit 3 floats representing a color

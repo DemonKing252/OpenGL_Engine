@@ -167,8 +167,14 @@ void ShaderManager::SetFragmentLightOnly(const GLuint core_program) const
 	SetUniformi(core_program, "fragStyle", 6);
 }
 
-void ShaderManager::SetFragmentBlend(const GLuint core_program, const GLfloat alpha) const
+void ShaderManager::SetFragmentAlphaBlend(const GLuint core_program, const GLfloat alpha) const
 {
 	SetUniformf(core_program, "alpha", alpha);
+}
+
+void ShaderManager::SetUVMapping(const GLint core_program, const glm::vec2 map, const bool shouldAnimate) const
+{
+	SetUniformi(core_program, "shouldAnimate", shouldAnimate);
+	SetUniform2f(core_program, "uvMapping", map);
 }
 

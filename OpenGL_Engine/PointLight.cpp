@@ -2,7 +2,8 @@
 
 Light::Light()
 {
-
+	position = colour = glm::vec3(0.0f);
+	strength = 0.0f;
 }
 
 Light::~Light()
@@ -16,6 +17,10 @@ Light::Light(glm::vec3 position, glm::vec3 colour, float strength)
 	this->colour = colour;
 	this->strength = strength;
 
+}
+
+Light::Light(Light * otherLight) : position(otherLight->position), colour(otherLight->colour), strength(otherLight->strength)
+{
 }
 
 
@@ -67,7 +72,7 @@ PointLight::~PointLight()
 void PointLight::updateBuffers(const GLuint core_program)
 {
 	// Catch an index number not being initialized
-	assert(index != -1);
+	_STL_VERIFY(index != -1, "Did you forget to set the light index?");
 
 	string front = "pLight[" + to_string(index) + "]";
 

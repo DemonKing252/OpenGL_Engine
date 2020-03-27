@@ -10,10 +10,23 @@ protected:
 	float strength;
 public:
 	int index = -1;
-	Light();
-	~Light();
-	Light(glm::vec3 position, glm::vec3 colour = glm::vec3(1, 1, 1), float strenth = 1.0f);
 	
+	// Default Constructor
+	Light();
+
+	// Constructor
+	Light(glm::vec3 position, glm::vec3 colour = glm::vec3(1, 1, 1), float strenth = 1.0f);
+
+	// Copy Constructor
+	Light(Light* otherLight);
+
+	// De-structor
+	~Light();
+	
+	// Why constant? Well we don't need a copy to that memory address because were not going to modify it. 
+	// A little performance optimization! 
+
+	// Abstract functions
 	virtual void updateBuffers(const GLuint core_program) = 0;
 	virtual void clean(const GLuint core_program) = 0;
 

@@ -21,7 +21,7 @@ public:
 	glm::vec4 fogColour = glm::vec4(0.0, 0.0f, 1.0f, 1.0f);
 
 	float lflickerRange = 0.7f;
-	float lFactor = 15.0f;
+	float lFactor = 3.0f;
 	int fps = 60;
 	bool wireFrameEnabled = false;
 	bool mLightShouldUpdate = true;

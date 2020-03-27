@@ -86,7 +86,7 @@ GLuint Application::getCoreProgram() const
 	return core_program;
 }
 
-Application * Application::GetInstance()
+Application * Application::Instance()
 {
 	if (p_sInstance == nullptr)
 	{
@@ -150,6 +150,9 @@ bool Application::Initialize(const char * titleName, const char * vertShader, co
 	frameBufferH = height;
 
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
+	TheShaderManager::Instance()->SetUVMapping(core_program, glm::vec2(0.0f, 0.0f), false);
 
 	Camera::UpdateCameraFacing(window);
+	Camera::CheckEvents(window);
+
 }

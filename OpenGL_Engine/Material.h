@@ -7,6 +7,7 @@ class Material
 public:
 	void bindTexture();
 	void load(const char* fileName);
+	void clean();
 private:
 	GLuint mtextureID;
 	int width;

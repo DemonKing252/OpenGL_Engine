@@ -15,18 +15,17 @@ public:
 	// For example, a lava land would have lava animating much slower.
 	GLfloat uv = 0.0f;
 
-	std::vector <PointLight*> m_vPointLights;
+	std::vector <Light*> m_vPointLights;
 	std::vector <RenderItem*> m_vRenderItems;
-	std::unordered_map <std::string, Material> mMaterialMap;
 	GeometryGenerator geoGen;
 
 	Scene();
 	~Scene();
 
 	void Update();
-	void Render();
+	void draw();
 	void Setup();
-	void Clean();
+	void clean();
 
 };
 

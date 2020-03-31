@@ -33,7 +33,7 @@ public:
 
 	void Init(GLFWwindow* window);
 	
-	void Render(std::vector <PointLight*> pLights);
+	void draw(std::vector <Light*> pLights);
 
 	void ClearColour();
 	void Clean();

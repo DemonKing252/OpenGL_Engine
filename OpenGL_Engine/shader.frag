@@ -42,6 +42,9 @@ void main()
 	vec3 specular = vec3(0);
 	vec3 diffuse = vec3(0);
 
+	const float fallOffStart = 1.0f;
+	const float fallOffEnd = 5.0f;
+
 	for (int i = 0; i < MAX_LIGHTS; i++)
 	{
 		// Do we want the distance between the light postion and camera to affect the intensity of reflected light?
@@ -49,25 +52,25 @@ void main()
 
 		float distance = length(pLight[i].position - fragPos);
 
-
-		// Calculate Diffuse
-		vec3 norm = normalize(vs_normal);
-		vec3 lightDir = normalize(pLight[i].position - fragPos);
-		float diff = max(dot(norm, lightDir), 0.0f);
-		diffuse += diff * pLight[i].colour * vec3(pLight[i].strength) / distance;
-		
-		// Calculate Specular
-		vec3 viewDir = normalize(mCameraFacing - fragPos);
-		vec3 reflectDir = reflect(-lightDir, norm);
-		float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32) / distance;
-		specular += pLight[i].strength * spec * pLight[i].colour;
-		
-		// Calculate the result of the all three lighting types
-		result = (ambient + specular + diffuse);	
-		
+		if (distance <= fallOffEnd)
+		{
+			// Calculate Diffuse
+			vec3 norm = normalize(vs_normal);
+			vec3 lightDir = normalize(pLight[i].position - fragPos);
+			float diff = max(dot(norm, lightDir), 0.0f);
+			diffuse += diff * pLight[i].colour * pLight[i].strength * ((fallOffEnd - distance) / (fallOffEnd - fallOffStart));
+			
+			// Calculate Specular
+			vec3 viewDir = normalize(mCameraFacing - fragPos);
+			vec3 reflectDir = reflect(-lightDir, norm);
+			float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32) / (distance * distance);
+			specular += pLight[i].strength * spec * pLight[i].colour;
+		}
 	}
+	// Calculate the result of the all three lighting types
+	result = (ambient + specular + diffuse);	
 	
-	
+	// I cannot use enumerators in the core shaders >:(
 
 	if (fragStyle == 0)
 		fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -88,20 +91,20 @@ void main()
 	
 
 	// Linear fog
-
+	
 	if (fragStyle != (0 | 1 | 2 | 3))
 	{
 		float distance = length(fragPos - mCameraFacing);
 		float fog_factor = (fog_fallOffEnd - distance) /
 		                  (fog_fallOffEnd - fog_fallOffStart);
-
+	
 		fog_factor = clamp(fog_factor, 0.0, 1.0);
-
+	
 		/*********************************************************
 		// Interpolate each property of the fragment
 		// IE: Lighting, Colour, Texture Sampler, and Fog
 		*********************************************************/
-
+	
 		fragColour = mix(fog_colour, fragColour, fog_factor);
 	}
 	

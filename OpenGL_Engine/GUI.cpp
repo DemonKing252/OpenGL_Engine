@@ -34,23 +34,23 @@ void GUI::Init(GLFWwindow* window)
 
 }
 
-void GUI::Render(std::vector <PointLight*> pLights)
+void GUI::draw(std::vector <Light*> l)
 {
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
 	ImGui::NewFrame();
 
-	float lightPos1[3] = { pLights[0]->getPosition().x, pLights[0]->getPosition().y, pLights[0]->getPosition().z };
-	float lightPos2[3] = { pLights[1]->getPosition().x, pLights[1]->getPosition().y, pLights[1]->getPosition().z };
+	float lightPos1[3] = { l[0]->getPosition().x, l[0]->getPosition().y, l[0]->getPosition().z };
+	float lightPos2[3] = { l[1]->getPosition().x, l[1]->getPosition().y, l[1]->getPosition().z };
 
-	float lightColour1[3] = { pLights[0]->getColour().x, pLights[0]->getColour().y, pLights[0]->getColour().z };
-	float lightColour2[3] = { pLights[1]->getColour().x, pLights[1]->getColour().y, pLights[1]->getColour().z };
+	float lightColour1[3] = { l[0]->getColour().x, l[0]->getColour().y, l[0]->getColour().z };
+	float lightColour2[3] = { l[1]->getColour().x, l[1]->getColour().y, l[1]->getColour().z };
 
-	float lStrength1 = pLights[0]->getStrength();
-	float lStrength2 = pLights[1]->getStrength();
+	float lStrength1 = l[0]->getStrength();
+	float lStrength2 = l[1]->getStrength();
 
-	ImGui::Begin("OpenGL Engine");                          // Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
 
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f), 0);
 	ImGui::ColorEdit3("Background colour", (float*)&clear_color); // Edit 3 floats representing a color
@@ -138,23 +138,23 @@ void GUI::Render(std::vector <PointLight*> pLights)
 
 	for (int i = 0; i < 2; i++)
 	{
-		pLights[i]->setColour(glm::vec3((i == 0 ? lightColour1[0] : lightColour2[0]), (i == 0 ? lightColour1[1] : lightColour2[1]), (i == 0 ? lightColour1[2] : lightColour2[2])));
-		pLights[i]->setStrength(i == 0 ? lStrength1 : lStrength2);
-		pLights[i]->updateBuffers(core_program);
+		l[i]->setColour(glm::vec3((i == 0 ? lightColour1[0] : lightColour2[0]), (i == 0 ? lightColour1[1] : lightColour2[1]), (i == 0 ? lightColour1[2] : lightColour2[2])));
+		l[i]->setStrength(i == 0 ? lStrength1 : lStrength2);
+		static_cast<PointLight*>(l[i])->updateBuffers(core_program);
 	}
 
 	ImGui::Begin("Light information");
 	ImGui::SetWindowPos(ImVec2(display_w - ImGui::GetWindowWidth(), 0.0f));
-	for (int i = 0; i < pLights.size(); i++)
+	for (int i = 0; i < l.size(); i++)
 	{
 		ImGui::PushStyleColor(0, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
 		ImGui::Text("Light #%d", i + 1);
 		ImGui::PopStyleColor();
 
 		ImGui::Separator();
-		ImGui::Text("position [%.1f, %.1f, %.1f]", pLights[i]->getPosition().x, pLights[i]->getPosition().y, pLights[i]->getPosition().z);               // Display some text (you can use a format strings too)
-		ImGui::Text("colour   [%.1f, %.1f, %.1f]", pLights[i]->getColour().x, pLights[i]->getColour().y, pLights[i]->getColour().z);               // Display some text (you can use a format strings too)
-		ImGui::Text("strength [%.1f]", pLights[i]->getStrength());               // Display some text (you can use a format strings too)
+		ImGui::Text("position [%.1f, %.1f, %.1f]", l[i]->getPosition().x, l[i]->getPosition().y, l[i]->getPosition().z);               // Display some text (you can use a format strings too)
+		ImGui::Text("colour   [%.1f, %.1f, %.1f]", l[i]->getColour().x, l[i]->getColour().y, l[i]->getColour().z);               // Display some text (you can use a format strings too)
+		ImGui::Text("strength [%.1f]", l[i]->getStrength());               // Display some text (you can use a format strings too)
 
 	}
 	ImGui::End();

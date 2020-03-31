@@ -19,6 +19,7 @@ void window_resize_callback(GLFWwindow* window, int x, int y)
 	// Change the view port size respective to the new window size.
 	glViewport(0, 0, _width, _height);
 
+	//cout << "Window: " << _width << " " << _height << endl;
 
 }
 Scene::Scene()
@@ -31,19 +32,18 @@ Scene::~Scene()
 
 void Scene::Update()
 {
-	// Not sure what to do about these yet.
-
-	for (auto light : m_vPointLights) {
+	for (auto l : m_vPointLights) {
 		if (TheApp::Instance()->mUserInterface->mLightShouldUpdate) {
 			TheApp::Instance()->strength += 1.5f;
 	
-			light->setStrength((TheApp::Instance()->mUserInterface->lflickerRange * cos(TheApp::Instance()->strength * Util::DegToRad())) + TheApp::Instance()->mUserInterface->lFactor);
+			l->setStrength((TheApp::Instance()->mUserInterface->lflickerRange * cos(TheApp::Instance()->strength * Util::DegToRad())) + TheApp::Instance()->mUserInterface->lFactor);
 		}
-		light->setPosition(glm::vec3(3 * cos((TheApp::Instance()->angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), light->getPosition().y, 3 * sin((TheApp::Instance()->angleDelta + (light->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
+		l->setPosition(glm::vec3(3 * cos((TheApp::Instance()->angleDelta + (l->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), l->getPosition().y, 3 * sin((TheApp::Instance()->angleDelta + (l->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
+		static_cast<PointLight*>(l)->updateBuffers(TheApp::Instance()->getCoreProgram());
 	}
 }
 
-void Scene::Render()
+void Scene::draw()
 {
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(TheApp::Instance()->getCoreProgram());
 	
@@ -60,14 +60,14 @@ void Scene::Render()
 void Scene::Setup()
 {
 	// Point Light
-	m_vPointLights.push_back(new PointLight(glm::vec3(3, 0, 0), glm::vec3(1), 2.5f));
+	m_vPointLights.push_back(new PointLight(glm::vec3(3, 0, 0), glm::vec3(0.5f), 1.5f));
 	m_vPointLights.back()->index = m_vPointLights.size() - 1;
-	m_vPointLights.back()->updateBuffers(TheApp::Instance()->getCoreProgram());
+	static_cast<PointLight*>(m_vPointLights.back())->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	// Point Light
-	m_vPointLights.push_back(new PointLight(glm::vec3(-3, 0, 0), glm::vec3(1), 2.5f));
+	m_vPointLights.push_back(new PointLight(glm::vec3(-3, 0, 0), glm::vec3(0.5f), 1.5f));
 	m_vPointLights.back()->index = m_vPointLights.size() - 1;
-	m_vPointLights.back()->updateBuffers(TheApp::Instance()->getCoreProgram());
+	static_cast<PointLight*>(m_vPointLights.back())->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	geoGen.createMesh(GeometryGenerator::CUBE);
 	geoGen.mGeometry[GeometryGenerator::CUBE]->generateBuffers();
@@ -86,18 +86,24 @@ void Scene::Setup()
 
 	TheShaderManager::Instance()->SetFragmentAlphaBlend(TheApp::Instance()->getCoreProgram(), 1.0f);
 
-	mMaterialMap["ice"].load("ice.png");
-	mMaterialMap["brick"].load("Brick5.png");
-	mMaterialMap["theSims"].load("TheSims.jfif");
-	mMaterialMap["fence"].load("Fence.png");
-	mMaterialMap["grass"].load("tile.png");
-	mMaterialMap["stoneBrick"].load("StoneBrick.jpg");
-	mMaterialMap["water"].load("water.png");
-
 	// Render Item:
-	// Mesh type, Fragment style, material, translation, scale, rotationAxis, angle.s
+	/*
+		Mesh type, 
+		Fragment style, 
+		material, 
+		translation, scale, 
+		rotationAxis, 
+		angle (based on rotation axis ^)
+	*/
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::PLANE, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "grass", 1.0f, glm::vec3(0.0f, -3.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CUBE , FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "water", 0.2f, glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, 0.0f), glm::vec3(65.f, 0.01f, 65.f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	
+	// Water plane will animate. To do this we simply use a uniform vec2 variable in the fragment shader
+	// as a uv that updates in the game loop. The result is the illusion of flowing water.
+	
+	// Alternatively, we could just access each uv and increase them and just re-bind the vertex array buffer.
+	// (potentially a slower method).
+
 	m_vRenderItems.back()->m_bShouldAnimate = true;
 
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::SPHEAR, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "theSims", 1.0f,glm::vec3(-0.5f, -0.5f - 0.03f, -0.5f), glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
@@ -128,11 +134,11 @@ void Scene::Setup()
 
 }
 
-void Scene::Clean()
+void Scene::clean()
 {
 	for (auto it : m_vPointLights)
 	{
-		it->clean(TheApp::Instance()->getCoreProgram());
+		static_cast<PointLight*>(it)->clean(TheApp::Instance()->getCoreProgram());
 		delete it;
 		it = nullptr;
 	}

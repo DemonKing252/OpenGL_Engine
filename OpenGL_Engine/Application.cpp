@@ -55,8 +55,8 @@ void Application::pollEvents()const
 
 void Application::draw()
 {
-	mPlayerScene->Render();
-	mUserInterface->Render(mPlayerScene->m_vPointLights);
+	mPlayerScene->draw();
+	mUserInterface->draw(mPlayerScene->m_vPointLights);
 }
 
 void Application::swapBuffers() const
@@ -69,8 +69,8 @@ void Application::clean() const
 {
 	mUserInterface->Clean();
 
-	mPlayerScene->Clean();
-	
+	mPlayerScene->clean();
+
 	glfwTerminate();
 
 	glDeleteProgram(core_program);
@@ -155,4 +155,11 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	Camera::UpdateCameraFacing(window);
 	Camera::CheckEvents(window);
 
+	mMaterialMap["ice"].load("ice.png");
+	mMaterialMap["brick"].load("Brick5.png");
+	mMaterialMap["theSims"].load("TheSims.jfif");
+	mMaterialMap["fence"].load("Fence.png");
+	mMaterialMap["grass"].load("grass2.png");
+	mMaterialMap["stoneBrick"].load("StoneBrick.jpg");
+	mMaterialMap["water"].load("water.png");
 }

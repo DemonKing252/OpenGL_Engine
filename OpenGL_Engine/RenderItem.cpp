@@ -75,7 +75,7 @@ void RenderItem::draw(Scene * scene) const
 	TheShaderManager::Instance()->SetUniformi(TheApp::Instance()->getCoreProgram(), "fragStyle", fragStyle);
 	TheShaderManager::Instance()->SetUniformf(TheApp::Instance()->getCoreProgram(), "alpha", alphaTest);
 
-	scene->mMaterialMap[material].bindTexture();
+	TheApp::Instance()->mMaterialMap[material].bindTexture();
 	scene->geoGen.mGeometry[mMeshType]->bindVAO();
 	scene->geoGen.draw(mMeshType);
 
@@ -92,6 +92,3 @@ void RenderItem::update(Scene * scene) const
 	}
 	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, scene->uv * 0.5f));
 }
-
-
-

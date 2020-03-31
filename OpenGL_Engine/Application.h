@@ -20,6 +20,7 @@ public:
 
 	// Multiplayer System (removed).
 	Scene* mPlayerScene;
+	std::unordered_map <std::string, Material> mMaterialMap;
 
 	GUI* mUserInterface;
 

@@ -26,7 +26,7 @@ void main()
 	vs_normal = mat3(M) * vertex_normal;
 	vs_texture = vertex_texture;
 	vs_colour = vertex_colour;	
-	fragPos = vertex_position;
+	fragPos = (M * vec4(vertex_position, 1.0f)).xyz;
 
 	gl_Position = P * V * M * vec4(vertex_position, 1.0f);
 }

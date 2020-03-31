@@ -26,14 +26,12 @@ public:
 	// Why constant? Well we don't need a copy to that memory address because were not going to modify it. 
 	// A little performance optimization! 
 
-	// Abstract functions
-	virtual void updateBuffers(const GLuint core_program) = 0;
-	virtual void clean(const GLuint core_program) = 0;
-
+	// Getters
 	glm::vec3 getPosition() const;
 	glm::vec3 getColour() const;
 	float getStrength() const;
 
+	// Mutators
 	void setPosition(const glm::vec3 position);
 	void setColour(const glm::vec3 colour);
 	void setStrength(const float strength);
@@ -47,6 +45,6 @@ public:
 	PointLight(glm::vec3 position, glm::vec3 colour = glm::vec3(1, 1, 1), float strenth = 1.0f);
 	~PointLight();
 
-	void updateBuffers(const GLuint core_program)override;
-	void clean(const GLuint core_program)override;
+	void updateBuffers(const GLuint core_program);
+	void clean(const GLuint core_program);
 } PointLight;

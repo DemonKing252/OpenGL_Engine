@@ -24,3 +24,8 @@ void Material::load(const char * fileName)
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void Material::clean()
+{
+	glDeleteTextures(1, &mtextureID);
+}
+

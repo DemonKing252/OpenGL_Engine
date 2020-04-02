@@ -11,7 +11,7 @@ using namespace std;
 class GeometryGenerator
 {
 public:
-	std::vector <GeometryMesh*> mGeometry;
+	std::vector <GeometryMesh*> mGeometryMesh;
 	enum Mesh { CUBE, PYRAMID, SPHEAR, PLANE, SKULL };
 
 	GeometryGenerator()

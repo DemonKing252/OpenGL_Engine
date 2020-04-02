@@ -119,6 +119,10 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	if (glewInit() != GLEW_OK)
 		return false;
 
+	glfwSetMouseButtonCallback(TheApp::Instance()->getWindow(), CallBack::mouse_btn_callback);
+	glfwSetWindowSizeCallback(TheApp::Instance()->getWindow(), CallBack::window_resize_callback);
+	glfwSetKeyCallback(TheApp::Instance()->getWindow(), CallBack::key_callback);
+
 	mPlayerScene = new Scene();
 	mUserInterface = new GUI();
 

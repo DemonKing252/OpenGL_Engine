@@ -1,27 +1,6 @@
 #include "Scene.h"
 #include "Application.h"
-void mouse_btn_down_callback(GLFWwindow* window, int button, int action, int mods)
-{
-	if ((button == GLFW_MOUSE_BUTTON_LEFT || button == GLFW_MOUSE_BUTTON_RIGHT) && action == GLFW_PRESS)
-	{
-		glfwGetCursorPos(window, &Camera::mouseX, &Camera::mouseY);
-	}
-}
-void window_resize_callback(GLFWwindow* window, int x, int y)
-{
-	GLint _width;
-	GLint _height;
-	glfwGetWindowSize(window, &_width, &_height);
 
-	TheApp::Instance()->frameBufferW = _width;
-	TheApp::Instance()->frameBufferH = _height;
-
-	// Change the view port size respective to the new window size.
-	glViewport(0, 0, _width, _height);
-
-	//cout << "Window: " << _width << " " << _height << endl;
-
-}
 Scene::Scene()
 {
 }
@@ -70,19 +49,19 @@ void Scene::Setup()
 	static_cast<PointLight*>(m_vPointLights.back())->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	geoGen.createMesh(GeometryGenerator::CUBE);
-	geoGen.mGeometry[GeometryGenerator::CUBE]->generateBuffers();
+	geoGen.mGeometryMesh[GeometryGenerator::CUBE]->generateBuffers();
 
 	geoGen.createMesh(GeometryGenerator::PYRAMID);
-	geoGen.mGeometry[GeometryGenerator::PYRAMID]->generateBuffers();
+	geoGen.mGeometryMesh[GeometryGenerator::PYRAMID]->generateBuffers();
 
 	geoGen.createMesh(GeometryGenerator::SPHEAR);
-	geoGen.mGeometry[GeometryGenerator::SPHEAR]->generateBuffers();
+	geoGen.mGeometryMesh[GeometryGenerator::SPHEAR]->generateBuffers();
 
 	geoGen.createMesh(GeometryGenerator::PLANE);
-	geoGen.mGeometry[GeometryGenerator::PLANE]->generateBuffers();
+	geoGen.mGeometryMesh[GeometryGenerator::PLANE]->generateBuffers();
 
 	geoGen.createMesh(GeometryGenerator::SKULL);
-	geoGen.mGeometry[GeometryGenerator::SKULL]->generateBuffers();
+	geoGen.mGeometryMesh[GeometryGenerator::SKULL]->generateBuffers();
 
 	TheShaderManager::Instance()->SetFragmentAlphaBlend(TheApp::Instance()->getCoreProgram(), 1.0f);
 
@@ -129,8 +108,6 @@ void Scene::Setup()
 
 	Camera::UpdateCameraFacing(TheApp::Instance()->getWindow());
 
-	glfwSetMouseButtonCallback(TheApp::Instance()->getWindow(), mouse_btn_down_callback);
-	glfwSetWindowSizeCallback(TheApp::Instance()->getWindow(), window_resize_callback);
 
 }
 

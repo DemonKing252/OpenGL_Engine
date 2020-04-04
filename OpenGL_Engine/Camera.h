@@ -22,7 +22,7 @@ public:
 
 	static glm::vec3 getPosition();
 	static glm::vec3 getLookAt();
-
+	static GLint frameBufferW, frameBufferH;
 
 	static double deltaX, deltaY;
 

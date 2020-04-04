@@ -14,13 +14,19 @@ enum FragmentStyle
 	ALL_TYPES
 };
 
-
 class RenderItem
 {
 private:
 	GeometryGenerator::Mesh mMeshType;
 	FragmentStyle fragStyle;
 public:
+	glm::vec3 position;
+	float m_fBobFactor = 0.10f;
+	float m_fBobSpeed = 0.05f;
+	float m_fCntr = 0.0f;
+
+	bool m_bApplyPhysics = false;
+
 	Transform* transform;
 
 	bool m_bShouldAnimate = false;
@@ -31,5 +37,5 @@ public:
 	~RenderItem();
 
 	void draw(Scene * scene) const;
-	void update(Scene * scene) const;
+	void update(Scene * scene);
 };

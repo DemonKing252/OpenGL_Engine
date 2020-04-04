@@ -23,7 +23,7 @@ double Util::RadToDeg()
 	return 180.0f / 3.1415926535f;
 }
 
-void Util::Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle)
+void Util::Transform(GLuint core_program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle)
 {
 	glm::mat4 Model;
 
@@ -33,8 +33,8 @@ void Util::Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm
 	Model = glm::scale(Model, scale);
 
 	// Communicate with the fragment shader to update the models position (relative to the camera) and translation
-	TheShaderManager::Instance()->SetUniformMat4x4(program, "M", Model);
-	TheShaderManager::Instance()->SetUniformMat4x4(program, "V", m_4x4ViewMatrix);
-	TheShaderManager::Instance()->SetUniformMat4x4(program, "P", m_4x4ProjMatrix);
+	TheShaderManager::Instance()->SetUniformMat4x4(core_program, "M", Model);
+	TheShaderManager::Instance()->SetUniformMat4x4(core_program, "V", m_4x4ViewMatrix);
+	TheShaderManager::Instance()->SetUniformMat4x4(core_program, "P", m_4x4ProjMatrix);
 	
 }

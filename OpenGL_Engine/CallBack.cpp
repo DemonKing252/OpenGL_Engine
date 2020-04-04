@@ -14,8 +14,8 @@ void CallBack::window_resize_callback(GLFWwindow* window, int x, int y)
 	GLint _height;
 	glfwGetWindowSize(window, &_width, &_height);
 
-	TheApp::Instance()->frameBufferW = _width;
-	TheApp::Instance()->frameBufferH = _height;
+	Camera::frameBufferW = _width;
+	Camera::frameBufferH = _height;
 
 	// Change the view port size respective to the new window size.
 	glViewport(0, 0, _width, _height);

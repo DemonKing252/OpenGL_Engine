@@ -12,7 +12,8 @@ double Camera::back_x = 0;
 double Camera::back_y = 0;
 glm::vec3 Camera::position = glm::vec3(0, 0, 3);
 glm::vec3 Camera::lookAt = glm::vec3(0, 0, 0);
-
+GLint Camera::frameBufferW = 0;
+GLint Camera::frameBufferH = 0;
 
 glm::vec3 Camera::getPosition()
 {
@@ -99,15 +100,20 @@ void Camera::CheckEvents(GLFWwindow * window)
 	if (keyD == GLFW_PRESS) {
 		position += rightVec * SPEED;
 	}
-	// First person camera
-	frontVec.x = cos(m_Yaw * Util::DegToRad()) * cos(m_Pitch * Util::DegToRad());
-	frontVec.y = sin(m_Pitch * Util::DegToRad());
-	frontVec.z = sin(m_Yaw * Util::DegToRad()) * cos(m_Pitch * Util::DegToRad());
+	
+	// Cylindrical Coordinates
+	// Calculus III Link -> http://tutorial.math.lamar.edu/Classes/CalcIII/CylindricalCoords.aspx
+	frontVec.x = cos_radians(m_Yaw) * cos_radians(m_Pitch);
+	frontVec.y = sin_radians(m_Pitch);
+	frontVec.z = sin_radians(m_Yaw) * cos_radians(m_Pitch);
+	
+	// Normalize forward Vector
 	frontVec = glm::normalize(frontVec);
+	
+	// Normalize forward Vector, then get the cross product of the camera world facing (0, -1, 0) for upside down.
 	rightVec = glm::normalize(glm::cross(frontVec, worldUp));
 	
 	lookAt = position + frontVec;
-
 
 	outerCamera = glm::vec3(mRadius * frontVec.x, mRadius * frontVec.y, mRadius * frontVec.z);
 	
@@ -123,6 +129,7 @@ void Camera::CheckEvents(GLFWwindow * window)
 
 	// Spinner camera (similar to hoomans template)
 	
+
 	Util::m_4x4ViewMatrix = glm::lookAt(
 	    outerCamera,
 	    glm::vec3(0, 0, 0),

@@ -11,7 +11,8 @@ RenderItem::RenderItem(GeometryGenerator::Mesh mMeshType, FragmentStyle style, s
 	this->alphaTest = alpha;
 	this->material = m;
 	this->fragStyle = style;
-	
+
+	this->position = transform->position;
 }
 
 RenderItem::~RenderItem()
@@ -33,13 +34,25 @@ void RenderItem::draw(Scene * scene) const
 	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(0.0f));
 }
 
-void RenderItem::update(Scene * scene) const
+void RenderItem::update(Scene * scene)
 {
-	scene->uv += 0.0002f;
-
-	if (scene->uv >= 1.0f)
+	if (m_bShouldAnimate)
 	{
-		scene->uv = 0.0f;
+		// Water animation
+		// fix this later
+		scene->uv += 0.0002f;
+
+		if (scene->uv >= 1.0f)
+		{
+			scene->uv = 0.0f;
+		}
+		TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, scene->uv * 0.5f));
 	}
-	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, scene->uv * 0.5f));
+	
+	if (m_bApplyPhysics)
+	{
+		transform->position.y = position.y + (m_fBobFactor * sin(m_fCntr * 3.141f / Util::Pi()));
+
+		m_fCntr += m_fBobSpeed;
+	}
 }

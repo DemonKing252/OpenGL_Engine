@@ -37,7 +37,7 @@ uniform vec4 fog_colour;
 void main()
 {
 	
-	vec3 ambient = vec3(0.3, 0.3, 0.3);	
+	vec3 ambient = vec3(0.5f);	
 	vec3 result = vec3(0);
 	vec3 specular = vec3(0);
 	vec3 diffuse = vec3(0);

@@ -39,7 +39,7 @@ public:
 	GLFWwindow* getWindow() const;
 	GLuint getCoreProgram() const;
 	
-	GLint frameBufferW, frameBufferH;
+
 
 private:
 	GLFWwindow* window;

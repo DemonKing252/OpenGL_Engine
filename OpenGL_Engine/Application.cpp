@@ -150,8 +150,8 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	frameBufferW = width;
-	frameBufferH = height;
+	Camera::frameBufferW = width;
+	Camera::frameBufferH = height;
 
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
 	TheShaderManager::Instance()->SetUVMapping(core_program, glm::vec2(0.0f, 0.0f), false);
@@ -159,11 +159,11 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	Camera::UpdateCameraFacing(window);
 	Camera::CheckEvents(window);
 
-	mMaterialMap["ice"].load("ice.png");
-	mMaterialMap["brick"].load("Brick5.png");
-	mMaterialMap["theSims"].load("TheSims.jfif");
-	mMaterialMap["fence"].load("Fence.png");
-	mMaterialMap["grass"].load("grass2.png");
-	mMaterialMap["stoneBrick"].load("StoneBrick.jpg");
-	mMaterialMap["water"].load("water.png");
+	mMaterialMap["ice"].load("Assets/Images/ice.png");
+	mMaterialMap["brick"].load("Assets/Images/Brick5.png");
+	mMaterialMap["theSims"].load("Assets/Images/TheSims.jfif");
+	mMaterialMap["fence"].load("Assets/Images/Fence.png");
+	mMaterialMap["grass"].load("Assets/Images/grass2.png");
+	mMaterialMap["stoneBrick"].load("Assets/Images/StoneBrick.jpg");
+	mMaterialMap["water"].load("Assets/Images/water.png");
 }

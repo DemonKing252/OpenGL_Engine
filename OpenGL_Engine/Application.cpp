@@ -5,27 +5,27 @@ Application* Application::p_sInstance = nullptr;
 
 void Application::update()
 {
-	while (glfwGetTime() < lasttime + 1.0 / mUserInterface->fps) {
+	while (glfwGetTime() < lasttime + 1.0 / m_userInterface->fps) {
 		// Put the thread to sleep.
 		// -> 1000.0f / 60.0f => 16.66667 milliseconds perframe
 		// Reminder that OpenGL only works on one thread.
 
 	}
-	lasttime += 1.0 / mUserInterface->fps;
+	lasttime += 1.0 / m_userInterface->fps;
 
-	mUserInterface->ClearColour();
+	m_userInterface->ClearColour();
 	// Light will increase and decrease intensity (look at this equation in desmos for the pattern)
 	
 	// light.strength = flickerRange * cos(strength * 3.14159f / 180.0f) + factor
 	
 	// Cosf supposedly accepts an angle in degrees but it was giving me rounding issues so I reverted back here.
 	// Same thing happened when I used it for the sphear (cartesian coordinates)
-	mPlayerScene->Update();
+	m_playerScene->Update();
 	
-	if (mUserInterface->mLightShouldUpdate)
+	if (m_userInterface->mLightShouldUpdate)
 		angleDelta += 3.0f;
 
-	if (Camera::EventMouseClick(window) && mUserInterface->allowCameraMovement)
+	if (Camera::EventMouseClick(window) && m_userInterface->allowCameraMovement)
 	{
 		Camera::UpdateCameraFacing(window);
 		Camera::CheckEvents(window);
@@ -55,8 +55,8 @@ void Application::pollEvents()const
 
 void Application::draw()
 {
-	mPlayerScene->draw();
-	mUserInterface->draw(mPlayerScene->m_vPointLights);
+	m_playerScene->draw();
+	m_userInterface->draw(m_playerScene->m_vPointLights);
 }
 
 void Application::swapBuffers() const
@@ -67,9 +67,8 @@ void Application::swapBuffers() const
 
 void Application::clean() const
 {
-	mUserInterface->Clean();
-
-	mPlayerScene->clean();
+	m_userInterface->clean();
+	m_playerScene->clean();
 
 	glfwTerminate();
 
@@ -98,67 +97,76 @@ Application * Application::Instance()
 
 bool Application::init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
 {
-	
-	srand((unsigned)time(NULL));
-	///* Initialize the library */
-	/* Initialize the library */
-	//ImGui::SameLine();
 
-	if (glfwInit() == GLFW_FALSE)
-		return false;
+	// Good seeds:
+	// 8 and 9, 21, 26, 27, 36, 40, 41
+	// Seed 5 for the noise algorithm for terrain generation.
+	srand(5);
+	///* Initialize the library */
+	// Initialize the library 
+
+	if (glfwInit() == GLFW_FALSE) { return false; }
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(width, height, titleName, NULL, NULL);
+	if (!window) { return false; }
 
-	if (!window)
-		return false;
-
-	/* Make the window's context current */
+	// Make the window's context current 
 	glfwMakeContextCurrent(window);
-	
 	if (glewInit() != GLEW_OK)
 		return false;
 
-	glfwSetMouseButtonCallback(TheApp::Instance()->getWindow(), CallBack::mouse_btn_callback);
-	glfwSetWindowSizeCallback(TheApp::Instance()->getWindow(), CallBack::window_resize_callback);
-	glfwSetKeyCallback(TheApp::Instance()->getWindow(), CallBack::key_callback);
-
-	mPlayerScene = new Scene();
-	mUserInterface = new GUI();
+	// Mouse events
+	glfwSetMouseButtonCallback(window, CallBack::mouse_btn_callback);
+	// Window buffer resize/minimize/maximize events
+	glfwSetWindowSizeCallback(window, CallBack::window_resize_callback);
+	// Keyboard events
+	glfwSetKeyCallback(window, CallBack::key_callback);
 
 	// Read the instructions from each shader and link them to the core program.
-	vert_shader = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
-	frag_shader = TheShaderManager::Instance()->CompileShader(GL_FRAGMENT_SHADER, fragShader);
+	m_ShaderInfo["vertex_core"] = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
+	m_ShaderInfo["fragment_core"] = TheShaderManager::Instance()->CompileShader(GL_FRAGMENT_SHADER, fragShader);
 
-	core_program = TheShaderManager::Instance()->AttachShader(vert_shader, frag_shader);
+	// Attach the object code to the core program
+	core_program = TheShaderManager::Instance()->AttachShader(m_ShaderInfo["vertex_core"], m_ShaderInfo["fragment_core"]);
 
 	// Delete unused memory
 	// If I was using Java I wouldn't have to worry about this! (Memory Management...)
-	glDeleteShader(vert_shader);
-	glDeleteShader(frag_shader);
+	for (auto iter : m_ShaderInfo)
+	{
+		glDeleteShader(m_ShaderInfo[iter.first]);
+	}
+	// The core program is holding the info of the vertex and fragment cores, no longer need these:
+	m_ShaderInfo.clear();
 
-	// Pipeline is setup
+	// Graphics pipeline is setup
 	glUseProgram(core_program);
 
-	mPlayerScene->Setup();
+	// Initialize the player scene 
+	m_playerScene = new Scene();
+	m_playerScene->setup();
 
-	mUserInterface->core_program = this->core_program;
-	mUserInterface->Init(window);
+	// Initialize Dear ImGui
+	m_userInterface = new GUI();
+	m_userInterface->core_program = this->core_program;
+	m_userInterface->setup(window);
 
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_STENCIL_TEST);
-	glEnable(GL_BLEND);
+	// GL settings
+	glEnable( GL_DEPTH_TEST );
+	glEnable( GL_STENCIL_TEST );
+	glEnable( GL_BLEND );
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	Camera::frameBufferW = width;
 	Camera::frameBufferH = height;
 
-	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(core_program);
+	// Initialize the water uv position for animating
 	TheShaderManager::Instance()->SetUVMapping(core_program, glm::vec2(0.0f, 0.0f), false);
 
 	Camera::UpdateCameraFacing(window);
 	Camera::CheckEvents(window);
 
+	// Load all materials
 	mMaterialMap["ice"].load("Assets/Images/ice.png");
 	mMaterialMap["brick"].load("Assets/Images/Brick5.png");
 	mMaterialMap["theSims"].load("Assets/Images/TheSims.jfif");

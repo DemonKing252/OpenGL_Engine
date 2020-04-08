@@ -101,7 +101,7 @@ void PointLight::updateBuffers(const GLuint core_program)
 void PointLight::clean(const GLuint core_program)
 {
 	// Catch an index number not being initialized
-	assert(index != -1);
+	_STL_VERIFY(index != -1, "Did you forget to set the light index?");
 
 	string front = "pLight[" + to_string(index) + "]";
 

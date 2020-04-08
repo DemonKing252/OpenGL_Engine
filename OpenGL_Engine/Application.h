@@ -20,10 +20,10 @@ public:
 	double lasttime = 0.0f;
 
 	// Multiplayer System (removed).
-	Scene* mPlayerScene;
+	Scene* m_playerScene;
 	std::unordered_map <std::string, Material> mMaterialMap;
 
-	GUI* mUserInterface;
+	GUI* m_userInterface;
 
 	static Application* Instance();
 
@@ -45,8 +45,7 @@ private:
 	GLFWwindow* window;
 	GLuint core_program;
 
-	GLuint vert_shader;
-	GLuint frag_shader;
+	std::unordered_map <std::string, GLuint> m_ShaderInfo;
 
 	static Application* p_sInstance;
 } Application, TheApp;

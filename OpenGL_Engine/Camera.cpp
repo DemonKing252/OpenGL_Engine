@@ -73,6 +73,7 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 	}
 	if (btnR == GLFW_PRESS)
 	{
+		
 		if (deltaY < 0.0f && mRadius >= /*(-deltaY)*/2.0f)
 			mRadius += deltaY * 0.25f;
 
@@ -129,7 +130,7 @@ void Camera::CheckEvents(GLFWwindow * window)
 
 	// Spinner camera (similar to hoomans template)
 	
-
+	
 	Util::m_4x4ViewMatrix = glm::lookAt(
 	    outerCamera,
 	    glm::vec3(0, 0, 0),

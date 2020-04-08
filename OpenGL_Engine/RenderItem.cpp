@@ -19,7 +19,7 @@ RenderItem::~RenderItem()
 {
 }
 
-void RenderItem::draw(Scene * scene) const
+void RenderItem::draw(Scene * currentScene) const
 {
 	transform->updateUniformMatrix(TheApp::Instance()->getCoreProgram());
 	
@@ -28,8 +28,8 @@ void RenderItem::draw(Scene * scene) const
 	TheShaderManager::Instance()->SetUniformf(TheApp::Instance()->getCoreProgram(), "alpha", alphaTest);
 
 	TheApp::Instance()->mMaterialMap[material].bindTexture();
-	scene->geoGen.mGeometryMesh[mMeshType]->bindVAO();
-	scene->geoGen.draw(mMeshType);
+	currentScene->geoGen.mGeometryMesh[mMeshType]->bindVAO();
+	currentScene->geoGen.draw(mMeshType);
 
 	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(0.0f));
 }
@@ -46,7 +46,7 @@ void RenderItem::update(Scene * scene)
 		{
 			scene->uv = 0.0f;
 		}
-		TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, scene->uv * 0.5f));
+		TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, 1.0f));
 	}
 	
 	if (m_bApplyPhysics)

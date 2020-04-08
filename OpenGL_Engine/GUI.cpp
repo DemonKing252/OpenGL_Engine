@@ -8,7 +8,7 @@ GUI::~GUI()
 {
 }
 
-void GUI::Init(GLFWwindow* window)
+void GUI::setup(GLFWwindow* window)
 {
 	const char* glsl_version = "#version 130";
 	
@@ -173,7 +173,7 @@ void GUI::ClearColour()
 	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 }
 
-void GUI::Clean()
+void GUI::clean()
 {
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

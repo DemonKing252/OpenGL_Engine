@@ -26,7 +26,7 @@ public:
 
 	void Update();
 	void draw();
-	void Setup();
+	void setup();
 	void clean();
 
 };

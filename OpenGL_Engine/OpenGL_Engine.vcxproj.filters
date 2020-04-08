@@ -90,6 +90,9 @@
     <ClCompile Include="CallBack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PerlinNoise.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shader.frag">
@@ -167,6 +170,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CallBack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PerlinNoise.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

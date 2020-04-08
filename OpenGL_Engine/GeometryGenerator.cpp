@@ -1,39 +1,5 @@
 #include "GeometryGenerator.h"
 #include "Application.h"
-void PerlinNoise2D(int nWidth, int nHeight, float *fSeed, int nOctaves, float fBias, float *fOutput)
-{
-	for (int x = 0; x < nWidth; x++)
-	for (int y = 0; y < nHeight; y++)
-	{
-		float fNoise = 0.0f;
-		float fScaleAcc = 0.0f;
-		float fScale = 1.0f;
-
-		for (int o = 0; o < nOctaves; o++)
-		{
-			int nPitch = nWidth >> o;
-			int nSampleX1 = (x / nPitch) * nPitch;
-			int nSampleY1 = (y / nPitch) * nPitch;
-
-			int nSampleX2 = (nSampleX1 + nPitch) % nWidth;
-			int nSampleY2 = (nSampleY1 + nPitch) % nWidth;
-
-			float fBlendX = (float)(x - nSampleX1) / (float)nPitch;
-			float fBlendY = (float)(y - nSampleY1) / (float)nPitch;
-
-			float fSampleT = (1.0f - fBlendX) * fSeed[nSampleY1 * nWidth + nSampleX1] + fBlendX * fSeed[nSampleY1 * nWidth + nSampleX2];
-			float fSampleB = (1.0f - fBlendX) * fSeed[nSampleY2 * nWidth + nSampleX1] + fBlendX * fSeed[nSampleY2 * nWidth + nSampleX2];
-
-			fScaleAcc += fScale;
-			fNoise += (fBlendY * (fSampleB - fSampleT) + fSampleT) * fScale;
-			fScale = fScale / fBias;
-		}
-
-		// Scale to seed range
-		fOutput[y * nWidth + x] = fNoise / fScaleAcc;
-	}
-
-}
 
 void GeometryGenerator::createMesh(Mesh mesh)
 {
@@ -75,38 +41,6 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f)),
 			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-1.0f, 0.0f, 0.0f)),
 			
-			
-			/*
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f )),
-			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, -0.5f, +0.5f )),
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
-
-			Vertex(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(-0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, 0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),  glm::vec3(0.5f, -0.5f, -0.5f )),
-			Vertex(glm::vec3(0.5f, 0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),  glm::vec3(0.5f, -0.5f, +0.5f )),
-			Vertex(glm::vec3(-0.5f, 0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-0.5f, -0.5f, +0.5f)),
-
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),glm::vec3(0.5f, -0.5f, +0.5f  )),
-			Vertex(glm::vec3(0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),glm::vec3(0.5f, +0.5f, +0.5f  )),
-			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, +0.5f)),
-
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(-0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f  )),
-			Vertex(glm::vec3(0.5f, +0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, +0.5f, -0.5f)  ),
-			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-0.5f, +0.5f, -0.5f)),
-
-			Vertex(glm::vec3(+0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(+0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(+0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(+0.5f, -0.5f, +0.5f)),
-			Vertex(glm::vec3(+0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(+0.5f, +0.5f, +0.5f)),
-			Vertex(glm::vec3(+0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(+0.5f, +0.5f, -0.5f)),
-
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(-0.5f, -0.5f, -0.5f)),
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
-			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(-0.5f, +0.5f, +0.5f)),
-			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-0.5f, +0.5f, -0.5f)),
-			*/
 
 		};
 		mGeometryMesh.back()->indicies = new GLuint[mGeometryMesh.back()->getNumIndicies()];
@@ -124,7 +58,8 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		mGeometryMesh.back()->setNumVertices(9);
 		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()]
 		{
-			//					Positions				 Colours					Texture UVs		-> (Refer to the vertex shader)
+			// Vertex Layout --> [Position, Color, TextureCoordinate, Normal]
+			// Size -> 44 bytes per vertex
 			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),   glm::vec3(-0.5f, -0.5f, -0.5f )),
 			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),   glm::vec3(0.5f, -0.5f, -0.5f  )),
 			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),   glm::vec3(0.5f, -0.5f, +0.5f  )),
@@ -166,22 +101,22 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		double y = 90.0f;
 		for (int i = 0; i < sliceCount * stackCount; i += 4)
 		{
-			// #1 
 			
 			// 3D Cartesian coordinates (Calculus III)
 			// Helpful link -> http://tutorial.math.lamar.edu/Classes/CalcIII/3DCoords.aspx
-			float tempX = (0.5f * cos(y * Util::DegToRad())) * cos(xz * Util::DegToRad());
-			float tempY = (0.5f * cos(y * Util::DegToRad())) * sin(xz * Util::DegToRad());
-			float tempZ = 0.5f * sin(y * Util::DegToRad());
+			float tempX = (0.5f * cos_radians(y)) * cos_radians(xz);
+			float tempY = (0.5f * cos_radians(y)) * sin_radians(xz);
+			float tempZ = 0.5f * sin_radians(y);
+
+			// #1 - Top Left of quad
 
 			// first theta - y, second theta [x/z] -> cos(theta) * sin(theta)
 			mGeometryMesh.back()->verticies[i].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometryMesh.back()->verticies[i].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
 			mGeometryMesh.back()->verticies[i].setUV(glm::vec2((xz / 360.0f) + 0.5f, y / 180.0f));
 			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(tempX, tempY, tempZ));
-			//cout << 0.5f + (tempX * 1.5f) << endl;
-
-			// #2
+			
+			// #2 - Top Right of quad
 			tempX = (0.5f * cos(y * Util::DegToRad())) * cos((xz + 10.0f) * Util::DegToRad());
 			tempY = (0.5f * cos(y * Util::DegToRad())) * sin((xz + 10.0f) * Util::DegToRad());
 			tempZ = 0.5f * sin(y * Util::DegToRad());
@@ -190,7 +125,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(((xz + 10.0f) / 360.0f) + 0.5f, y / 180.0f));
 			mGeometryMesh.back()->verticies[i + 1].setNormal(glm::vec3(tempX, tempY, tempZ));
 
-			// #3
+			// #3 - Bottom Right of the quad
 			tempX = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * cos((xz + 10.0f) * Util::DegToRad());
 			tempY = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * sin((xz + 10.0f) * Util::DegToRad());
 			tempZ = 0.5f * sin((y - 10.0f) * Util::DegToRad());
@@ -200,7 +135,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(((xz + 10.0f) / 360.0f) + 0.5f, (y - 10.0f) / 180.0f));
 			mGeometryMesh.back()->verticies[i + 2].setNormal(glm::vec3(tempX, tempY, tempZ));
 
-			// #4
+			// #4 - Bottom Left of the quad
 			tempX = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * cos((xz)* Util::DegToRad());
 			tempY = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * sin((xz)* Util::DegToRad());
 			tempZ = 0.5f * sin((y - 10.0f) * Util::DegToRad());
@@ -255,17 +190,6 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometryMesh.back()->verticies[i + 1].setPosition(tempVertex[1]);
 			mGeometryMesh.back()->verticies[i + 2].setPosition(tempVertex[2]);
 			mGeometryMesh.back()->verticies[i + 3].setPosition(tempVertex[3]);
-		
-			mGeometryMesh.back()->verticies[i].setNormal(mGeometryMesh.back()->verticies[i].getPosition());
-			mGeometryMesh.back()->verticies[i + 1].setNormal(mGeometryMesh.back()->verticies[i + 1].getPosition());
-			mGeometryMesh.back()->verticies[i + 2].setNormal(mGeometryMesh.back()->verticies[i + 2].getPosition());
-			mGeometryMesh.back()->verticies[i + 3].setNormal(mGeometryMesh.back()->verticies[i + 3].getPosition());
-			
-			mGeometryMesh.back()->verticies[i].setUV(glm::vec2(0.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(1.0f, 1.0f));
-			mGeometryMesh.back()->verticies[i + 3].setUV(glm::vec2(0.0f, 1.0f));
-			
 			x += 1.0f;
 			if (x == cols)
 			{
@@ -274,7 +198,10 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			}
 		}
 		
-		// Start ->
+
+		// Start ---------------------------------------------->
+		// 2D Perlin Noise Generator (Random Interpolation)
+		// -------------------
 		int nOutputWidth = rows * 2;
 		int nOutputHeight = cols * 2;
 		float *fNoiseSeed2D = nullptr;
@@ -287,46 +214,45 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		fNoiseSeed2D = new float[nOutputWidth * nOutputHeight];
 		fPerlinNoise2D = new float[nOutputWidth * nOutputHeight];
 		
-		
 		for (int i = 0; i < nOutputWidth * nOutputHeight; i++) fNoiseSeed2D[i] = (float)rand() / (float)RAND_MAX;
 		
+		// 2D Perlin noise generator
+		PerlinNoise::GeneratePerlinNoise(nOutputWidth, nOutputHeight, fNoiseSeed2D, nOctaveCount, fScalingBias, fPerlinNoise2D);
 		
-		PerlinNoise2D(nOutputWidth, nOutputHeight, fNoiseSeed2D, nOctaveCount, fScalingBias, fPerlinNoise2D);
-		
-		int count = 0;
-		float pixel_bw[4];
-		for (int x = 0; x < nOutputWidth; x+=4)
+		float g_pixelBandWidth[4];
+		for (int x = 0; x < nOutputWidth+82; x+=4)
 		{
 			for (int y = 0; y < nOutputHeight; y++)
 			{
+				
 				//////////////////////////////////////////////////////////////////////
-				pixel_bw[0] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x-2)] * 30.0f) - 8.0f);
-				pixel_bw[1] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x+2)] * 30.0f) - 8.0f);
-				pixel_bw[2] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x+2)] * 30.0f) - 8.0f);
-				pixel_bw[3] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x-2)] * 30.0f) - 8.0f);
+				g_pixelBandWidth[0] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x-2)] * 30.0f) - 6.0f);
+				g_pixelBandWidth[1] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x+2)] * 30.0f) - 6.0f);
+				g_pixelBandWidth[2] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x+2)] * 30.0f) - 6.0f);
+				g_pixelBandWidth[3] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x-2)] * 30.0f) - 6.0f);
 				//////////////////////////////////////////////////////////////////////
 
 				mGeometryMesh.back()->verticies[y * (nOutputWidth) + x].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[y * (nOutputWidth)+x].getPosition().x,
-					pixel_bw[0],
+					g_pixelBandWidth[0],
 					mGeometryMesh.back()->verticies[y * (nOutputWidth)+x].getPosition().z
 				));
 				
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 1].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 1].getPosition().x,
-					pixel_bw[1],
+					g_pixelBandWidth[1],
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 1].getPosition().z
 				));
 				
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 2].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x)+2].getPosition().x,
-					pixel_bw[2],
+					g_pixelBandWidth[2],
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x)+2].getPosition().z
 				));
 				
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 3].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x)+3].getPosition().x,
-					pixel_bw[3],
+					g_pixelBandWidth[3],
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 3].getPosition().z
 				));
 
@@ -340,6 +266,22 @@ void GeometryGenerator::createMesh(Mesh mesh)
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 2].setUV(glm::vec2(1.0f, 1.0f));
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 3].setUV(glm::vec2(0.0f, 1.0f));
 			}
+		}
+		// Final check for un-defined vertex positions
+		for (int i = 0; i < rows * cols * 4; i++)
+		{
+			glm::vec3 tempVertex = mGeometryMesh.back()->verticies[i].getPosition();
+			
+			//cout << tempVertex.y << endl;
+			
+			// Usually an undefined variable is filled with a garbage value like +infinity or -infinity
+			if (tempVertex.y < -600.0f || tempVertex.y > 600.0f)
+			{
+				tempVertex.y = 0.0f;
+			
+				mGeometryMesh.back()->verticies[i].setPosition(tempVertex);
+			}
+		
 		}
 		mGeometryMesh.back()->indicies = new GLuint[mGeometryMesh.back()->getNumIndicies()];
 		for (int i = 0; i < cols * rows * 4; i++)
@@ -404,7 +346,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 
 void GeometryGenerator::draw(Mesh type)
 {
-	glDrawElements(TheApp::Instance()->mUserInterface->wireFrameEnabled ? GL_LINE_LOOP : mGeometryMesh[type]->getPrimitiveType(),
+	glDrawElements(TheApp::Instance()->m_userInterface->wireFrameEnabled ? GL_LINE_LOOP : mGeometryMesh[type]->getPrimitiveType(),
 		mGeometryMesh[type]->getNumIndicies(),
 		GL_UNSIGNED_INT,
 		0);

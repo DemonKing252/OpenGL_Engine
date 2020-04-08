@@ -17,7 +17,7 @@ public:
 
 
 	float fogFallOffStart = 0.1f;
-	float fogFallOffEnd = 24.0f;
+	float fogFallOffEnd = 80.0f;
 	glm::vec4 fogColour = glm::vec4(0.0, 0.0f, 1.0f, 1.0f);
 
 	float lflickerRange = 0.7f;
@@ -31,12 +31,12 @@ public:
 	ImVec4 clear_color = ImVec4(14.0f/255, 16.0f/255, 71.0f/255, 1.0f);//ImVec4(135.0f/255.f, 206.0f/255.f, 235.0f/255.f, 1);
 
 
-	void Init(GLFWwindow* window);
+	void setup(GLFWwindow* window);
 	
 	void draw(std::vector <Light*> pLights);
 
 	void ClearColour();
-	void Clean();
+	void clean();
 private:
 	
 };

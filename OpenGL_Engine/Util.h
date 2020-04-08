@@ -10,16 +10,19 @@
 #include "gtc/matrix_transform.hpp"
 using namespace std;
 
-
+// -----------------
+// X and Z comonents for first person camera.
 #ifndef Util::Pi()
 	#define cos_radians(x) cos(static_cast<float>(x * Util::Pi() / 180.0f))
 	#define sin_radians(y) sin(static_cast<float>(y * Util::Pi() / 180.0f))
 #else
 	#define cos_radians(x) cos(static_cast<float>(x * 3.14159f / 180.0f))
 	#define sin_radians(y) sin(static_cast<float>(y * 3.14159f / 180.0f))
-#endif // !Util::Pi()
+#endif 
+// -----------------
+// !Util::Pi()
 
-#define get_stride_of(count, DataType) sizeof(DataType) * count
+#define stride_of(count, DataType) sizeof(DataType) * count
 #define random_float_in_range(LO, HI) LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)))
 
 class Util

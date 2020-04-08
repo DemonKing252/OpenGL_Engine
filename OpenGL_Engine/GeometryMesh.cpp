@@ -39,19 +39,19 @@ void GeometryMesh::generateBuffers()
 	
 
 	// Vertex Layout #0 --> Vertex positions -> Vec3()
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, get_stride_of(1, Vertex), 0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), 0);
 	glEnableVertexAttribArray(0);
 
 	// Vertex Layout #1 --> Color -> Vec3()
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, get_stride_of(1, Vertex), (void*)(static_cast<uint32_t>(FLOAT3_MEMORY_SIZE)));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)(static_cast<uint32_t>(FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(1);
 
 	// Vertex Layout #2 --> Texture coordinate -> Vec2()
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, get_stride_of(1, Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE)));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE)));
 	glEnableVertexAttribArray(2);
 
 	// Vertex Layout #3 --> Normal (for diffuse/specular lighting) -> Vec3()
-	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, get_stride_of(1, Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE)));
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)(static_cast<uint32_t>(2 * FLOAT3_MEMORY_SIZE + FLOAT2_MEMORY_SIZE)));
 	glEnableVertexAttribArray(3);
 
 	// Un-bind vertex array to prevent possible data corruption.

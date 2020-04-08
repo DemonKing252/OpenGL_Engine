@@ -2,6 +2,7 @@
 #include "MainHeaders.h"
 #include <SOIL.h>
 #include <unordered_map>
+#include <string>
 class Material
 {
 public:

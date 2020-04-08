@@ -148,6 +148,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RenderItem.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="MainHeaders.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RenderItem.h" />
     <ClInclude Include="Scene.h" />

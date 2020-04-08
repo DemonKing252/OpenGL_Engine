@@ -1,6 +1,7 @@
 #pragma once
 #include "GeometryMesh.h"
 #include "Util.h"
+#include "PerlinNoise.h"
 #include <fstream>
 using namespace std;
 

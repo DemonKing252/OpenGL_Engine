@@ -101,7 +101,7 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	// Good seeds:
 	// 8 and 9, 21, 26, 27, 36, 40, 41
 	// Seed 5 for the noise algorithm for terrain generation.
-	srand(5);
+	srand(40);
 	///* Initialize the library */
 	// Initialize the library 
 

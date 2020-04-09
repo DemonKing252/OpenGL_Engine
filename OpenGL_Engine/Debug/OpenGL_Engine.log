@@ -1,18 +1,4 @@
-﻿  3dApp.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Application.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  CallBack.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Camera.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(71): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(72): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  GUI.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\gui.cpp(59): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\gui.cpp(148): warning C4018: '<': signed/unsigned mismatch
-  GeometryGenerator.cpp
+﻿  GeometryGenerator.cpp
 c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(120): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(121): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
@@ -23,16 +9,4 @@ c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(13
 c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(139): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(140): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(141): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  RenderItem.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\renderitem.cpp(54): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Scene.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\scene.cpp(18): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-  Generating Code...
-c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(177): warning C4715: 'Application::init': not all control paths return a value
   OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

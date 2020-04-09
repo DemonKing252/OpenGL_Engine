@@ -226,10 +226,10 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			{
 				
 				//////////////////////////////////////////////////////////////////////
-				g_pixelBandWidth[0] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x-2)] * 30.0f) - 6.0f);
-				g_pixelBandWidth[1] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x+2)] * 30.0f) - 6.0f);
-				g_pixelBandWidth[2] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x+2)] * 30.0f) - 6.0f);
-				g_pixelBandWidth[3] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x-2)] * 30.0f) - 6.0f);
+				g_pixelBandWidth[0] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x-2) > 0 ? (y-1) * nOutputWidth + (x-2) : 0] * 30.0f) - 6.0f);
+				g_pixelBandWidth[1] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x+2) > 0 ? (y-1) * nOutputWidth + (x+2) : 1] * 30.0f) - 6.0f);
+				g_pixelBandWidth[2] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x+2) > 0 ? (y+1) * nOutputWidth + (x+2) : 2] * 30.0f) - 6.0f);
+				g_pixelBandWidth[3] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x-2) > 0 ? (y+1) * nOutputWidth + (x-2) : 3] * 30.0f) - 6.0f);
 				//////////////////////////////////////////////////////////////////////
 
 				mGeometryMesh.back()->verticies[y * (nOutputWidth) + x].setPosition(glm::vec3(

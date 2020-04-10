@@ -67,7 +67,7 @@ void GUI::draw(std::vector <Light*> l)
 	{
 		allowCameraMovement = (allowCameraMovement ? false : true);
 	}
-	ImGui::Checkbox("Lights should alternate", &mLightShouldUpdate);
+	ImGui::Checkbox("Lights should alternate", &m_bLightShouldUpdate);
 	if (ImGui::Checkbox("Wire frame enabled", &wireFrameEnabled))
 	{
 		if (wireFrameEnabled)
@@ -140,7 +140,7 @@ void GUI::draw(std::vector <Light*> l)
 	{
 		l[i]->setColour(glm::vec3((i == 0 ? lightColour1[0] : lightColour2[0]), (i == 0 ? lightColour1[1] : lightColour2[1]), (i == 0 ? lightColour1[2] : lightColour2[2])));
 		l[i]->setStrength(i == 0 ? lStrength1 : lStrength2);
-		static_cast<PointLight*>(l[i])->updateBuffers(core_program);
+		l[i]->updateBuffers(core_program);
 	}
 
 	ImGui::Begin("Light information");
@@ -168,7 +168,7 @@ void GUI::draw(std::vector <Light*> l)
 
 
 }
-void GUI::ClearColour()
+void GUI::clearColor()
 {
 	glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 }

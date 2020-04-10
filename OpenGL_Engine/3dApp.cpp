@@ -1,5 +1,5 @@
 #include "Application.h"
-#define SIZE_WIDTH 1024
+#define SIZE_WIDTH 1280
 #define SIZE_HEIGHT 768
 using namespace std;
 //***************************************************************************
@@ -42,17 +42,34 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	// Check for link errors in glfw or glew.
-	_STL_VERIFY(TheApp::Instance()->init("OpenGL Physics Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
+	_STL_VERIFY(TheApp::Instance()->init("OpenGL Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
 	("Engine could not initialize due to: " + to_string(glGetError())).c_str());
+
+	float deltaTime = 0.0f;
+	float nextFrame = 0.0f;
+	float previousTime = 0.0f;
+	float gameTimer = 0.0f;
 
 	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
 	{
-		TheApp::Instance()->pollEvents();
+		previousTime = nextFrame;
 
-		TheApp::Instance()->update();
-		TheApp::Instance()->draw();
+		TheApp::Instance()->pollEvents();
 		
-		TheApp::Instance()->swapBuffers();	
+		// Govern the framrate by allowing time to pass.
+		// 1000 ticks / 60 => 16.667 milliseconds per frame
+		if (TheApp::Instance()->tick())
+		{
+			TheApp::Instance()->update();
+			TheApp::Instance()->draw();
+
+			TheApp::Instance()->swapBuffers();
+		}
+		// Calculate the amount of time passed from the previous frame, and add that to the game timer.
+		nextFrame = clock();
+		deltaTime = (nextFrame - previousTime) / static_cast<float>(CLOCKS_PER_SEC);
+		gameTimer += deltaTime;
+
 	}
 	TheApp::Instance()->clean();
 

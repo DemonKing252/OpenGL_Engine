@@ -9,16 +9,16 @@ Scene::~Scene()
 {
 }
 
-void Scene::Update()
+void Scene::update()
 {
 	for (auto l : m_vPointLights) {
-		if (TheApp::Instance()->m_userInterface->mLightShouldUpdate) {
+		if (TheApp::Instance()->m_userInterface->m_bLightShouldUpdate) {
 			TheApp::Instance()->strength += 1.5f;
 	
 			l->setStrength((TheApp::Instance()->m_userInterface->lflickerRange * cos(TheApp::Instance()->strength * Util::DegToRad())) + TheApp::Instance()->m_userInterface->lFactor);
 		}
 		l->setPosition(glm::vec3(3 * cos((TheApp::Instance()->angleDelta + (l->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), l->getPosition().y, 3 * sin((TheApp::Instance()->angleDelta + (l->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
-		static_cast<PointLight*>(l)->updateBuffers(TheApp::Instance()->getCoreProgram());
+		l->updateBuffers(TheApp::Instance()->getCoreProgram());
 	}
 		
 }
@@ -37,14 +37,14 @@ void Scene::draw()
 void Scene::setup()
 {
 	// Point Light
-	m_vPointLights.push_back(new PointLight(glm::vec3(3, 0, 0), glm::vec3(0.0f, 1.0f, 0.0f), 1.5f));
+	m_vPointLights.push_back(new PointLight(glm::vec3(3, 0, 0), glm::vec3(0.5f), 1.5f));
 	m_vPointLights.back()->index = m_vPointLights.size() - 1;
-	static_cast<PointLight*>(m_vPointLights.back())->updateBuffers(TheApp::Instance()->getCoreProgram());
+	m_vPointLights.back()->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	// Point Light
-	m_vPointLights.push_back(new PointLight(glm::vec3(-3, 0, 0), glm::vec3(0.0f, 1.0f, 0.0f), 1.5f));
+	m_vPointLights.push_back(new PointLight(glm::vec3(-3, 0, 0), glm::vec3(0.5f), 1.5f));
 	m_vPointLights.back()->index = m_vPointLights.size() - 1;
-	static_cast<PointLight*>(m_vPointLights.back())->updateBuffers(TheApp::Instance()->getCoreProgram());
+	m_vPointLights.back()->updateBuffers(TheApp::Instance()->getCoreProgram());
 
 	geoGen.createMesh(GeometryGenerator::CUBE);
 	geoGen.mGeometryMesh[GeometryGenerator::CUBE]->generateBuffers();
@@ -60,6 +60,9 @@ void Scene::setup()
 
 	geoGen.createMesh(GeometryGenerator::SKULL);
 	geoGen.mGeometryMesh[GeometryGenerator::SKULL]->generateBuffers();
+
+	geoGen.createMesh(GeometryGenerator::CAR);
+	geoGen.mGeometryMesh[GeometryGenerator::CAR]->generateBuffers();
 
 	TheShaderManager::Instance()->SetFragmentAlphaBlend(TheApp::Instance()->getCoreProgram(), 1.0f);
 
@@ -109,7 +112,7 @@ void Scene::setup()
 	m_vRenderItems.back()->m_bApplyPhysics = true;
 	
 	// Comment this out to see the effect of all the floaters being in the same range
-	m_vRenderItems.back()->m_fCntr = random_float_in_range(0.5f, 5.5f);   // Prevent all floaters from bobbing at the same rate
+	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 5.5f);   // Prevent all floaters from bobbing at the same rate
 	// -----------------------------------
 
 	// Bob #2 ----------------------------
@@ -117,7 +120,7 @@ void Scene::setup()
 	m_vRenderItems.back()->m_bApplyPhysics = true;
 	
 	// Comment this out to see the effect of all the floaters being in the same range
-	m_vRenderItems.back()->m_fCntr = random_float_in_range(0.5f, 7.5f);	  // Prevent all floaters from bobbing at the same rate
+	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);	  // Prevent all floaters from bobbing at the same rate
 	// -----------------------------------
 
 	// Bob #3 ----------------------------
@@ -125,7 +128,7 @@ void Scene::setup()
 	m_vRenderItems.back()->m_bApplyPhysics = true;
 	
 	// Comment this out to see the effect of all the floaters being in the same range
-	m_vRenderItems.back()->m_fCntr = random_float_in_range(0.5f, 7.5f);	  // Prevent all floaters from bobbing at the same rate
+	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);	  // Prevent all floaters from bobbing at the same rate
 	// -----------------------------------
 
 	// Bob #4 ----------------------------
@@ -133,19 +136,20 @@ void Scene::setup()
 	m_vRenderItems.back()->m_bApplyPhysics = true;
 	
 	// Comment this out to see the effect of all the floaters being in the same range
-	m_vRenderItems.back()->m_fCntr = random_float_in_range(0.5f, 7.5f);   // Prevent all floaters from bobbing at the same rate
+	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);   // Prevent all floaters from bobbing at the same rate
 	// -----------------------------------
 
+	// Car
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CAR, FragmentStyle::LIGHT_AND_COLOR_ONLY, "null", 1.0f, glm::vec3(-7.0f, 2.0f+-0.65f*1.2 - (0.9f / 2.0f), 0.0f), glm::vec3(1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+
 	Camera::UpdateCameraFacing(TheApp::Instance()->getWindow());
-
-
 }
 
 void Scene::clean()
 {
 	for (auto it : m_vPointLights)
 	{
-		static_cast<PointLight*>(it)->clean(TheApp::Instance()->getCoreProgram());
+		it->clean(TheApp::Instance()->getCoreProgram());
 		delete it;
 		it = nullptr;
 	}

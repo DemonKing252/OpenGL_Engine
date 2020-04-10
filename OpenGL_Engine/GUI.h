@@ -24,7 +24,7 @@ public:
 	float lFactor = 3.0f;
 	int fps = 60;
 	bool wireFrameEnabled = false;
-	bool mLightShouldUpdate = true;
+	bool m_bLightShouldUpdate = true;
 	bool allowCameraMovement = true;
 
 	int display_w, display_h;
@@ -35,7 +35,7 @@ public:
 	
 	void draw(std::vector <Light*> pLights);
 
-	void ClearColour();
+	void clearColor();
 	void clean();
 private:
 	

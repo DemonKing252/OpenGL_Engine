@@ -1,12 +1,4 @@
-﻿  GeometryGenerator.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(15): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(120): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(121): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(122): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(129): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(130): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(131): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(139): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(140): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\geometrygenerator.cpp(141): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  Application.cpp
+c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(19): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(84): warning C4715: 'Application::init': not all control paths return a value
   OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

@@ -97,10 +97,16 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		mGeometryMesh.back()->setNumVertices(sliceCount * stackCount);
 		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()];
 
-		double xz = 0.0f;
-		double y = 90.0f;
+		float xz = 0.0f;
+		float y = 90.0f;
+
+		float stepOver = 6.0f;
+		float stepDown = 6.0f;
+
 		for (int i = 0; i < sliceCount * stackCount; i += 4)
 		{
+			// 1 unit in length
+			// ( <---------> )
 			
 			// 3D Cartesian coordinates (Calculus III)
 			// Helpful link -> http://tutorial.math.lamar.edu/Classes/CalcIII/3DCoords.aspx
@@ -117,43 +123,39 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(tempX, tempY, tempZ));
 			
 			// #2 - Top Right of quad
-			tempX = (0.5f * cos(y * Util::DegToRad())) * cos((xz + 10.0f) * Util::DegToRad());
-			tempY = (0.5f * cos(y * Util::DegToRad())) * sin((xz + 10.0f) * Util::DegToRad());
-			tempZ = 0.5f * sin(y * Util::DegToRad());
+			tempX = (0.5f * cos_radians(y)) * cos_radians((xz + stepOver));
+			tempY = (0.5f * cos_radians(y)) * sin_radians((xz + stepOver));
+			tempZ = 0.5f * sin_radians(y);
 			mGeometryMesh.back()->verticies[i + 1].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometryMesh.back()->verticies[i + 1].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(((xz + 10.0f) / 360.0f) + 0.5f, y / 180.0f));
+			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(((xz + stepOver) / 360.0f) + 0.5f, y / 180.0f));
 			mGeometryMesh.back()->verticies[i + 1].setNormal(glm::vec3(tempX, tempY, tempZ));
 
 			// #3 - Bottom Right of the quad
-			tempX = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * cos((xz + 10.0f) * Util::DegToRad());
-			tempY = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * sin((xz + 10.0f) * Util::DegToRad());
-			tempZ = 0.5f * sin((y - 10.0f) * Util::DegToRad());
+			tempX = (0.5f * cos_radians((y - stepDown))) * cos_radians((xz + stepOver));
+			tempY = (0.5f * cos_radians((y - stepDown))) * sin_radians((xz + stepOver));
+			tempZ = 0.5f * sin_radians((y - stepDown));
 
 			mGeometryMesh.back()->verticies[i + 2].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometryMesh.back()->verticies[i + 2].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(((xz + 10.0f) / 360.0f) + 0.5f, (y - 10.0f) / 180.0f));
+			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(((xz + stepOver) / 360.0f) + 0.5f, (y - stepDown) / 180.0f));
 			mGeometryMesh.back()->verticies[i + 2].setNormal(glm::vec3(tempX, tempY, tempZ));
 
 			// #4 - Bottom Left of the quad
-			tempX = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * cos((xz)* Util::DegToRad());
-			tempY = (0.5f * cos((y - 10.0f) * Util::DegToRad())) * sin((xz)* Util::DegToRad());
-			tempZ = 0.5f * sin((y - 10.0f) * Util::DegToRad());
+			tempX = (0.5f * cos_radians((y - stepDown))) * cos_radians((xz));
+			tempY = (0.5f * cos_radians((y - stepDown))) * sin_radians((xz));
+			tempZ = 0.5f * sin_radians((y - stepDown));
 
 			mGeometryMesh.back()->verticies[i + 3].setPosition(glm::vec3(tempX, tempY, tempZ));
 			mGeometryMesh.back()->verticies[i + 3].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 3].setUV(glm::vec2((xz / 360.0f) + 0.5f, (y - 10.0f) / 180.0f));
+			mGeometryMesh.back()->verticies[i + 3].setUV(glm::vec2((xz / 360.0f) + 0.5f, (y - stepDown) / 180.0f));
 			mGeometryMesh.back()->verticies[i + 3].setNormal(glm::vec3(tempX, tempY, tempZ));
 
-			if (i > 0 && i % 360 == 0) { y -= 10.0f; }
-			if (xz >= 360.0f) { xz -= 360; }
-
-			xz += 10.0f;
+			xz += stepOver;
+			if (i > 0 && (int)xz % 360 == 0) { y -= stepDown; xz = 0.0f; }
 
 		}
 
-
-		//};
 		mGeometryMesh.back()->indicies = new GLuint[mGeometryMesh.back()->getNumIndicies()];
 		for (int i = 0; i < mGeometryMesh.back()->getNumIndicies(); i++)
 		{
@@ -325,6 +327,55 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(tempNormal));
 			mGeometryMesh.back()->verticies[i].setColour(glm::vec3(0.6f, 0.6f, 0.6f));
 
+			mGeometryMesh.back()->verticies[i].setUV(glm::vec2(0.0f, 0.0f));
+		}
+
+		inFile >> ignoreThis;
+		inFile >> ignoreThis;
+		inFile >> ignoreThis;
+
+		for (int i = 0; i < triangleCount; i++)
+		{
+			inFile >> mGeometryMesh.back()->indicies[i * 3 + 0];
+			inFile >> mGeometryMesh.back()->indicies[i * 3 + 1];
+			inFile >> mGeometryMesh.back()->indicies[i * 3 + 2];
+		}
+
+		inFile.close();
+		mGeometryMesh.back()->setPrimitiveType(GL_TRIANGLES);
+	}
+	else if (mesh == CAR)
+	{
+		const std::string fileName = "car.txt";
+		fstream inFile;
+		inFile.open(fileName);
+
+		_STL_VERIFY(inFile.is_open(), "Could not open file: " + fileName);
+
+		int vertexCount, triangleCount;
+		string ignoreThis;
+
+		inFile >> ignoreThis >> vertexCount;
+		inFile >> ignoreThis >> triangleCount;
+		inFile >> ignoreThis >> ignoreThis >> ignoreThis >> ignoreThis;
+
+		mGeometryMesh.back()->setNumIndicies(3 * triangleCount);
+		mGeometryMesh.back()->setNumVertices(vertexCount);
+
+		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()];
+		mGeometryMesh.back()->indicies = new GLuint[mGeometryMesh.back()->getNumIndicies()];
+
+		glm::vec3 tempVertex;
+		glm::vec3 tempNormal;
+
+		for (int i = 0; i < vertexCount; i++)
+		{
+			inFile >> tempVertex.x >> tempVertex.y >> tempVertex.z;
+			inFile >> tempNormal.x >> tempNormal.y >> tempNormal.z;
+
+			mGeometryMesh.back()->verticies[i].setPosition(glm::vec3(tempVertex));
+			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(tempNormal));
+			mGeometryMesh.back()->verticies[i].setColour(glm::vec3(tempVertex.x, tempVertex.y, tempNormal.z));
 			mGeometryMesh.back()->verticies[i].setUV(glm::vec2(0.0f, 0.0f));
 		}
 

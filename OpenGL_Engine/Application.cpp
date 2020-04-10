@@ -1,38 +1,115 @@
 #include "Application.h"
 Application* Application::p_sInstance = nullptr;
+bool Application::init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
+{
+	// Good seeds:
+	// 8 and 9, 21, 26, 27, 36, 40, 41
+	// Seed 5 for the noise algorithm for terrain generation.
+	// Using 5 octaves
 
+	srand(40);
+	///* Initialize the library */
+	// Initialize the library 
 
+	if (glfwInit() == GLFW_FALSE) { return false; }
+
+	/* Create a windowed mode window and its OpenGL context */
+	window = glfwCreateWindow(width, height, titleName, NULL, NULL);
+	if (!window) { return false; }
+
+	// Make the window's context current 
+	glfwMakeContextCurrent(window);
+	if (glewInit() != GLEW_OK)
+		return false;
+
+	// Mouse events
+	glfwSetMouseButtonCallback(window, CallBack::mouse_btn_callback);
+	// Window buffer resize/minimize/maximize events
+	glfwSetWindowSizeCallback(window, CallBack::window_resize_callback);
+	// Keyboard events
+	glfwSetKeyCallback(window, CallBack::key_callback);
+
+	// Read the instructions from each shader and link them to the core program.
+	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShader(GL_VERTEX_SHADER, vertShader);
+	m_shaderInfo["fragment_core"] = TheShaderManager::Instance()->compileShader(GL_FRAGMENT_SHADER, fragShader);
+
+	// Attach the object code to the core program
+	core_program = TheShaderManager::Instance()->attachShaders(m_shaderInfo["vertex_core"], m_shaderInfo["fragment_core"]);
+
+	// Delete unused memory
+	// If I was using Java I wouldn't have to worry about this! (Memory Management...)
+	for (auto iter : m_shaderInfo)
+	{
+		glDeleteShader(m_shaderInfo[iter.first]);
+	}
+	// The core program is holding the info of the vertex and fragment cores, no longer need these:
+	m_shaderInfo.clear();
+
+	// Graphics pipeline is setup
+	glUseProgram(core_program);
+
+	// Initialize the player scene 
+	m_playerScene = new Scene();
+	m_playerScene->setup();
+
+	// Initialize Dear ImGui
+	m_userInterface = new GUI();
+	m_userInterface->core_program = this->core_program;
+	m_userInterface->setup(window);
+
+	// GL settings
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	Camera::frameBufferW = width;
+	Camera::frameBufferH = height;
+
+	// Initialize the water uv position for animating
+	TheShaderManager::Instance()->SetUVMapping(core_program, glm::vec2(0.0f, 0.0f), false);
+
+	Camera::UpdateCameraFacing(window);
+	Camera::CheckEvents(window);
+
+	// Load all materials
+	m_materialMap["ice"].load("Assets/Images/ice.png");
+	m_materialMap["brick"].load("Assets/Images/Brick5.png");
+	m_materialMap["theSims"].load("Assets/Images/TheSims.jfif");
+	m_materialMap["fence"].load("Assets/Images/Fence.png");
+	m_materialMap["grass"].load("Assets/Images/grass2.png");
+	m_materialMap["stoneBrick"].load("Assets/Images/StoneBrick.jpg");
+	m_materialMap["water"].load("Assets/Images/water.png");
+}
+
+void Application::pollEvents()const
+{
+	glfwPollEvents();
+}
+bool Application::tick()
+{
+	if (glfwGetTime() < lasttime + 1.0 / m_userInterface->fps)
+		return false;
+
+	lasttime += 1.0 / m_userInterface->fps;
+
+	return true;
+}
 
 void Application::update()
 {
-	while (glfwGetTime() < lasttime + 1.0 / m_userInterface->fps) {
-		// Put the thread to sleep.
-		// -> 1000.0f / 60.0f => 16.66667 milliseconds perframe
-		// Reminder that OpenGL only works on one thread.
-
-	}
-	lasttime += 1.0 / m_userInterface->fps;
-
-	m_userInterface->ClearColour();
-	// Light will increase and decrease intensity (look at this equation in desmos for the pattern)
+	m_userInterface->clearColor();
+	m_playerScene->update();
 	
-	// light.strength = flickerRange * cos(strength * 3.14159f / 180.0f) + factor
-	
-	// Cosf supposedly accepts an angle in degrees but it was giving me rounding issues so I reverted back here.
-	// Same thing happened when I used it for the sphear (cartesian coordinates)
-	m_playerScene->Update();
-	
-	if (m_userInterface->mLightShouldUpdate)
+	if (m_userInterface->m_bLightShouldUpdate)
 		angleDelta += 3.0f;
 
 	if (Camera::EventMouseClick(window) && m_userInterface->allowCameraMovement)
 	{
 		Camera::UpdateCameraFacing(window);
 		Camera::CheckEvents(window);
-
 		// Update the camera facing vector 
 	}
-
 
 	// Clear buffers (ie: Color, Depth, and Stencil) to prepare to swap the back and front buffers
 	// The concept of swapping buffers is important because the front buffer is being shown to the screen
@@ -42,15 +119,10 @@ void Application::update()
 			GL_DEPTH_BUFFER_BIT |			// Clear depth buffers (ie: Only whats in front is shown to the camera)
 			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet))
 
-
 	// Camera can see 45 degrees left/right, with a minimum vocal range of (0.1 - 300)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
 	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
 
-}
-void Application::pollEvents()const
-{
-	glfwPollEvents();
 }
 
 void Application::draw()
@@ -93,85 +165,4 @@ Application * Application::Instance()
 		return p_sInstance;
 	}
 	return p_sInstance;
-}
-
-bool Application::init(const char * titleName, const char * vertShader, const char * fragShader, const GLint width, const GLint height)
-{
-
-	// Good seeds:
-	// 8 and 9, 21, 26, 27, 36, 40, 41
-	// Seed 5 for the noise algorithm for terrain generation.
-	srand(40);
-	///* Initialize the library */
-	// Initialize the library 
-
-	if (glfwInit() == GLFW_FALSE) { return false; }
-
-	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(width, height, titleName, NULL, NULL);
-	if (!window) { return false; }
-
-	// Make the window's context current 
-	glfwMakeContextCurrent(window);
-	if (glewInit() != GLEW_OK)
-		return false;
-
-	// Mouse events
-	glfwSetMouseButtonCallback(window, CallBack::mouse_btn_callback);
-	// Window buffer resize/minimize/maximize events
-	glfwSetWindowSizeCallback(window, CallBack::window_resize_callback);
-	// Keyboard events
-	glfwSetKeyCallback(window, CallBack::key_callback);
-
-	// Read the instructions from each shader and link them to the core program.
-	m_ShaderInfo["vertex_core"] = TheShaderManager::Instance()->CompileShader(GL_VERTEX_SHADER, vertShader);
-	m_ShaderInfo["fragment_core"] = TheShaderManager::Instance()->CompileShader(GL_FRAGMENT_SHADER, fragShader);
-
-	// Attach the object code to the core program
-	core_program = TheShaderManager::Instance()->AttachShader(m_ShaderInfo["vertex_core"], m_ShaderInfo["fragment_core"]);
-
-	// Delete unused memory
-	// If I was using Java I wouldn't have to worry about this! (Memory Management...)
-	for (auto iter : m_ShaderInfo)
-	{
-		glDeleteShader(m_ShaderInfo[iter.first]);
-	}
-	// The core program is holding the info of the vertex and fragment cores, no longer need these:
-	m_ShaderInfo.clear();
-
-	// Graphics pipeline is setup
-	glUseProgram(core_program);
-
-	// Initialize the player scene 
-	m_playerScene = new Scene();
-	m_playerScene->setup();
-
-	// Initialize Dear ImGui
-	m_userInterface = new GUI();
-	m_userInterface->core_program = this->core_program;
-	m_userInterface->setup(window);
-
-	// GL settings
-	glEnable( GL_DEPTH_TEST );
-	glEnable( GL_STENCIL_TEST );
-	glEnable( GL_BLEND );
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-	Camera::frameBufferW = width;
-	Camera::frameBufferH = height;
-
-	// Initialize the water uv position for animating
-	TheShaderManager::Instance()->SetUVMapping(core_program, glm::vec2(0.0f, 0.0f), false);
-
-	Camera::UpdateCameraFacing(window);
-	Camera::CheckEvents(window);
-
-	// Load all materials
-	mMaterialMap["ice"].load("Assets/Images/ice.png");
-	mMaterialMap["brick"].load("Assets/Images/Brick5.png");
-	mMaterialMap["theSims"].load("Assets/Images/TheSims.jfif");
-	mMaterialMap["fence"].load("Assets/Images/Fence.png");
-	mMaterialMap["grass"].load("Assets/Images/grass2.png");
-	mMaterialMap["stoneBrick"].load("Assets/Images/StoneBrick.jpg");
-	mMaterialMap["water"].load("Assets/Images/water.png");
 }

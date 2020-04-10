@@ -180,5 +180,8 @@
     <Text Include="skull.txt">
       <Filter>Resource Files\Models</Filter>
     </Text>
+    <Text Include="car.txt">
+      <Filter>Resource Files\Models</Filter>
+    </Text>
   </ItemGroup>
 </Project>

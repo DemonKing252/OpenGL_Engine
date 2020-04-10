@@ -1,8 +1,5 @@
 #pragma once
 #include "MainHeaders.h"
-#define FLOAT1_MEMORY_SIZE 4
-#define FLOAT2_MEMORY_SIZE 8
-#define FLOAT3_MEMORY_SIZE 12
 class Vertex
 {
 private:

@@ -19,15 +19,10 @@ public:
 	GLfloat strength = 0.0f;
 	double lasttime = 0.0f;
 
-	// Multiplayer System (removed).
-	Scene* m_playerScene;
-	std::unordered_map <std::string, Material> mMaterialMap;
-
-	GUI* m_userInterface;
-
 	static Application* Instance();
 
 	bool init(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
+	bool tick();
 
 	void update();
 	void pollEvents() const;
@@ -39,13 +34,15 @@ public:
 	GLFWwindow* getWindow() const;
 	GLuint getCoreProgram() const;
 	
-
+	Scene* m_playerScene;
+	GUI* m_userInterface;
+	std::unordered_map <std::string, Material> m_materialMap;
 
 private:
 	GLFWwindow* window;
 	GLuint core_program;
 
-	std::unordered_map <std::string, GLuint> m_ShaderInfo;
+	std::unordered_map <std::string, GLuint> m_shaderInfo;
 
 	static Application* p_sInstance;
 } Application, TheApp;

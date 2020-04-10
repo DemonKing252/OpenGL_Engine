@@ -27,7 +27,7 @@ void RenderItem::draw(Scene * currentScene) const
 	TheShaderManager::Instance()->SetUniformi(TheApp::Instance()->getCoreProgram(), "fragStyle", fragStyle);
 	TheShaderManager::Instance()->SetUniformf(TheApp::Instance()->getCoreProgram(), "alpha", alphaTest);
 
-	TheApp::Instance()->mMaterialMap[material].bindTexture();
+	TheApp::Instance()->m_materialMap[material].bindTexture();
 	currentScene->geoGen.mGeometryMesh[mMeshType]->bindVAO();
 	currentScene->geoGen.draw(mMeshType);
 
@@ -51,8 +51,8 @@ void RenderItem::update(Scene * scene)
 	
 	if (m_bApplyPhysics)
 	{
-		transform->position.y = position.y + (m_fBobFactor * sin(m_fCntr * 3.141f / Util::Pi()));
+		transform->position.y = position.y + (m_fBobFactor * sin(m_y * 3.141f / Util::Pi()));
 
-		m_fCntr += m_fBobSpeed;
+		m_y += m_fBobSpeed;
 	}
 }

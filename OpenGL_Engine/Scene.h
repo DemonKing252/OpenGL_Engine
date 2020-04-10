@@ -7,9 +7,6 @@
 #include "RenderItem.h"
 class Scene
 {
-private:
-
-
 public:
 	glm::vec3 oceanTranslatation = glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, 0.0f);	// For floaters.
 
@@ -24,7 +21,7 @@ public:
 	Scene();
 	~Scene();
 
-	void Update();
+	void update();
 	void draw();
 	void setup();
 	void clean();

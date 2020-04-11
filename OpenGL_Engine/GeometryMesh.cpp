@@ -17,7 +17,7 @@ void GeometryMesh::generateBuffers()
 	GLuint indexBuffer = 0;
 	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numIndicies, indicies, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numIndicies, indicies, GL_DYNAMIC_DRAW);
 
 	// Generate a vertex buffer
 	GLuint vertexBuffer = 0;
@@ -32,7 +32,7 @@ void GeometryMesh::generateBuffers()
 	// Send our data to OpenGLs V-RAM
 	// Note: If we want an index buffer then we would use GL_ELEMENT_ARRAY_BUFFER.
 	// GL_STATIC_DRAW is a gl Hint that these verticies will not change, the alternative would be GL_DYNAMIC_DRAW
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVerticies * 11, verticies, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * numVerticies * 11, verticies, GL_DYNAMIC_DRAW);
 
 	// Describe the data set -> Vec2 at layout location 0 in the vertex shader. 2 floats for vertex positions.
 	// Note: sizeof() will return the size of an array in bytes (4 bytes per float -> 4 * 5 = 20 bytes, you could alternatively put 20)

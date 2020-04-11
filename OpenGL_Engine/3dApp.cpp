@@ -56,8 +56,6 @@ int main(int argc, char* argv[])
 
 		TheApp::Instance()->pollEvents();
 		
-		// Govern the framrate by allowing time to pass.
-		// 1000 ticks / 60 => 16.667 milliseconds per frame
 		if (TheApp::Instance()->tick())
 		{
 			TheApp::Instance()->update();

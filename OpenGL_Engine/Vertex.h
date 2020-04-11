@@ -23,5 +23,7 @@ public:
 	void setColour(glm::vec3 colour);
 	void setNormal(glm::vec3 normal);
 	
+
+	float m_xDist = 0.0f;
 };
 

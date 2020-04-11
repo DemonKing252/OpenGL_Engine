@@ -19,7 +19,7 @@ RenderItem::~RenderItem()
 {
 }
 
-void RenderItem::draw(Scene * currentScene) const
+void RenderItem::draw(Scene * currScene) const
 {
 	transform->updateUniformMatrix(TheApp::Instance()->getCoreProgram());
 	
@@ -28,25 +28,25 @@ void RenderItem::draw(Scene * currentScene) const
 	TheShaderManager::Instance()->SetUniformf(TheApp::Instance()->getCoreProgram(), "alpha", alphaTest);
 
 	TheApp::Instance()->m_materialMap[material].bindTexture();
-	currentScene->geoGen.mGeometryMesh[mMeshType]->bindVAO();
-	currentScene->geoGen.draw(mMeshType);
+	currScene->geoGen.mGeometryMesh[mMeshType]->bindVAO();
+	currScene->geoGen.draw(mMeshType);
 
 	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(0.0f));
 }
 
-void RenderItem::update(Scene * scene)
+void RenderItem::update(Scene * currScene)
 {
 	if (m_bShouldAnimate)
 	{
 		// Water animation
 		// fix this later
-		scene->uv += 0.0002f;
+		currScene->uv += 0.02f;
 
-		if (scene->uv >= 1.0f)
+		if (currScene->uv >= 1.0f)
 		{
-			scene->uv = 0.0f;
+			currScene->uv = 0.0f;
 		}
-		TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(scene->uv, 1.0f));
+		TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(currScene->uv, 1.0f));
 	}
 	
 	if (m_bApplyPhysics)

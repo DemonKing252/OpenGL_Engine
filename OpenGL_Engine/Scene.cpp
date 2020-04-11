@@ -20,7 +20,22 @@ void Scene::update()
 		l->setPosition(glm::vec3(3 * cos((TheApp::Instance()->angleDelta + (l->index == 0 ? 0 : 180.0f)) * Util::DegToRad()), l->getPosition().y, 3 * sin((TheApp::Instance()->angleDelta + (l->index == 0 ? 0 : 180.0f)) * Util::DegToRad())));
 		l->updateBuffers(TheApp::Instance()->getCoreProgram());
 	}
-		
+
+	for (int i = 0; i < geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->getNumVertices(); i++)
+	{
+		geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].m_xDist += 0.125f;
+		geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].setPosition
+		(
+			glm::vec3
+			(
+				geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].getPosition().x,
+				0.2f * sin(0.5f * geoGen.mGeometryMesh.back()->verticies[i].m_xDist),
+				geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].getPosition().z
+			)
+		);
+	}
+	geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->generateBuffers();
+
 }
 
 void Scene::draw()
@@ -64,6 +79,9 @@ void Scene::setup()
 	geoGen.createMesh(GeometryGenerator::CAR);
 	geoGen.mGeometryMesh[GeometryGenerator::CAR]->generateBuffers();
 
+	geoGen.createMesh(GeometryGenerator::WATER_PLANE);
+	geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->generateBuffers();
+
 	TheShaderManager::Instance()->SetFragmentAlphaBlend(TheApp::Instance()->getCoreProgram(), 1.0f);
 
 	// Render Item:
@@ -77,7 +95,7 @@ void Scene::setup()
 	*/
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::PLANE, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "grass", 1.0f, glm::vec3(0.0f, -3.5f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
-	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CUBE , FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "water", 0.2f, glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, 0.0f), glm::vec3(65.f, 0.01f, 65.f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
+	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::WATER_PLANE , FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "water", 0.2f, glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_vRenderItems.back()->m_bShouldAnimate = true;
 	// Future project, ice blocks drop from the sky and bob in the ocean
 

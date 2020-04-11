@@ -11,35 +11,35 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()]
 		{
 			
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
-			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
-			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f)),
+			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f)),
+			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+																									    
+			Vertex(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, 0.5f, -0.5f)),
+			Vertex(glm::vec3(0.5f, 0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, 0.5f, -0.5f)),
+			Vertex(glm::vec3(0.5f, 0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, 0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, 0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-0.5f, 0.5f, +0.5f)),
+																									    
+			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, +0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, +0.5f)),
+																									    
+			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f)),
+			Vertex(glm::vec3(0.5f, +0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, +0.5f, -0.5f)),
+			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, -0.5f)),
 
-			Vertex(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(0.0f, 1.0f, 0.0f)),
-			Vertex(glm::vec3(0.5f, 0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),  glm::vec3(0.0f, 1.0f, 0.0f)),
-			Vertex(glm::vec3(0.5f, 0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),  glm::vec3(0.0f, 1.0f, 0.0f)),
-			Vertex(glm::vec3(-0.5f, 0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(0.0f, 1.0f, 0.0f)),
+			Vertex(glm::vec3(+0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(+0.5f, -0.5f, -0.5f)),
+			Vertex(glm::vec3(+0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(+0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(+0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(+0.5f, +0.5f, +0.5f)),
+			Vertex(glm::vec3(+0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(+0.5f, +0.5f, -0.5f)),
 
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f)),
-			Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f )),
-			Vertex(glm::vec3(0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f )),
-			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 1.0f)),
-
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(0.0f, 0.0f, -1.0f)),
-			Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),  glm::vec3(0.0f, 0.0f, -1.0f)),
-			Vertex(glm::vec3(0.5f, +0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),  glm::vec3(0.0f, 0.0f, -1.0f)),
-			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(0.0f, 0.0f, -1.0f)),
-
-			Vertex(glm::vec3(+0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(1.0f, 0.0f, 0.0f)),
-			Vertex(glm::vec3(+0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f)),
-			Vertex(glm::vec3(+0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f)),
-			Vertex(glm::vec3(+0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(1.0f, 0.0f, 0.0f)),
-
-			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f),  glm::vec3(-1.0f, 0.0f, 0.0f)),
-			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(-1.0f, 0.0f, 0.0f)),
-			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f)),
-			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-1.0f, 0.0f, 0.0f)),
+			Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+			Vertex(glm::vec3(-0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),glm::vec3(-0.5f, -0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),glm::vec3(-0.5f, +0.5f, +0.5f)),
+			Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, -0.5f)),
 			
 
 		};
@@ -97,71 +97,70 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		mGeometryMesh.back()->setNumVertices(sliceCount * stackCount);
 		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()];
 
-		float xz = 0.0f;
-		float y = 90.0f;
+		float yaw = 0.0f;
+		float pitch = 90.0f;
 
 		float stepOver = 6.0f;
 		float stepDown = 6.0f;
 
+		float offSetX;
+		float offSetY;
+		float offSetZ;
+		// Why 0.5? We need a total diameter of 1 (0.5 on each side) for scaling.
 		for (int i = 0; i < sliceCount * stackCount; i += 4)
-		{
-			// 1 unit in length
-			// ( <---------> )
-			
+		{	
 			// 3D Cartesian coordinates (Calculus III)
 			// Helpful link -> http://tutorial.math.lamar.edu/Classes/CalcIII/3DCoords.aspx
-			float tempX = (0.5f * cos_radians(y)) * cos_radians(xz);
-			float tempY = (0.5f * cos_radians(y)) * sin_radians(xz);
-			float tempZ = 0.5f * sin_radians(y);
+
+			offSetX = 0.5f * (cos_radians(yaw) * cos_radians(pitch));
+			offSetY = 0.5f * sin_radians(pitch);
+			offSetZ = 0.5f * (sin_radians(yaw) * cos_radians(pitch));
 
 			// #1 - Top Left of quad
-
-			// first theta - y, second theta [x/z] -> cos(theta) * sin(theta)
-			mGeometryMesh.back()->verticies[i].setPosition(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i].setPosition(glm::vec3(offSetX, offSetY, offSetZ));
 			mGeometryMesh.back()->verticies[i].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i].setUV(glm::vec2((xz / 360.0f) + 0.5f, y / 180.0f));
-			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i].setUV(glm::vec2((yaw / 360.0f) + 0.5f, pitch / 180.0f));
+			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(offSetX, offSetY, offSetZ));
 			
 			// #2 - Top Right of quad
-			tempX = (0.5f * cos_radians(y)) * cos_radians((xz + stepOver));
-			tempY = (0.5f * cos_radians(y)) * sin_radians((xz + stepOver));
-			tempZ = 0.5f * sin_radians(y);
-			mGeometryMesh.back()->verticies[i + 1].setPosition(glm::vec3(tempX, tempY, tempZ));
+			offSetX = 0.5f * (cos_radians(yaw + stepOver) * cos_radians(pitch));
+			offSetY = 0.5f * sin_radians(pitch);
+			offSetZ = 0.5f * (sin_radians(yaw + stepOver) * cos_radians(pitch));
+			
+			mGeometryMesh.back()->verticies[i + 1].setPosition(glm::vec3(offSetX, offSetY, offSetZ));
 			mGeometryMesh.back()->verticies[i + 1].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(((xz + stepOver) / 360.0f) + 0.5f, y / 180.0f));
-			mGeometryMesh.back()->verticies[i + 1].setNormal(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(((yaw + stepOver) / 360.0f) + 0.5f, pitch / 180.0f));
+			mGeometryMesh.back()->verticies[i + 1].setNormal(glm::vec3(offSetX, offSetY, offSetZ));
 
 			// #3 - Bottom Right of the quad
-			tempX = (0.5f * cos_radians((y - stepDown))) * cos_radians((xz + stepOver));
-			tempY = (0.5f * cos_radians((y - stepDown))) * sin_radians((xz + stepOver));
-			tempZ = 0.5f * sin_radians((y - stepDown));
+			offSetX = 0.5f * (cos_radians(yaw + stepOver) * cos_radians(pitch - stepDown));
+			offSetY = 0.5f * sin_radians(pitch - stepDown);
+			offSetZ = 0.5f * (sin_radians(yaw + stepOver) * cos_radians(pitch - stepDown));
 
-			mGeometryMesh.back()->verticies[i + 2].setPosition(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i + 2].setPosition(glm::vec3(offSetX, offSetY, offSetZ));
 			mGeometryMesh.back()->verticies[i + 2].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(((xz + stepOver) / 360.0f) + 0.5f, (y - stepDown) / 180.0f));
-			mGeometryMesh.back()->verticies[i + 2].setNormal(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(((yaw + stepOver) / 360.0f) + 0.5f, (pitch - stepDown) / 180.0f));
+			mGeometryMesh.back()->verticies[i + 2].setNormal(glm::vec3(offSetX, offSetY, offSetZ));
 
 			// #4 - Bottom Left of the quad
-			tempX = (0.5f * cos_radians((y - stepDown))) * cos_radians((xz));
-			tempY = (0.5f * cos_radians((y - stepDown))) * sin_radians((xz));
-			tempZ = 0.5f * sin_radians((y - stepDown));
+			offSetX = 0.5f * (cos_radians(yaw) * cos_radians(pitch - stepDown));
+			offSetY = 0.5f * sin_radians(pitch - stepDown);
+			offSetZ = 0.5f * (sin_radians(yaw) * cos_radians(pitch - stepDown));
 
-			mGeometryMesh.back()->verticies[i + 3].setPosition(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i + 3].setPosition(glm::vec3(offSetX, offSetY, offSetZ));
 			mGeometryMesh.back()->verticies[i + 3].setColour(glm::vec3(1.0f, 1.0f, 0.0f));
-			mGeometryMesh.back()->verticies[i + 3].setUV(glm::vec2((xz / 360.0f) + 0.5f, (y - stepDown) / 180.0f));
-			mGeometryMesh.back()->verticies[i + 3].setNormal(glm::vec3(tempX, tempY, tempZ));
+			mGeometryMesh.back()->verticies[i + 3].setUV(glm::vec2((yaw / 360.0f) + 0.5f, (pitch - stepDown) / 180.0f));
+			mGeometryMesh.back()->verticies[i + 3].setNormal(glm::vec3(offSetX, offSetY, offSetZ));
 
-			xz += stepOver;
-			if (i > 0 && (int)xz % 360 == 0) { y -= stepDown; xz = 0.0f; }
+			yaw += stepOver;
+			if (i > 0 && (int)yaw % 360 == 0 && yaw > 0.0f) { pitch -= stepDown; yaw = 0.0f; }
 
 		}
-
 		mGeometryMesh.back()->indicies = new GLuint[mGeometryMesh.back()->getNumIndicies()];
 		for (int i = 0; i < mGeometryMesh.back()->getNumIndicies(); i++)
 		{
 			mGeometryMesh.back()->indicies[i] = i;
 		}
-
 		mGeometryMesh.back()->setPrimitiveType(GL_QUADS);
 	}
 	
@@ -294,6 +293,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 
 		//  -> End
 	}
+	
 	else if (mesh == SKULL)
 	{
 		const std::string fileName = "skull.txt";
@@ -375,7 +375,7 @@ void GeometryGenerator::createMesh(Mesh mesh)
 
 			mGeometryMesh.back()->verticies[i].setPosition(glm::vec3(tempVertex));
 			mGeometryMesh.back()->verticies[i].setNormal(glm::vec3(tempNormal));
-			mGeometryMesh.back()->verticies[i].setColour(glm::vec3(tempVertex.x, tempVertex.y, tempNormal.z));
+			mGeometryMesh.back()->verticies[i].setColour(glm::vec3(tempNormal.x, tempNormal.y, tempNormal.z));
 			mGeometryMesh.back()->verticies[i].setUV(glm::vec2(0.0f, 0.0f));
 		}
 
@@ -392,6 +392,84 @@ void GeometryGenerator::createMesh(Mesh mesh)
 
 		inFile.close();
 		mGeometryMesh.back()->setPrimitiveType(GL_TRIANGLES);
+	}
+	else if (mesh == WATER_PLANE)
+	{
+
+		const int rows = 64;
+		const int cols = 64;
+
+		const glm::vec3 mountainPos = glm::vec3(0.0f, 0.0f, 0.0f);
+
+		mGeometryMesh.back()->setNumIndicies(rows * cols * 4);
+		mGeometryMesh.back()->setNumVertices(rows * cols * 4);
+		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()];
+		float x = -cols * 0.5f;
+		float z = -rows * 0.5f;
+
+		glm::vec3 tempVertex[4];
+		float distance[4];
+
+		glm::vec3 waveCentre = glm::vec3(1.0f, 0.0f, 0.0f);
+
+		for (int i = 0; i < rows * cols * 4; i += 4)
+		{
+			tempVertex[0] = glm::vec3(x, 0.0f, z);
+			tempVertex[1] = glm::vec3(x + 1.0f, 0.0f, z);
+			tempVertex[2] = glm::vec3(x + 1.0f, 0.0f, z + 1.0f);
+			tempVertex[3] = glm::vec3(x, 0.0f, z + 1.0f);
+
+
+			distance[0] = glm::length(waveCentre - tempVertex[0]);
+			distance[1] = glm::length(waveCentre - tempVertex[1]);
+			distance[2] = glm::length(waveCentre - tempVertex[2]);
+			distance[3] = glm::length(waveCentre - tempVertex[3]);
+
+			tempVertex[0].y = 0.5f * sin(0.5f * distance[0]);
+			tempVertex[1].y = 0.5f * sin(0.5f * distance[1]);
+			tempVertex[2].y = 0.5f * sin(0.5f * distance[2]);
+			tempVertex[3].y = 0.5f * sin(0.5f * distance[3]);
+
+			mGeometryMesh.back()->verticies[i + 0].m_xDist = distance[0];
+			mGeometryMesh.back()->verticies[i + 1].m_xDist = distance[1];
+			mGeometryMesh.back()->verticies[i + 2].m_xDist = distance[2];
+			mGeometryMesh.back()->verticies[i + 3].m_xDist = distance[3];
+
+			//cout << tempVertex[i].y << endl;
+
+
+			mGeometryMesh.back()->verticies[i].setPosition(tempVertex[0]);
+			mGeometryMesh.back()->verticies[i + 1].setPosition(tempVertex[1]);
+			mGeometryMesh.back()->verticies[i + 2].setPosition(tempVertex[2]);
+			mGeometryMesh.back()->verticies[i + 3].setPosition(tempVertex[3]);
+
+			mGeometryMesh.back()->verticies[i].setUV(glm::vec2(0.0f, 0.0f));
+			mGeometryMesh.back()->verticies[i + 1].setUV(glm::vec2(1.0f, 0.0f));
+			mGeometryMesh.back()->verticies[i + 2].setUV(glm::vec2(1.0f, 1.0f));
+			mGeometryMesh.back()->verticies[i + 3].setUV(glm::vec2(0.0f, 1.0f));
+
+			mGeometryMesh.back()->verticies[i].setNormal(tempVertex[0]);
+			mGeometryMesh.back()->verticies[i + 1].setNormal(tempVertex[1]);
+			mGeometryMesh.back()->verticies[i + 2].setNormal(tempVertex[2]);
+			mGeometryMesh.back()->verticies[i + 3].setNormal(tempVertex[3]);
+
+
+			x += 1.0f;
+			if (x == (int)cols * 0.5f)
+			{
+				z += 1.0f;
+				x = -cols * 0.5f;
+			}
+		}
+
+		mGeometryMesh.back()->indicies = new GLuint[mGeometryMesh.back()->getNumIndicies()];
+		for (int i = 0; i < cols * rows * 4; i++)
+		{
+			mGeometryMesh.back()->indicies[i] = i;
+		}
+		mGeometryMesh.back()->setPrimitiveType(GL_QUADS);
+
+		//  -> End
 	}
 }
 

@@ -36,13 +36,21 @@ using namespace std;
 // 7. Phong lighting improvements: fragment color changes with the model matrix
 // (randomly generated hills and valleys).
 
+// ------------------------------------- Final Release -------------------------------------
+// New Features:
+// 1. Ambient strength can be modified through ImGui
+// 2. Improved water animation
+// 3. Active waves
+// 4. Buoyancy physics that take account for the waves they are resting on
+// 5. Added a car mesh
+
 //*****************************************************************************
 // GL Returns an error as an unsigned integer.If there is an error, set a break point and check the hexadecimal value
 // of the error, then use Ctrl+F to search for the error in glew.h.
 int main(int argc, char* argv[])
 {
 	// Check for link errors in glfw or glew.
-	_STL_VERIFY(TheApp::Instance()->init("OpenGL Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
+	_STL_VERIFY(TheApp::Instance()->init("OpenGL Physics Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
 	("Engine could not initialize due to: " + to_string(glGetError())).c_str());
 
 	float deltaTime = 0.0f;

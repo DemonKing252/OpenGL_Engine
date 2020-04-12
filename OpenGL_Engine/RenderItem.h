@@ -24,6 +24,8 @@ public:
 	float m_fBobFactor = 0.10f;
 	float m_fBobSpeed = 0.05f;
 	float m_y = 0.0f;
+	float m_desiredFactor = 0.0f;
+	float currY = 0.0f;
 
 	bool m_bApplyPhysics = false;
 

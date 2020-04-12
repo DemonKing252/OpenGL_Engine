@@ -39,5 +39,7 @@ public:
 	static double RadToDeg();
 
 	static void Transform(GLuint program, glm::vec3 translation, glm::vec3 scale, glm::vec3 rotAxis, float angle);
+
+	static glm::vec3 waveCentre;
 };
 

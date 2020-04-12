@@ -1,13 +1,15 @@
 #pragma once
 #include "MainHeaders.h"
+
 class Vertex
 {
 private:
 	glm::vec3 position;
 	glm::vec3 colour;
 	glm::vec2 UV;			
-	glm::vec3 normal;		
+	glm::vec3 normal;	
 public:
+	float m_xDist;
 
 	Vertex();
 	Vertex(glm::vec3 position, glm::vec3 colour = glm::vec3(1), glm::vec2 UV = glm::vec2(0), glm::vec3 normal = glm::vec3(0));
@@ -23,7 +25,5 @@ public:
 	void setColour(glm::vec3 colour);
 	void setNormal(glm::vec3 normal);
 	
-
-	float m_xDist = 0.0f;
 };
 

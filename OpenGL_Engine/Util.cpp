@@ -6,7 +6,7 @@ glm::mat4 Util::m_4x4ViewMatrix = glm::mat4(1);
 glm::mat4 Util::m_4x4ProjMatrix = glm::mat4(1);
 GLenum Util::wireType1 = GL_QUADS;
 GLenum Util::wireType2 = GL_TRIANGLES;
-
+glm::vec3 Util::waveCentre = glm::vec3(1.0f, 0.0f, 0.0f);
 
 double Util::Pi()
 {

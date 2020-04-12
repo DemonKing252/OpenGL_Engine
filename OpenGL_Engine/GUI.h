@@ -18,6 +18,8 @@ public:
 
 	float fogFallOffStart = 0.1f;
 	float fogFallOffEnd = 80.0f;
+
+	glm::vec3 ambientStrength = glm::vec3(0.7f, 0.2f, 0.7f);
 	glm::vec4 fogColour = glm::vec4(0.0, 0.0f, 1.0f, 1.0f);
 
 	float lflickerRange = 0.7f;

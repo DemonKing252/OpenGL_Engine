@@ -396,34 +396,34 @@ void GeometryGenerator::createMesh(Mesh mesh)
 	else if (mesh == WATER_PLANE)
 	{
 
-		const int rows = 64;
-		const int cols = 64;
+		const int rows = 32;
+		const int cols = 32;
 
 		const glm::vec3 mountainPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 		mGeometryMesh.back()->setNumIndicies(rows * cols * 4);
 		mGeometryMesh.back()->setNumVertices(rows * cols * 4);
 		mGeometryMesh.back()->verticies = new Vertex[mGeometryMesh.back()->getNumVertices()];
-		float x = -cols * 0.5f;
-		float z = -rows * 0.5f;
+		float x = (-cols * 0.5f) * 2.0f;
+		float z = (-rows * 0.5f) * 2.0f;
 
+		float stepOver = 2.0f;
 		glm::vec3 tempVertex[4];
 		float distance[4];
 
-		glm::vec3 waveCentre = glm::vec3(1.0f, 0.0f, 0.0f);
 
 		for (int i = 0; i < rows * cols * 4; i += 4)
 		{
 			tempVertex[0] = glm::vec3(x, 0.0f, z);
-			tempVertex[1] = glm::vec3(x + 1.0f, 0.0f, z);
-			tempVertex[2] = glm::vec3(x + 1.0f, 0.0f, z + 1.0f);
-			tempVertex[3] = glm::vec3(x, 0.0f, z + 1.0f);
+			tempVertex[1] = glm::vec3(x + stepOver, 0.0f, z);
+			tempVertex[2] = glm::vec3(x + stepOver, 0.0f, z + stepOver);
+			tempVertex[3] = glm::vec3(x, 0.0f, z + stepOver);
 
 
-			distance[0] = glm::length(waveCentre - tempVertex[0]);
-			distance[1] = glm::length(waveCentre - tempVertex[1]);
-			distance[2] = glm::length(waveCentre - tempVertex[2]);
-			distance[3] = glm::length(waveCentre - tempVertex[3]);
+			distance[0] = glm::length(Util::waveCentre - tempVertex[0]);
+			distance[1] = glm::length(Util::waveCentre - tempVertex[1]);
+			distance[2] = glm::length(Util::waveCentre - tempVertex[2]);
+			distance[3] = glm::length(Util::waveCentre - tempVertex[3]);
 
 			tempVertex[0].y = 0.5f * sin(0.5f * distance[0]);
 			tempVertex[1].y = 0.5f * sin(0.5f * distance[1]);
@@ -454,11 +454,11 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			mGeometryMesh.back()->verticies[i + 3].setNormal(tempVertex[3]);
 
 
-			x += 1.0f;
-			if (x == (int)cols * 0.5f)
+			x += stepOver;
+			if (x == (cols * 0.5f) * 2.0f)
 			{
-				z += 1.0f;
-				x = -cols * 0.5f;
+				z += stepOver;
+				x = (-cols * 0.5f) * 2.0f;
 			}
 		}
 

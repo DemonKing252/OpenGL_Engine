@@ -40,7 +40,7 @@ void RenderItem::update(Scene * currScene)
 	{
 		// Water animation
 		// fix this later
-		currScene->uv += 0.02f;
+		currScene->uv += 0.01f;
 
 		if (currScene->uv >= 1.0f)
 		{
@@ -51,7 +51,11 @@ void RenderItem::update(Scene * currScene)
 	
 	if (m_bApplyPhysics)
 	{
-		transform->position.y = position.y + (m_fBobFactor * sin(m_y * 3.141f / Util::Pi()));
+		m_desiredFactor += 0.0625f;
+
+		currY = 0.5f * sin(0.5f * m_desiredFactor);
+
+		transform->position.y = -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f + currY;// + (m_fBobFactor * sin(m_y * 3.141f / Util::Pi()));
 
 		m_y += m_fBobSpeed;
 	}

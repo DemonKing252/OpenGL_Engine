@@ -26,6 +26,7 @@ void GUI::setup(GLFWwindow* window)
 	TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffStart", fogFallOffStart);
 	TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffEnd", fogFallOffEnd);
 	TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", fogColour);
+	TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);
 
 	// Setup Platform/Renderer bindings
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -50,10 +51,17 @@ void GUI::draw(std::vector <Light*> l)
 	float lStrength1 = l[0]->getStrength();
 	float lStrength2 = l[1]->getStrength();
 
-	ImGui::Begin("Debug");                          // Create a window called "Hello, world!" and append into it.
+	ImGui::Begin("Enviorment Settings");                          // Create a window called "Hello, world!" and append into it.
+
 
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f), 0);
 	ImGui::ColorEdit3("Background colour", (float*)&clear_color); // Edit 3 floats representing a color
+	float ambient[3] = { ambientStrength.x, ambientStrength.y, ambientStrength.z };
+	if (ImGui::SliderFloat3("Ambient Strength", ambient, 0.0f, 1.0f, "%.1f"))
+	{
+		ambientStrength = glm::vec3(ambient[0], ambient[1], ambient[2]);
+		TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);
+	}
 
 	ImGui::PushItemWidth(150.0f);
 	ImGui::SliderInt("Max FPS", &fps, 1.0f, 60.0f);

@@ -23,13 +23,13 @@ void Scene::update()
 
 	for (int i = 0; i < geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->getNumVertices(); i++)
 	{
-		geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].m_xDist += 0.125f;
+		geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].m_xDist += 0.0625f;
 		geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].setPosition
 		(
 			glm::vec3
 			(
 				geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].getPosition().x,
-				0.2f * sin(0.5f * geoGen.mGeometryMesh.back()->verticies[i].m_xDist),
+				0.2f * sin(0.5f * geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].m_xDist),
 				geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->verticies[i].getPosition().z
 			)
 		);
@@ -129,8 +129,13 @@ void Scene::setup()
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CUBE, FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "ice", 0.5f, glm::vec3(+7.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, -8.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_vRenderItems.back()->m_bApplyPhysics = true;
 	
+	
+
 	// Comment this out to see the effect of all the floaters being in the same range
-	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 5.5f);   // Prevent all floaters from bobbing at the same rate
+	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);
+	float distance = glm::length(Util::waveCentre - m_vRenderItems.back()->transform->position);
+	m_vRenderItems.back()->currY = 0.5f * sin(0.5f * distance);
+	m_vRenderItems.back()->m_desiredFactor = distance;
 	// -----------------------------------
 
 	// Bob #2 ----------------------------
@@ -139,6 +144,9 @@ void Scene::setup()
 	
 	// Comment this out to see the effect of all the floaters being in the same range
 	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);	  // Prevent all floaters from bobbing at the same rate
+	distance = glm::length(Util::waveCentre - m_vRenderItems.back()->transform->position);
+	m_vRenderItems.back()->currY = 0.5f * sin(0.5f * distance);
+	m_vRenderItems.back()->m_desiredFactor = distance;
 	// -----------------------------------
 
 	// Bob #3 ----------------------------
@@ -147,6 +155,9 @@ void Scene::setup()
 	
 	// Comment this out to see the effect of all the floaters being in the same range
 	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);	  // Prevent all floaters from bobbing at the same rate
+	distance = glm::length(Util::waveCentre - m_vRenderItems.back()->transform->position);
+	m_vRenderItems.back()->currY = 0.5f * sin(0.5f * distance);
+	m_vRenderItems.back()->m_desiredFactor = distance;
 	// -----------------------------------
 
 	// Bob #4 ----------------------------
@@ -155,6 +166,9 @@ void Scene::setup()
 	
 	// Comment this out to see the effect of all the floaters being in the same range
 	m_vRenderItems.back()->m_y = random_float_in_range(0.5f, 7.5f);   // Prevent all floaters from bobbing at the same rate
+	distance = glm::length(Util::waveCentre - m_vRenderItems.back()->transform->position);
+	m_vRenderItems.back()->currY = 0.5f * sin(0.5f * distance);
+	m_vRenderItems.back()->m_desiredFactor = distance;
 	// -----------------------------------
 
 	// Car

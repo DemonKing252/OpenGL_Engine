@@ -8,19 +8,24 @@ GeometryMesh::~GeometryMesh()
 	glBindVertexArray(0);
 }
 
+void GeometryMesh::deleteBuffers()
+{
+	glDeleteVertexArrays(1, &mVAO);
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &indexBuffer);
+}
+
 void GeometryMesh::generateBuffers()
 {
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
 
 	// index buffer
-	GLuint indexBuffer = 0;
 	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numIndicies, indicies, GL_DYNAMIC_DRAW);
 
 	// Generate a vertex buffer
-	GLuint vertexBuffer = 0;
 
 	// Set the active buffer
 	glGenBuffers(1, &vertexBuffer);

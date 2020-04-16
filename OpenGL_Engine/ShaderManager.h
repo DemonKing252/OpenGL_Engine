@@ -29,7 +29,8 @@ public:
 	
 	GLuint compileShader(const GLenum type, const char* file) const;
 	GLuint attachShaders(const GLuint vertShader, const GLuint fragShader) const;
-	
+	//void linkProgram(const GLuint core_program);
+
 	void SetUniformMat4x4(const GLuint core_program, const string name, const glm::mat4 value) const;
 	
 	void SetUniform2f(const GLuint core_program, const string name, const glm::vec2 value) const;
@@ -56,8 +57,5 @@ public:
 
 	// Animating Textures.
 	void SetUVMapping(const GLint core_program, const glm::vec2 map, const bool shouldAnimate) const;
-
-
-
 };
 typedef ShaderManager TheShaderManager;

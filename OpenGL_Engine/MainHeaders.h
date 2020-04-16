@@ -1,4 +1,6 @@
 #pragma once
+
+// Pragma once will automatically prevent includes from being used more than once.
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <mat4x4.hpp>

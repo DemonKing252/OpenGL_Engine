@@ -30,7 +30,7 @@ public:
 	bool allowCameraMovement = true;
 
 	int display_w, display_h;
-	ImVec4 clear_color = ImVec4(14.0f/255, 16.0f/255, 71.0f/255, 1.0f);//ImVec4(135.0f/255.f, 206.0f/255.f, 235.0f/255.f, 1);
+	ImVec4 clear_color = ImVec4(102.0f/255, 102.0f/255, 183.0f/255, 1.0f);//ImVec4(135.0f/255.f, 206.0f/255.f, 235.0f/255.f, 1);
 
 
 	void setup(GLFWwindow* window);

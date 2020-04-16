@@ -17,7 +17,7 @@ enum FragmentStyle
 class RenderItem
 {
 private:
-	GeometryGenerator::Mesh mMeshType;
+	GeometryGenerator::Mesh meshType;
 	FragmentStyle fragStyle;
 public:
 	glm::vec3 position;

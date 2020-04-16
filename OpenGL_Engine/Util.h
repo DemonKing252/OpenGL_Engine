@@ -12,19 +12,24 @@
 #define FLOAT1_MEMORY_SIZE 4
 #define FLOAT2_MEMORY_SIZE 8
 #define FLOAT3_MEMORY_SIZE 12
+
+// Used for getting the total memory size of a vertex to create our input layout during the assembly stage.
 #define stride_of(count, DataType) sizeof(DataType) * count
+
+// Random decimal in range (assuming we used a random seed, this will work).
 #define random_float_in_range(LO, HI) LO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (HI - LO)))
+
 // -----------------
 // X and Z comonents for first person camera.
+// Just less writing to do with this:
 #ifndef Util::Pi()
 	#define cos_radians(x) cos(static_cast<float>((x) * Util::Pi() / 180.0f))
 	#define sin_radians(y) sin(static_cast<float>((y) * Util::Pi() / 180.0f))
 #else											  
 	#define cos_radians(x) cos(static_cast<float>((x) * 3.14159f / 180.0f))
 	#define sin_radians(y) sin(static_cast<float>((y) * 3.14159f / 180.0f))
-#endif 
+#endif // !Util::Pi()
 // -----------------
-// !Util::Pi()
 
 class Util
 {

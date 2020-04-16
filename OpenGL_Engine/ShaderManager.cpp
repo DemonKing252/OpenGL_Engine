@@ -73,29 +73,33 @@ GLuint ShaderManager::compileShader(const GLenum type, const char * file) const
 
 GLuint ShaderManager::attachShaders(const GLuint vertShader, const GLuint fragShader) const
 {
+	GLuint program;
 	char infoLog[512];
-	GLuint core_program;
 	GLint success;
+	program = glCreateProgram();
 
-	core_program = glCreateProgram();
+	glAttachShader(program, vertShader);
+	glAttachShader(program, fragShader);
 
-	glAttachShader(core_program, vertShader);
-	glAttachShader(core_program, fragShader);
+	glLinkProgram(program);
 
-	glLinkProgram(core_program);
-
-	glGetProgramiv(core_program, GL_LINK_STATUS, &success);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (!success)
 	{
-		glGetProgramInfoLog(core_program, 512, NULL, infoLog);
+		glGetProgramInfoLog(program, 512, NULL, infoLog);
 
 		cout << infoLog << endl;
 	}
 
 	glUseProgram(0);
 
-	return core_program;
+	return program;
 }
+
+//void ShaderManager::linkProgram(const GLuint& core_program)
+//{
+//	
+//}
 
 void ShaderManager::SetUniformMat4x4(const GLuint core_program, const string name, const glm::mat4 value) const
 {

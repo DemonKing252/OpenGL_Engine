@@ -4,7 +4,7 @@
 #include "Util.h"
 
 RenderItem::RenderItem(GeometryGenerator::Mesh mMeshType, FragmentStyle style, std::string m, float alpha, glm::vec3 translate, glm::vec3 scale, glm::vec3 rotAxis, float angle)
-	: mMeshType(mMeshType)
+	: meshType(mMeshType)
 {
 	transform = new Transform(translate, scale, rotAxis, angle);
 
@@ -21,16 +21,25 @@ RenderItem::~RenderItem()
 
 void RenderItem::draw(Scene * currScene) const
 {
+	// step 1: update the model matrix
 	transform->updateUniformMatrix(TheApp::Instance()->getCoreProgram());
-	
 
+	// step 2: change the fragment style [Options are: color, lighting, texturing ]
 	TheShaderManager::Instance()->SetUniformi(TheApp::Instance()->getCoreProgram(), "fragStyle", fragStyle);
+	
+	// step 3: change the alpha test (if blending is applicable)
 	TheShaderManager::Instance()->SetUniformf(TheApp::Instance()->getCoreProgram(), "alpha", alphaTest);
 
+	// step 4: bind the texture object
 	TheApp::Instance()->m_materialMap[material].bindTexture();
-	currScene->geoGen.mGeometryMesh[mMeshType]->bindVAO();
-	currScene->geoGen.draw(mMeshType);
 
+	// step 5: bind the vertex array object
+	currScene->geoGen.mGeometryMesh[meshType]->bindVAO();
+
+	// step 6: draw
+	currScene->geoGen.draw(meshType);
+
+	// step 7: reset the animation uv for models that don't need it
 	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(0.0f));
 }
 

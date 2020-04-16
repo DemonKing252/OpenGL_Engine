@@ -33,9 +33,13 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShader(GL_VERTEX_SHADER, vertShader);
 	m_shaderInfo["fragment_core"] = TheShaderManager::Instance()->compileShader(GL_FRAGMENT_SHADER, fragShader);
 
-	// Attach the object code to the core program
-	core_program = TheShaderManager::Instance()->attachShaders(m_shaderInfo["vertex_core"], m_shaderInfo["fragment_core"]);
-
+	core_program = TheShaderManager::Instance()->attachShaders
+	(
+		m_shaderInfo["vertex_core"], 
+		m_shaderInfo["fragment_core"]
+	);
+	
+	// Pipleline is setup
 	// Delete unused memory
 	// If I was using Java I wouldn't have to worry about this! (Memory Management...)
 	for (auto iter : m_shaderInfo)
@@ -47,7 +51,6 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 
 	// Graphics pipeline is setup
 	glUseProgram(core_program);
-
 	// Initialize the player scene 
 	m_playerScene = new Scene();
 	m_playerScene->setup();
@@ -111,11 +114,11 @@ void Application::update()
 		// Update the camera facing vector 
 	}
 
-	// Clear buffers (ie: Color, Depth, and Stencil) to prepare to swap the back and front buffers
+	// Clear buffers
 	// The concept of swapping buffers is important because the front buffer is being shown to the screen
 	// while the back buffer is still being drawn to
 
-	glClear(GL_COLOR_BUFFER_BIT |			// Clear colour buffers
+	glClear(GL_COLOR_BUFFER_BIT |			// Clear color buffers
 			GL_DEPTH_BUFFER_BIT |			// Clear depth buffers (ie: Only whats in front is shown to the camera)
 			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet))
 

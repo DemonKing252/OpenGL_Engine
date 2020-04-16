@@ -13,9 +13,12 @@ public:
 	GeometryMesh();
 	~GeometryMesh();
 
+	GLuint indexBuffer = 0;
+	GLuint vertexBuffer = 0;
 	Vertex* verticies;
 	GLuint* indicies;
 
+	void deleteBuffers();
 	void generateBuffers();
 	void bindVAO();
 	void unBindVAO();

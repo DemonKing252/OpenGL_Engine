@@ -210,7 +210,8 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		
 		int nOctaveCount = 5;
 		float fScalingBias = 2.0f;
-		int nMode = 1;
+		
+		// -------------------
 		
 		fNoiseSeed2D = new float[nOutputWidth * nOutputHeight];
 		fPerlinNoise2D = new float[nOutputWidth * nOutputHeight];
@@ -220,40 +221,41 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		// 2D Perlin noise generator
 		PerlinNoise::GeneratePerlinNoise(nOutputWidth, nOutputHeight, fNoiseSeed2D, nOctaveCount, fScalingBias, fPerlinNoise2D);
 		
-		float g_pixelBandWidth[4];
+		float g_heightMap[4];
+
 		for (int x = 0; x < nOutputWidth+82; x+=4)
 		{
 			for (int y = 0; y < nOutputHeight; y++)
 			{
-				
+				// Change the height map of each vertex respecitive to the noise values
 				//////////////////////////////////////////////////////////////////////
-				g_pixelBandWidth[0] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x-2) > 0 ? (y-1) * nOutputWidth + (x-2) : 0] * 30.0f) - 6.0f);
-				g_pixelBandWidth[1] = ( (float)(fPerlinNoise2D[(y-1) * nOutputWidth + (x+2) > 0 ? (y-1) * nOutputWidth + (x+2) : 1] * 30.0f) - 6.0f);
-				g_pixelBandWidth[2] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x+2) > 0 ? (y+1) * nOutputWidth + (x+2) : 2] * 30.0f) - 6.0f);
-				g_pixelBandWidth[3] = ( (float)(fPerlinNoise2D[(y+1) * nOutputWidth + (x-2) > 0 ? (y+1) * nOutputWidth + (x-2) : 3] * 30.0f) - 6.0f);
+				g_heightMap[0] = ( static_cast<float>(fPerlinNoise2D[(y-1) * nOutputWidth + (x-2) > 0 ? (y-1) * nOutputWidth + (x-2) : 0] * 30.0f) - 6.0f);
+				g_heightMap[1] = ( static_cast<float>(fPerlinNoise2D[(y-1) * nOutputWidth + (x+2) > 0 ? (y-1) * nOutputWidth + (x+2) : 1] * 30.0f) - 6.0f);
+				g_heightMap[2] = ( static_cast<float>(fPerlinNoise2D[(y+1) * nOutputWidth + (x+2) > 0 ? (y+1) * nOutputWidth + (x+2) : 2] * 30.0f) - 6.0f);
+				g_heightMap[3] = ( static_cast<float>(fPerlinNoise2D[(y+1) * nOutputWidth + (x-2) > 0 ? (y+1) * nOutputWidth + (x-2) : 3] * 30.0f) - 6.0f);
 				//////////////////////////////////////////////////////////////////////
 
 				mGeometryMesh.back()->verticies[y * (nOutputWidth) + x].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[y * (nOutputWidth)+x].getPosition().x,
-					g_pixelBandWidth[0],
+					g_heightMap[0],
 					mGeometryMesh.back()->verticies[y * (nOutputWidth)+x].getPosition().z
 				));
 				
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 1].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 1].getPosition().x,
-					g_pixelBandWidth[1],
+					g_heightMap[1],
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 1].getPosition().z
 				));
 				
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 2].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x)+2].getPosition().x,
-					g_pixelBandWidth[2],
+					g_heightMap[2],
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x)+2].getPosition().z
 				));
 				
 				mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 3].setPosition(glm::vec3(
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x)+3].getPosition().x,
-					g_pixelBandWidth[3],
+					g_heightMap[3],
 					mGeometryMesh.back()->verticies[(y * (nOutputWidth)+x) + 3].getPosition().z
 				));
 
@@ -273,9 +275,6 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		{
 			glm::vec3 tempVertex = mGeometryMesh.back()->verticies[i].getPosition();
 			
-			//cout << tempVertex.y << endl;
-			
-			// Usually an undefined variable is filled with a garbage value like +infinity or -infinity
 			if (tempVertex.y < -600.0f || tempVertex.y > 600.0f)
 			{
 				tempVertex.y = 0.0f;
@@ -291,7 +290,10 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		}
 		mGeometryMesh.back()->setPrimitiveType(GL_QUADS);
 
-		//  -> End
+
+		// Clear memory
+		delete[] fNoiseSeed2D;
+		delete[] fPerlinNoise2D;
 	}
 	
 	else if (mesh == SKULL)
@@ -411,14 +413,12 @@ void GeometryGenerator::createMesh(Mesh mesh)
 		glm::vec3 tempVertex[4];
 		float distance[4];
 
-
 		for (int i = 0; i < rows * cols * 4; i += 4)
 		{
 			tempVertex[0] = glm::vec3(x, 0.0f, z);
 			tempVertex[1] = glm::vec3(x + stepOver, 0.0f, z);
 			tempVertex[2] = glm::vec3(x + stepOver, 0.0f, z + stepOver);
 			tempVertex[3] = glm::vec3(x, 0.0f, z + stepOver);
-
 
 			distance[0] = glm::length(Util::waveCentre - tempVertex[0]);
 			distance[1] = glm::length(Util::waveCentre - tempVertex[1]);
@@ -430,13 +430,10 @@ void GeometryGenerator::createMesh(Mesh mesh)
 			tempVertex[2].y = 0.5f * sin(0.5f * distance[2]);
 			tempVertex[3].y = 0.5f * sin(0.5f * distance[3]);
 
-			mGeometryMesh.back()->verticies[i + 0].m_xDist = distance[0];
+			mGeometryMesh.back()->verticies[i].m_xDist = distance[0];
 			mGeometryMesh.back()->verticies[i + 1].m_xDist = distance[1];
 			mGeometryMesh.back()->verticies[i + 2].m_xDist = distance[2];
 			mGeometryMesh.back()->verticies[i + 3].m_xDist = distance[3];
-
-			//cout << tempVertex[i].y << endl;
-
 
 			mGeometryMesh.back()->verticies[i].setPosition(tempVertex[0]);
 			mGeometryMesh.back()->verticies[i + 1].setPosition(tempVertex[1]);
@@ -475,6 +472,12 @@ void GeometryGenerator::createMesh(Mesh mesh)
 
 void GeometryGenerator::draw(Mesh type)
 {
+	// Using an index buffer. If we want to draw a simple primitive like a triangle, we won't need an index buffer,
+	// so we can just use glDrawArrays() to render out a shape using verticies.
+
+	// Why do we use index buffers? In most cases of creating complex shapes like a cylinder or sphere or torus your going
+	// to have a lot of duplicate data (vertex positions).
+
 	glDrawElements(TheApp::Instance()->m_userInterface->wireFrameEnabled ? GL_LINE_LOOP : mGeometryMesh[type]->getPrimitiveType(),
 		mGeometryMesh[type]->getNumIndicies(),
 		GL_UNSIGNED_INT,

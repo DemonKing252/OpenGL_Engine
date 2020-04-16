@@ -89,10 +89,12 @@ void GUI::draw(std::vector <Light*> l)
 			Util::wireType2 = GL_TRIANGLES;
 		}
 	}
+	ImVec4 light = { lightColour1[0], lightColour2[1], lightColour1[2], lightColour1[3] };
 
-	ImGui::SliderFloat3("Light #1 colour", lightColour1, 0.0f, 1.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 
-	ImGui::SliderFloat3("Light #2 colour", lightColour2, 0.0f, 1.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
+	ImGui::SliderFloat3("Light #1 color", lightColour1, 0.0f, 1.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
+
+	ImGui::SliderFloat3("Light #2 color", lightColour2, 0.0f, 1.0f, "%.1f");            // Edit 1 float using a slider from 0.0f to 1.0f
 
 	ImGui::NewLine();
 
@@ -161,7 +163,7 @@ void GUI::draw(std::vector <Light*> l)
 
 		ImGui::Separator();
 		ImGui::Text("position [%.1f, %.1f, %.1f]", l[i]->getPosition().x, l[i]->getPosition().y, l[i]->getPosition().z);               // Display some text (you can use a format strings too)
-		ImGui::Text("colour   [%.1f, %.1f, %.1f]", l[i]->getColour().x, l[i]->getColour().y, l[i]->getColour().z);               // Display some text (you can use a format strings too)
+		ImGui::Text("color    [%.1f, %.1f, %.1f]", l[i]->getColour().x, l[i]->getColour().y, l[i]->getColour().z);               // Display some text (you can use a format strings too)
 		ImGui::Text("strength [%.1f]", l[i]->getStrength());               // Display some text (you can use a format strings too)
 
 	}

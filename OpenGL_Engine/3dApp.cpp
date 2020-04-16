@@ -62,8 +62,10 @@ int main(int argc, char* argv[])
 	{
 		previousTime = nextFrame;
 
+		// Polling events will be respect to maximum refresh rate of the monitor
 		TheApp::Instance()->pollEvents();
 		
+		// Updating, Drawing and swapping buffers will be under control of the FPS that the user sets
 		if (TheApp::Instance()->tick())
 		{
 			TheApp::Instance()->update();

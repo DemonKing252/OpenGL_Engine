@@ -57,7 +57,7 @@ void GUI::draw(std::vector <Light*> l)
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f), 0);
 	ImGui::ColorEdit3("Background colour", (float*)&clear_color); // Edit 3 floats representing a color
 	float ambient[3] = { ambientStrength.x, ambientStrength.y, ambientStrength.z };
-	if (ImGui::SliderFloat3("Ambient Strength", ambient, 0.0f, 1.0f, "%.1f"))
+	if (ImGui::SliderFloat3("Ambient Lighting", ambient, 0.0f, 1.0f, "%.1f"))
 	{
 		ambientStrength = glm::vec3(ambient[0], ambient[1], ambient[2]);
 		TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);

@@ -5,7 +5,9 @@ GeometryMesh::GeometryMesh()
 
 GeometryMesh::~GeometryMesh()
 {
-	glBindVertexArray(0);
+	glDeleteVertexArrays(1, &mVAO);
+	glDeleteBuffers(1, &vertexBuffer);
+	glDeleteBuffers(1, &indexBuffer);
 }
 
 void GeometryMesh::deleteBuffers()
@@ -17,44 +19,40 @@ void GeometryMesh::deleteBuffers()
 
 void GeometryMesh::generateBuffers()
 {
+	// Vertex array object buffer
+	// This allows us to easily control different objects 
+	// When you want to draw a specific shape, bind that vertex array
+	
+	// -----------------------------------------------------------------
+	// As long as the buffer is active in V-RAM then this will work.
+	// -----------------------------------------------------------------
+
 	glGenVertexArrays(1, &mVAO);
 	glBindVertexArray(mVAO);
 
-	// index buffer
+	// Index buffer: size of an unsigned integer (4 bytes) * the number of indicies you have 
 	glGenBuffers(1, &indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexBuffer);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * numIndicies, indicies, GL_DYNAMIC_DRAW);
 
-	// Generate a vertex buffer
-
-	// Set the active buffer
+	// Vertex buffer: [vertex size (11 floats * size of float (4 bytes)) = 44 bytes] * total number of verticies 
 	glGenBuffers(1, &vertexBuffer);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-
-	// NOTE:
-	// Our buffer is now bound, we can now write data to it.
-
-	// Send our data to OpenGLs V-RAM
-	// Note: If we want an index buffer then we would use GL_ELEMENT_ARRAY_BUFFER.
-	// GL_STATIC_DRAW is a gl Hint that these verticies will not change, the alternative would be GL_DYNAMIC_DRAW
 	glBufferData(GL_ARRAY_BUFFER, stride_of(numVerticies, Vertex), verticies, GL_DYNAMIC_DRAW);
 
-	// Describe the data set -> Vec2 at layout location 0 in the vertex shader. 2 floats for vertex positions.
-	// Note: sizeof() will return the size of an array in bytes (4 bytes per float -> 4 * 5 = 20 bytes, you could alternatively put 20)
-	
-	// Vertex Layout #0 --> Vertex positions -> Vec3()
+	// Vertex Layout #0 --> positions -> Vec3() --> Start of the vertex so offset will be 0 bytes.
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// Vertex Layout #1 --> Color -> Vec3()
+	// Vertex Layout #1 --> Color -> Vec3() --> Offset from previous vertex is 12 bytes
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)(FLOAT3_MEMORY_SIZE));
 	glEnableVertexAttribArray(1);
 
-	// Vertex Layout #2 --> Texture coordinate -> Vec2()
+	// Vertex Layout #2 --> Texture coordinate -> Vec2() --> Offset from previous vertex is 24 bytes
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)(2*FLOAT3_MEMORY_SIZE));
 	glEnableVertexAttribArray(2);
 
-	// Vertex Layout #3 --> Normal (for diffuse/specular lighting) -> Vec3()
+	// Vertex Layout #3 --> Normal (for diffuse/specular lighting) -> Vec3() --> Offset from previous vertex is 32 bytes
 	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, stride_of(1, Vertex), (void*)(2*FLOAT3_MEMORY_SIZE+FLOAT2_MEMORY_SIZE));
 	glEnableVertexAttribArray(3);
 

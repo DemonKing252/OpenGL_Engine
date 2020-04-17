@@ -12,7 +12,7 @@ public:
 	glm::vec3 scale;				// 3D Vector Scale		
 	glm::vec3 rotationAxis;			// 3D Vector Rotation Axis
 
-	float angle;					// Angle (relative to the rotation axis)
+	float angle;					// Angle (relative to the ^^ rotation axis ^^)
 
 	// Default contructor
 	Transform();

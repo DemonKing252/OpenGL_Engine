@@ -12,9 +12,11 @@ c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(69): warning 
 c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(71): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
   GeometryGenerator.cpp
 c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  GeometryMesh.cpp
+c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   RenderItem.cpp
 c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\renderitem.cpp(58): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
+c:\users\owner\source\repos\opengl_engine\opengl_engine\renderitem.cpp(67): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
           with
           [
               T=float

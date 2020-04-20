@@ -4,7 +4,6 @@ Author: Liam Blake
 Created: 2020-02-12
 Modified: 2020-03-12
 *****************************/
-
 #version 430 core
 #define MAX_LIGHTS 2
 
@@ -69,10 +68,9 @@ void main()
 		}
 	}
 	// Calculate the result of the all three lighting types
-	result = (ambient + specular + diffuse);	
-	
+	result = (ambient + diffuse + specular);	
 	// I cannot use enumerators in the core shaders >:(
-
+	
 	if (fragStyle == 0)
 		fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	else if (fragStyle == 1)
@@ -108,5 +106,5 @@ void main()
 	
 		fragColour = mix(fog_colour, fragColour, fog_factor);
 	}
-	
+
 }

@@ -21,6 +21,7 @@ uniform mat4 P;
 
 void main()
 {
+
 	vs_normal = mat3(M) * vertex_normal;
 	vs_texture = vertex_texture;
 	vs_color = vertex_color;

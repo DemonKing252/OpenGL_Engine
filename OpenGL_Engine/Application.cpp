@@ -69,6 +69,9 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	Camera::frameBufferW = width;
 	Camera::frameBufferH = height;
 
+	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
+	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "P", Util::m_4x4ProjMatrix);
+
 	// Initialize the water uv position for animating
 	TheShaderManager::Instance()->SetUVMapping(core_program, glm::vec2(0.0f, 0.0f), false);
 
@@ -124,8 +127,6 @@ void Application::update()
 
 	// Camera can see 45 degrees left/right, with a minimum vocal range of (0.1 - 300)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
-	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
-
 }
 
 void Application::draw()

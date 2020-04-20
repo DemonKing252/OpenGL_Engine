@@ -21,7 +21,6 @@ void CallBack::window_resize_callback(GLFWwindow* window, int x, int y)
 	glViewport(0, 0, _width, _height);
 
 	//cout << "Window: " << _width << " " << _height << endl;
-
 }
 void CallBack::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {

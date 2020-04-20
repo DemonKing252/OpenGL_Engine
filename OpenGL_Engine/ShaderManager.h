@@ -31,7 +31,7 @@ public:
 	GLuint attachShaders(const GLuint vertShader, const GLuint fragShader) const;
 	//void linkProgram(const GLuint core_program);
 
-	void SetUniformMat4x4(const GLuint core_program, const string name, const glm::mat4 value) const;
+	void SetUniformMatrix4x4(const GLuint core_program, const string name, const glm::mat4 value) const;
 	
 	void SetUniform2f(const GLuint core_program, const string name, const glm::vec2 value) const;
 	void SetUniform3f(const GLuint core_program, const string name, const glm::vec3 value) const;

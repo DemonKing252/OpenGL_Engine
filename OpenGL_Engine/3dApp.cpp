@@ -50,7 +50,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	// Check for link errors in glfw or glew.
-	_STL_VERIFY(TheApp::Instance()->init("OpenGL Physics Engine", "shader.vert", "shader.frag", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
+	_STL_VERIFY(TheApp::Instance()->init("OpenGL Physics Engine", "VertexCore.hlsl", "FragmentCore.hlsl", SIZE_WIDTH, SIZE_HEIGHT) != GLFW_FALSE,
 	("Engine could not initialize due to: " + to_string(glGetError())).c_str());
 
 	float deltaTime = 0.0f;

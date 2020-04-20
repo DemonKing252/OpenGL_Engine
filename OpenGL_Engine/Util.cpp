@@ -33,8 +33,7 @@ void Util::Transform(GLuint core_program, glm::vec3 translation, glm::vec3 scale
 	Model = glm::scale(Model, scale);
 
 	// Communicate with the fragment shader to update the models position (relative to the camera) and translation
-	TheShaderManager::Instance()->SetUniformMat4x4(core_program, "M", Model);
-	TheShaderManager::Instance()->SetUniformMat4x4(core_program, "V", m_4x4ViewMatrix);
-	TheShaderManager::Instance()->SetUniformMat4x4(core_program, "P", m_4x4ProjMatrix);
+	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "M", Model);
+	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "V", m_4x4ViewMatrix);
 	
 }

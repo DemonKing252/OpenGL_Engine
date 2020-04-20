@@ -1,5 +1,5 @@
 /*****************************
-File: shader.vert (Fragment Shader)
+File: FragmentCore.hlsl (Fragment Shader)
 Author: Liam Blake
 Created: 2020-02-12
 Modified: 2020-03-12
@@ -8,7 +8,7 @@ Modified: 2020-03-12
 #version 430 core
 #define MAX_LIGHTS 2
 
-in vec3 vs_colour;
+in vec3 vs_color;
 in vec2 vs_texture;
 out vec4 fragColour;
 in vec3 fragPos;
@@ -25,15 +25,17 @@ struct PointLight
 
 };
 uniform int fragStyle;
-uniform float alpha;
-uniform PointLight pLight[MAX_LIGHTS];
-uniform vec2 uvMapping;
 
-uniform vec3 mCameraFacing;
+uniform float alpha;
 uniform float fog_fallOffEnd;
 uniform float fog_fallOffStart;
-uniform vec4 fog_colour;
+
+uniform vec2 uvMapping;
+uniform vec3 mCameraFacing;
 uniform vec3 ambient;
+uniform vec4 fog_colour;
+
+uniform PointLight pLight[MAX_LIGHTS];
 
 void main()
 {
@@ -74,19 +76,19 @@ void main()
 	if (fragStyle == 0)
 		fragColour = vec4(0.0f, 0.0f, 0.0f, 1.0f);
 	else if (fragStyle == 1)
-		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_colour, alpha);
+		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_color, alpha);
 	else if (fragStyle == 2)
-		fragColour = vec4(vs_colour, alpha);
+		fragColour = vec4(vs_color, alpha);
 	else if (fragStyle == 3)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(1,1,1, alpha);
 	else if (fragStyle == 4)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(1,1,1, alpha) * vec4(result, 1.0f);
 	else if (fragStyle == 5)
-		fragColour = vec4(vs_colour, alpha) * vec4(result, 1.0f);
+		fragColour = vec4(vs_color, alpha) * vec4(result, 1.0f);
 	else if (fragStyle == 6)
 		fragColour = vec4(result, alpha);
 	else if (fragStyle == 7)
-		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_colour, alpha) * vec4(result, 1.0f);
+		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_color, alpha) * vec4(result, 1.0f);
 	
 
 	// Linear fog

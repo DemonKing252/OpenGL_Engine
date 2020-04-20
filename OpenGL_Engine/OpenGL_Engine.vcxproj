@@ -158,8 +158,8 @@
     <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="FragmentCore.hlsl" />
+    <None Include="VertexCore.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />

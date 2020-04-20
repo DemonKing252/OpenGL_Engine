@@ -101,7 +101,7 @@ GLuint ShaderManager::attachShaders(const GLuint vertShader, const GLuint fragSh
 //	
 //}
 
-void ShaderManager::SetUniformMat4x4(const GLuint core_program, const string name, const glm::mat4 value) const
+void ShaderManager::SetUniformMatrix4x4(const GLuint core_program, const string name, const glm::mat4 value) const
 {
 	glUniformMatrix4fv(glGetUniformLocation(core_program, name.c_str()), 1, GL_FALSE, &value[0][0]);
 }

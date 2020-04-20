@@ -1,31 +1,7 @@
 ﻿  3dApp.cpp
 c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
 c:\users\owner\source\repos\opengl_engine\opengl_engine\3dapp.cpp(77): warning C4244: '=': conversion from 'clock_t' to 'float', possible loss of data
-  Application.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   CallBack.cpp
 c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Camera.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(66): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(69): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-c:\users\owner\source\repos\opengl_engine\opengl_engine\camera.cpp(71): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-  GeometryGenerator.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  GeometryMesh.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  RenderItem.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\renderitem.cpp(67): warning C4244: '=': conversion from 'double' to 'T', possible loss of data
-          with
-          [
-              T=float
-          ]
-  Scene.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\owner\source\repos\opengl_engine\opengl_engine\scene.cpp(19): warning C4244: 'argument': conversion from 'double' to 'const float', possible loss of data
-  Transform.cpp
-c:\users\owner\source\repos\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Generating Code...
-c:\users\owner\source\repos\opengl_engine\opengl_engine\application.cpp(86): warning C4715: 'Application::init': not all control paths return a value
   OpenGL_Engine.vcxproj -> C:\Users\Owner\source\repos\OpenGL_Engine\Debug\OpenGL_Engine.exe

@@ -478,8 +478,11 @@ void GeometryGenerator::draw(Mesh type)
 	// Why do we use index buffers? In most cases of creating complex shapes like a cylinder or sphere or torus your going
 	// to have a lot of duplicate data (vertex positions).
 
-	glDrawElements(TheApp::Instance()->m_userInterface->wireFrameEnabled ? GL_LINE_LOOP : mGeometryMesh[type]->getPrimitiveType(),
+	glDrawElements
+	(
+		TheApp::Instance()->m_userInterface->wireFrameEnabled ? GL_LINE_LOOP : mGeometryMesh[type]->getPrimitiveType(),
 		mGeometryMesh[type]->getNumIndicies(),
 		GL_UNSIGNED_INT,
-		0);
+		0
+	);
 }

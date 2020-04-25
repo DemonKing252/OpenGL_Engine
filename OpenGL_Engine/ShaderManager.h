@@ -11,7 +11,7 @@
 #include <iosfwd>
 #include <vector>
 using namespace std;
-class ShaderManager
+typedef class ShaderManager
 {
 private:
 	/*
@@ -21,13 +21,22 @@ private:
 	Static members instances are preferable for this because every instance is shared across 
 	every other instances of the class
 	*/
+	// To ensure that this instance is only created statically through our static instance getter.
+	ShaderManager();	
+	
 	static ShaderManager* s_pInstance;
-	ShaderManager();
 public:
+	// Ensure that this class instance cannot be copied elsewhere (it is a singleton after all).
+	// To do this we can delete the copy constructor
+	ShaderManager(ShaderManager*) = delete;
+
+
 	~ShaderManager();
 	static ShaderManager* Instance();
 	
-	GLuint compileShader(const GLenum type, const char* file) const;
+	GLuint compileShaderFromFile(const GLenum type, const char* file) const;
+	GLuint compileShaderFromString(const GLenum type, string src) const;
+
 	GLuint attachShaders(const GLuint vertShader, const GLuint fragShader) const;
 	//void linkProgram(const GLuint core_program);
 
@@ -57,5 +66,4 @@ public:
 
 	// Animating Textures.
 	void SetUVMapping(const GLint core_program, const glm::vec2 map, const bool shouldAnimate) const;
-};
-typedef ShaderManager TheShaderManager;
+} ShaderManager, TheShaderManager;

@@ -27,6 +27,7 @@ public:
 	float m_desiredFactor = 0.0f;
 	float currY = 0.0f;
 
+	bool m_bHeightEffects = false;
 	bool m_bApplyPhysics = false;
 
 	Transform* transform;

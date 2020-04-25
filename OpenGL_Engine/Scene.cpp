@@ -103,7 +103,8 @@ void Scene::setup()
 
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::WATER_PLANE , FragmentStyle::TEXTURE_AND_LIGHT_ONLY, "water", 0.3f, glm::vec3(0.0f, -0.65f*1.2 - (0.9f / 2.0f) - 0.2f - 1.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 	m_vRenderItems.back()->m_bShouldAnimate = true;
-
+	m_vRenderItems.back()->m_bHeightEffects = true;
+	
 	// Water plane will animate. To do this we simply use a uniform vec2 variable in the fragment shader
 	// as a uv that updates in the game loop. The result is the illusion of flowing water.
 	

@@ -15,6 +15,10 @@
 typedef class Application
 {
 public:
+	// Ensure that this class instance cannot be copied elsewhere (it is a singleton after all).
+	// To do this we can delete the copy constructor
+	Application(Application*) = delete;
+
 	GLfloat angleDelta = 0.0f;
 	GLfloat strength = 0.0f;
 	double lasttime = 0.0f;
@@ -36,9 +40,12 @@ public:
 	
 	Scene* m_playerScene;
 	GUI* m_userInterface;
+
 	std::unordered_map <std::string, Material> m_materialMap;
 
 private:
+	Application();
+
 	GLFWwindow* window;
 	GLuint core_program;
 

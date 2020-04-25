@@ -2,15 +2,16 @@
 File: FragmentCore.hlsl (Fragment Shader)
 Author: Liam Blake
 Created: 2020-02-12
-Modified: 2020-03-12
+Modified: 2020-04-13
 *****************************/
 #version 430 core
 #define MAX_LIGHTS 2
 
+in vec3 vs_unadjustedfragPos;
 in vec3 vs_color;
 in vec2 vs_texture;
 out vec4 fragColour;
-in vec3 fragPos;
+in vec3 vs_fragPos;
 in vec3 vs_normal;
 
 uniform sampler2D texture0;
@@ -23,6 +24,9 @@ struct PointLight
 	float strength;
 
 };
+
+
+uniform int changeHeight;
 uniform int fragStyle;
 
 uniform float alpha;
@@ -50,18 +54,18 @@ void main()
 		// Do we want the distance between the light postion and camera to affect the intensity of reflected light?
 		// In real life yes so I'm doing that here
 
-		float distance = length(pLight[i].position - fragPos);
+		float distance = length(pLight[i].position - vs_fragPos);
 
 		if (distance <= fallOffEnd)
 		{
 			// Calculate Diffuse
 			vec3 norm = normalize(vs_normal);
-			vec3 lightDir = normalize(pLight[i].position - fragPos);
+			vec3 lightDir = normalize(pLight[i].position - vs_fragPos);
 			float diff = max(dot(norm, lightDir), 0.0f);
 			diffuse += diff * pLight[i].colour * pLight[i].strength * ((fallOffEnd - distance) / (fallOffEnd - fallOffStart));
 			
 			// Calculate Specular
-			vec3 viewDir = normalize(mCameraFacing - fragPos);
+			vec3 viewDir = normalize(mCameraFacing - vs_fragPos);
 			vec3 reflectDir = reflect(-lightDir, norm);
 			float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32) / (distance * distance);
 			specular += pLight[i].strength * spec * pLight[i].colour;
@@ -88,12 +92,24 @@ void main()
 	else if (fragStyle == 7)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_color, alpha) * vec4(result, 1.0f);
 	
+	// Future project: Change wave fragment color according to their height.
+	/*
+	// 0.0f -> 3.0f
+	if (changeHeight == 1)
+	{
+		if (vs_unadjustedfragPos.y > 0.0f)
+			fragColour = vec4(fragColour.x, fragColour.y, fragColour.z + 1.0f, alpha);
+		else
+			fragColour = vec4(fragColour.x, fragColour.y, fragColour.z, alpha);
+
+	}
+	*/
 
 	// Linear fog
 	
 	if (fragStyle != (0 | 1 | 2 | 3))
 	{
-		float distance = length(fragPos - mCameraFacing);
+		float distance = length(vs_fragPos - mCameraFacing);
 		float fog_factor = (fog_fallOffEnd - distance) /
 		                  (fog_fallOffEnd - fog_fallOffStart);
 	

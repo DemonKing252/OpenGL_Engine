@@ -57,7 +57,6 @@ int main(int argc, char* argv[])
 	float nextFrame = 0.0f;
 	float previousTime = 0.0f;
 	float gameTimer = 0.0f;
-
 	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
 	{
 		previousTime = nextFrame;

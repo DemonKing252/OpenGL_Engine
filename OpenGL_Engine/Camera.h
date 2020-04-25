@@ -15,7 +15,7 @@ private:
 	static glm::vec3 lookAt;
 
 	static double mPhi, mTheta;
-	static double mRadius;
+	static double m_dRadius;
 public:
 	static double mouseX, mouseY;
 	static double back_x, back_y;

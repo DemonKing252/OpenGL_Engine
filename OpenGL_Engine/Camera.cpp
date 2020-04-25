@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "ShaderManager.h"
 #include "Application.h"
-double Camera::mRadius = 7.0f;
+double Camera::m_dRadius = 7.0f;
 double Camera::mTheta = 0.0f;
 double Camera::mPhi = 90.0f;
 double Camera::deltaX = 0.0f;
@@ -27,6 +27,7 @@ glm::vec3 Camera::getLookAt()
 
 bool Camera::EventMouseClick(GLFWwindow* window)
 {
+
 	int keyW = glfwGetKey(window, GLFW_KEY_W);
 	int keyA = glfwGetKey(window, GLFW_KEY_A);
 	int keyS = glfwGetKey(window, GLFW_KEY_S);
@@ -61,8 +62,10 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 	deltaX = (mouseX - back_x) * 0.4f;
 	deltaY = (mouseY - back_y) * 0.4f;
 
+	// Input mode for hidding the cursor does not work for some reason!
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
 	{
+		
 		s_fYaw += deltaX * 0.5f;
 		
 		if ( (deltaY < 0.0f && s_fPitch < 90.0f + (deltaY * 0.5f)) )
@@ -73,11 +76,12 @@ void Camera::UpdateCameraFacing(GLFWwindow* window)
 	}
 	if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS)
 	{
-		if (deltaY < 0.0f && mRadius >= 2.0f - (deltaY * 0.25f))
-			mRadius += deltaY * 0.25f;
+		
+		if (deltaY < 0.0f && m_dRadius >= 2.0f - (deltaY * 0.25f))
+			m_dRadius += deltaY * 0.25f;
 
-		else if (deltaY > 0.0f && mRadius <= 40.0f - (deltaY * 0.25f))
-			mRadius += deltaY * 0.25f;
+		else if (deltaY > 0.0f && m_dRadius <= 40.0f - (deltaY * 0.25f))
+			m_dRadius += deltaY * 0.25f;
 	}
 }
 
@@ -97,7 +101,7 @@ void Camera::CheckEvents(GLFWwindow * window)
 	
 	
 	// Cylindrical Coordinates
-	// Calculus III Link -> http://tutorial.math.lamar.edu/Classes/CalcIII/CylindricalCoords.aspx
+	// Link --> http://tutorial.math.lamar.edu/Classes/CalcIII/CylindricalCoords.aspx
 
 	// What is s_f? 
 	// - s stands for a static member, f is reprenting as a float variable (4 bytes of memory).
@@ -107,7 +111,7 @@ void Camera::CheckEvents(GLFWwindow * window)
 	
 	// Normalize forward Vector
 	
-	// The forward vector we can already use for keys [W] and [S] because its a vector facing infront of the camera!
+	// The forward vector we can already use (as a delta speed) for keys [W] and [S] because its a vector facing infront of the camera!
 	forwardVector = glm::normalize(forwardVector);
 	
 	// On the other hand, strafing left and right requires the cross product of the forward vector and up vector (up camera facing).
@@ -116,15 +120,15 @@ void Camera::CheckEvents(GLFWwindow * window)
 
 	lookAt = position + forwardVector;
 
-	outerCamera = glm::vec3(mRadius * forwardVector.x, mRadius * forwardVector.y, mRadius * forwardVector.z);
+	outerCamera = glm::vec3(m_dRadius * forwardVector.x, m_dRadius * forwardVector.y, m_dRadius * forwardVector.z);
 	
 	// FPS Camera
 
 	
 	Util::m_4x4ViewMatrix = glm::lookAt(
-		position, 
-		lookAt, 
-		glm::vec3(0,1,0));
+		position,			// Eye position
+		lookAt,				// Camera position of focus (always in front)
+		glm::vec3(0,1,0));	// head is up (0, -1, 0) to make the camera look upside down.
 	
 	TheShaderManager::Instance()->SetUniform3f(TheApp::Instance()->getCoreProgram(), "mCameraFacing", position);
 

@@ -32,8 +32,8 @@ void Util::Transform(GLuint core_program, glm::vec3 translation, glm::vec3 scale
 	Model = glm::rotate(Model, glm::radians(angle), rotAxis);
 	Model = glm::scale(Model, scale);
 
-	// Communicate with the fragment shader to update the models position (relative to the camera) and translation
+	// Update the uniform matricies that handle 3D rendering 
+	
 	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "M", Model);
 	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "V", m_4x4ViewMatrix);
-	
 }

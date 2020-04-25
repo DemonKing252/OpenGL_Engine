@@ -34,9 +34,8 @@ ShaderManager * ShaderManager::Instance()
 	}
 	return s_pInstance;
 }
-GLuint ShaderManager::compileShader(const GLenum type, const char * file) const
+GLuint ShaderManager::compileShaderFromFile(const GLenum type, const char * file) const
 {
-	bool loadSuccess = true;
 	char infoLog[512];
 	GLint success;
 	string temp;
@@ -71,6 +70,32 @@ GLuint ShaderManager::compileShader(const GLenum type, const char * file) const
 	return shader;
 }
 
+GLuint ShaderManager::compileShaderFromString(const GLenum type, string src) const
+{
+	char infoLog[512];
+	GLint success;
+	// Vertex Shader
+	
+	GLuint shader = glCreateShader(type);
+
+	const GLchar* vertSrc = src.c_str();
+	glShaderSource(shader, 1, &vertSrc, NULL);
+	glCompileShader(shader);
+
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (!success)
+	{
+		glGetShaderInfoLog(shader, 512, NULL, infoLog);
+		cout << infoLog << endl;
+	}
+	_STL_VERIFY(success, "Could not compile one of your shaders!");
+	
+	// Fragment Shader
+	src.clear();
+
+	return shader;
+}
+
 GLuint ShaderManager::attachShaders(const GLuint vertShader, const GLuint fragShader) const
 {
 	GLuint program;
@@ -87,7 +112,7 @@ GLuint ShaderManager::attachShaders(const GLuint vertShader, const GLuint fragSh
 	if (!success)
 	{
 		glGetProgramInfoLog(program, 512, NULL, infoLog);
-
+		
 		cout << infoLog << endl;
 	}
 

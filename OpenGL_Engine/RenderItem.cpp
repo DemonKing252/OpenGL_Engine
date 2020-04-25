@@ -29,18 +29,23 @@ void RenderItem::draw(Scene * currScene) const
 	
 	// step 3: change the alpha test (if blending is applicable)
 	TheShaderManager::Instance()->SetUniformf(TheApp::Instance()->getCoreProgram(), "alpha", alphaTest);
+	
+	// step 4: does the height affect the fragment strength?
+	TheShaderManager::Instance()->SetUniformi(TheApp::Instance()->getCoreProgram(), "changeHeight", static_cast<int>(m_bHeightEffects));
 
 	// step 4: bind the texture object
 	TheApp::Instance()->m_materialMap[material].bindTexture();
 
 	// step 5: bind the vertex array object
-	currScene->geoGen.mGeometryMesh[meshType]->bindVAO();
+	currScene->geoGen.mGeometryMesh[meshType]->bindVertexArrayObject();
 
 	// step 6: draw
 	currScene->geoGen.draw(meshType);
 
-	// step 7: reset the animation uv for models that don't need it
+	// step 7: reset the animation and height mapping, don't need it
 	TheShaderManager::Instance()->SetUniform2f(TheApp::Instance()->getCoreProgram(), "uvMapping", glm::vec2(0.0f));
+	TheShaderManager::Instance()->SetUniformi(TheApp::Instance()->getCoreProgram(), "changeHeight", 0);
+
 }
 
 void RenderItem::update(Scene * currScene)

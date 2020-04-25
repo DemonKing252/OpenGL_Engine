@@ -15,13 +15,12 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(width, height, titleName, NULL, NULL);
-	if (!window) { return false; }
+	if (!window) return false; 
 
 	// Make the window's context current 
 	glfwMakeContextCurrent(window);
-	if (glewInit() != GLEW_OK)
-		return false;
-
+	if (glewInit() != GLEW_OK) return false;
+	
 	// Mouse events
 	glfwSetMouseButtonCallback(window, CallBack::mouse_btn_callback);
 	// Window buffer resize/minimize/maximize events
@@ -29,9 +28,45 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	// Keyboard events
 	glfwSetKeyCallback(window, CallBack::key_callback);
 
+	// Example of compiling a shader from a string, be sure to include a '\n' after each line!
+	/*
+	string vertexcore = 
+	"#version 430 core													\n"
+	"layout(location = 0) in vec3 vertex_position;						\n"
+	"layout(location = 1) in vec3 vertex_color;							\n"
+	"layout(location = 2) in vec2 vertex_texture;						\n"
+	"layout(location = 3) in vec3 vertex_normal;						\n"
+	"																	\n"
+	"out vec3 vs_unadjustedfragPos;										\n"
+	"out vec3 vs_normal;												\n"
+	"out vec3 vs_color;													\n"
+	"out vec2 vs_texture;												\n"
+	"out vec3 vs_fragPos;												\n"
+	"																	\n"
+	"uniform mat4 M;													\n"
+	"uniform mat4 V;													\n"
+	"uniform mat4 P;													\n"
+	"																	\n"
+	"void main()														\n"
+	"{																	\n"
+	"	vs_unadjustedfragPos = vertex_position;							\n"
+	"	vs_normal = mat3(M) * vertex_normal;							\n"
+	"	vs_texture = vertex_texture;									\n"
+	"	vs_color = vertex_color;										\n"
+	"	vs_fragPos = (M * vec4(vertex_position, 1.0f)).xyz;				\n"
+	"																	\n"
+	"	// Convert 3D world space coordinates to 2D screen coordinates	\n"
+	"	gl_Position = P * V * M * vec4(vertex_position, 1.0f);			\n"
+	"}																	\n";
+	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShaderFromString(GL_VERTEX_SHADER, vertexcore);
+	*/
+
+	/*************************************************************************/
+
+
 	// Read the instructions from each shader and link them to the core program.
-	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShader(GL_VERTEX_SHADER, vertShader);
-	m_shaderInfo["fragment_core"] = TheShaderManager::Instance()->compileShader(GL_FRAGMENT_SHADER, fragShader);
+	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShaderFromString(GL_VERTEX_SHADER, vertShader);
+	m_shaderInfo["fragment_core"] = TheShaderManager::Instance()->compileShaderFromFile(GL_FRAGMENT_SHADER, fragShader);
 
 	core_program = TheShaderManager::Instance()->attachShaders
 	(
@@ -39,9 +74,7 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 		m_shaderInfo["fragment_core"]
 	);
 	
-	// Pipleline is setup
 	// Delete unused memory
-	// If I was using Java I wouldn't have to worry about this! (Memory Management...)
 	for (auto iter : m_shaderInfo)
 	{
 		glDeleteShader(m_shaderInfo[iter.first]);
@@ -50,7 +83,9 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	m_shaderInfo.clear();
 
 	// Graphics pipeline is setup
+	// From here on out we can get access to uniform variables with this variable:
 	glUseProgram(core_program);
+
 	// Initialize the player scene 
 	m_playerScene = new Scene();
 	m_playerScene->setup();
@@ -117,10 +152,6 @@ void Application::update()
 		// Update the camera facing vector 
 	}
 
-	// Clear buffers
-	// The concept of swapping buffers is important because the front buffer is being shown to the screen
-	// while the back buffer is still being drawn to
-
 	glClear(GL_COLOR_BUFFER_BIT |			// Clear color buffers
 			GL_DEPTH_BUFFER_BIT |			// Clear depth buffers (ie: Only whats in front is shown to the camera)
 			GL_STENCIL_BUFFER_BIT);			// Clear stencil buffers (ie: mirroring and shadowing (not used yet))
@@ -137,7 +168,14 @@ void Application::draw()
 
 void Application::swapBuffers() const
 {
-	// The back buffer is being drawn too while the front buffer is being shown on the view port.
+	// Whats happening here?
+	// 1. Clear the current buffer.
+	// 2. Swap the front and back buffer.
+	// 3. The next frame, everything will be drawn to to this buffer while the other buffer is being shown to the screen.
+	// 4. This process repeats
+
+	// In DirectX 11 we would use a swap chain to manage this process 
+
 	glfwSwapBuffers(window);
 }
 
@@ -159,6 +197,10 @@ GLFWwindow * Application::getWindow() const
 GLuint Application::getCoreProgram() const
 {
 	return core_program;
+}
+
+Application::Application()
+{
 }
 
 Application * Application::Instance()

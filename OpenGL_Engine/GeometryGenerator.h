@@ -15,6 +15,9 @@ public:
 	std::vector <GeometryMesh*> mGeometryMesh;
 	enum Mesh { CUBE, PYRAMID, SPHEAR, PLANE, SKULL, CAR, WATER_PLANE };
 
+	// Not allowed to have mode than one instance of this.
+	GeometryGenerator(GeometryGenerator&) = delete;
+
 	GeometryGenerator()
 	{
 		

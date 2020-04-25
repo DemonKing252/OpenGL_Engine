@@ -61,7 +61,7 @@ void GeometryMesh::generateBuffers()
 
 }
 
-void GeometryMesh::bindVAO()
+void GeometryMesh::bindVertexArrayObject()
 {
 	glBindVertexArray(mVAO);
 }

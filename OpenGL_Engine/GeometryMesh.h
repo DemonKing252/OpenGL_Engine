@@ -20,7 +20,7 @@ public:
 
 	void deleteBuffers();
 	void generateBuffers();
-	void bindVAO();
+	void bindVertexArrayObject();
 	void unBindVAO();
 
 	void setNumVertices(const GLint verticies);

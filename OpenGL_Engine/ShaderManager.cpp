@@ -207,3 +207,8 @@ void ShaderManager::SetUVMapping(const GLint core_program, const glm::vec2 map, 
 	SetUniform2f(core_program, "uvMapping", map);
 }
 
+void ShaderManager::SetDiffuseAlbedo(const GLuint core_program, const glm::vec4 diffuseAlbedo) const noexcept
+{
+	SetUniform4f(core_program, "diffAlbedo", diffuseAlbedo);
+}
+

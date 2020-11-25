@@ -5,7 +5,7 @@ using namespace std;
 //***************************************************************************
 // OpenGL_Engine::Application::3dApp.cpp by Liam Blake (C) 2020 All Rights Reserved.
 // Created:  2020-02-10	
-// Modified: 2020-04-08
+// Modified: 2020-11-22
 //
 // Description:
 // A 3D graphics engine I developed with the knowlege I learned in semester 3.
@@ -43,6 +43,7 @@ using namespace std;
 // 3. Active waves
 // 4. Buoyancy physics that take account for the waves they are resting on
 // 5. Added a car mesh
+// 6. Added a skybox
 
 //*****************************************************************************
 // GL Returns an error as an unsigned integer.If there is an error, set a break point and check the hexadecimal value
@@ -67,7 +68,7 @@ int main(int argc, char* argv[])
 		// Updating, Drawing and swapping buffers will be under control of the FPS that the user sets
 		if (TheApp::Instance()->tick())
 		{
-			TheApp::Instance()->update();
+			TheApp::Instance()->update(deltaTime);
 			TheApp::Instance()->draw();
 
 			TheApp::Instance()->swapBuffers();

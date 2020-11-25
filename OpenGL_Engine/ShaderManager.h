@@ -66,4 +66,8 @@ public:
 
 	// Animating Textures.
 	void SetUVMapping(const GLint core_program, const glm::vec2 map, const bool shouldAnimate) const;
+
+	// Diffuse albedo
+	void SetDiffuseAlbedo(const GLuint core_program, const glm::vec4 diffuseAlbedo) const noexcept;
+
 } ShaderManager, TheShaderManager;

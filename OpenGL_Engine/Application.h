@@ -28,7 +28,7 @@ public:
 	bool init(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
 	bool tick();
 
-	void update();
+	void update(float dt);
 	void pollEvents() const;
 	void draw();
 	void swapBuffers() const;
@@ -38,12 +38,19 @@ public:
 	GLFWwindow* getWindow() const;
 	GLuint getCoreProgram() const;
 	
+	GLuint vao, vao2;
+	GLuint tex[6];
+	Vertex* vertices;
+	GLuint* indicies;
+
 	Scene* m_playerScene;
 	GUI* m_userInterface;
 
 	std::unordered_map <std::string, Material> m_materialMap;
 
 private:
+
+
 	Application();
 
 	GLFWwindow* window;

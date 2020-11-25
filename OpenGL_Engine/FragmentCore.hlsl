@@ -37,6 +37,7 @@ uniform vec2 uvMapping;
 uniform vec3 mCameraFacing;
 uniform vec3 ambient;
 uniform vec4 fog_colour;
+uniform vec4 diffAlbedo;
 
 uniform PointLight pLight[MAX_LIGHTS];
 
@@ -90,8 +91,10 @@ void main()
 	else if (fragStyle == 6)
 		fragColour = vec4(result, alpha);
 	else if (fragStyle == 7)
+		fragColour = texture(texture0, vs_texture + uvMapping) * diffAlbedo;
+	else if (fragStyle == 8)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_color, alpha) * vec4(result, 1.0f);
-	
+
 	// Future project: Change wave fragment color according to their height.
 	/*
 	// 0.0f -> 3.0f

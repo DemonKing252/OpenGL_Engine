@@ -11,7 +11,9 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	///* Initialize the library */
 	// Initialize the library 
 
-	if (glfwInit() == GLFW_FALSE) { return false; }
+	if (glfwInit() == GLFW_FALSE) { cerr << "GLFW Init fail!" << endl; return false; }
+
+	cout << "GLFW Init success!" << endl;
 
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(width, height, titleName, NULL, NULL);
@@ -19,7 +21,9 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 
 	// Make the window's context current 
 	glfwMakeContextCurrent(window);
-	if (glewInit() != GLEW_OK) return false;
+	if (glewInit() != GLEW_OK) { cerr << "GLEW Init fail!" << endl; return false; }
+	
+	cout << "GLEW Init success!" << endl;
 	
 	// Mouse events
 	glfwSetMouseButtonCallback(window, CallBack::mouse_btn_callback);
@@ -65,7 +69,9 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 
 
 	// Read the instructions from each shader and link them to the core program.
-	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShaderFromString(GL_VERTEX_SHADER, vertShader);
+
+	cout << "Compiling shaders..." << endl;
+	m_shaderInfo["vertex_core"] = TheShaderManager::Instance()->compileShaderFromFile(GL_VERTEX_SHADER, vertShader);
 	m_shaderInfo["fragment_core"] = TheShaderManager::Instance()->compileShaderFromFile(GL_FRAGMENT_SHADER, fragShader);
 
 	core_program = TheShaderManager::Instance()->attachShaders
@@ -104,7 +110,7 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	Camera::frameBufferW = width;
 	Camera::frameBufferH = height;
 
-	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(45.0f), 4.0f / 3.0f, 0.1f, 300.0f);
+	Util::m_4x4ProjMatrix = glm::perspective(glm::radians(90.f), 4.0f / 3.0f, 0.1f, 50.0f);
 	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "P", Util::m_4x4ProjMatrix);
 
 	// Initialize the water uv position for animating
@@ -121,6 +127,104 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 	m_materialMap["grass"].load("Assets/Images/grass2.png");
 	m_materialMap["stoneBrick"].load("Assets/Images/StoneBrick.jpg");
 	m_materialMap["water"].load("Assets/Images/water.png");
+
+	Vertex vertices[24] =
+	{
+		
+		Vertex(glm::vec3(-1.0f, -1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 1.f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 1.f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(-1.0f, +1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 0.f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-1.0f, +1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 0.f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+		
+
+		
+		Vertex(glm::vec3(+1.0f, -1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 1.f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 1.f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, +1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 0.f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(+1.0f, +1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 0.f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+
+
+		
+		Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 1.f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 1.f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, +1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 0.f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-1.0f, +1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 0.f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+
+
+		
+		Vertex(glm::vec3(-1.0f, -1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 1.f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, -1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 1.f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, +1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 0.f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-1.0f, +1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 0.f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+
+
+		
+		Vertex(glm::vec3(-1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 1.f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, -1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 1.f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, -1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 0.f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-1.0f, -1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 0.f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+
+		Vertex(glm::vec3(-1.0f, +1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 0.f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, +1.0f, -1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 0.f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+1.0f, +1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.f, 1.f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-1.0f, +1.0f, +1.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.f, 1.f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+
+	};
+
+
+
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	GLuint vbo = 0;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * 24, vertices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)12);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)24);
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)32);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
+
+	glBindVertexArray(0);
+
+	// texture 1
+	// --------------------------------
+	int w[6], h[6];
+	unsigned char* image[6] = {
+		SOIL_load_image("Assets/IceRiver/negx.bmp", &w[0], &h[0], 0, SOIL_LOAD_RGBA),
+		SOIL_load_image("Assets/IceRiver/posx.bmp", &w[1], &h[1], 0, SOIL_LOAD_RGBA),
+		SOIL_load_image("Assets/IceRiver/negz.bmp", &w[2], &h[2], 0, SOIL_LOAD_RGBA),
+		SOIL_load_image("Assets/IceRiver/posz.bmp", &w[3], &h[3], 0, SOIL_LOAD_RGBA),
+		SOIL_load_image("Assets/IceRiver/posy.bmp", &w[4], &h[4], 0, SOIL_LOAD_RGBA),
+		SOIL_load_image("Assets/IceRiver/negy.bmp", &w[5], &h[5], 0, SOIL_LOAD_RGBA)
+	};
+	for (int i = 0; i < 6; i++)
+	{
+		// generate the texture
+		glGenTextures(1, &tex[i]);
+
+		// bind the texture (IMPORTANT):
+		glBindTexture(GL_TEXTURE_2D, tex[i]);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w[i], h[i], 0, GL_RGBA, GL_UNSIGNED_BYTE, image[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		//glGenerateMipmap(GL_TEXTURE_2D);
+		SOIL_free_image_data(image[i]);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+	}
+	
 }
 
 void Application::pollEvents()const
@@ -137,7 +241,7 @@ bool Application::tick()
 	return true;
 }
 
-void Application::update()
+void Application::update(float dt)
 {
 	m_userInterface->clearColor();
 	m_playerScene->update();
@@ -162,6 +266,28 @@ void Application::update()
 
 void Application::draw()
 {
+	glDisable(GL_DEPTH_TEST);
+	Util::Transform(core_program, Camera::getPosition(), glm::vec3(.5f, .5f, .5f), glm::vec3(0.f, 1.f, 0.f), 0.0f);
+
+	TheShaderManager::Instance()->SetUniformi(core_program, "fragStyle", FragmentStyle::TEXTURE_AND_DIFFALBEDO_ONLY);
+	TheShaderManager::Instance()->SetDiffuseAlbedo(core_program, /*glm::vec4(0.7f, 0.7f, 0.7f, 1.0f)*/m_userInterface->fogColour);
+	
+	// bind the vbo and ibo (vertices and indicies)
+	glBindVertexArray(vao);
+	
+	// ----------------------------------------------------------------------------
+	// bind the texture, set is as the active one, now we can draw it:
+	
+	int first = 0;
+	for (int i = 0; i < 6; i++)
+	{
+		glBindTexture(GL_TEXTURE_2D, tex[i]);
+		glDrawArrays(GL_QUADS, first, 4);
+		first += 4;
+	}
+
+	glEnable(GL_DEPTH_TEST);
+
 	m_playerScene->draw();
 	m_userInterface->draw(m_playerScene->m_vPointLights);
 }

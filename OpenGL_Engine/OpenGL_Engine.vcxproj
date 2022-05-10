@@ -22,13 +22,13 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{26671E9B-7039-479A-91AD-C728A9425993}</ProjectGuid>
     <RootNamespace>OpenGLEngine</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -148,6 +148,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Material.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="PerlinNoise.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RenderItem.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="MainHeaders.h" />
     <ClInclude Include="Material.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="PerlinNoise.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="RenderItem.h" />

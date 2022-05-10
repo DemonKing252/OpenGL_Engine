@@ -37,29 +37,29 @@ void GUI::setup(GLFWwindow* window)
 
 void GUI::draw(std::vector <Light*> l)
 {
-	fogColour.x = (cos_radians(a)) + 0.5f;
-	fogColour.y = (cos_radians(a)) + 0.5f;
-	fogColour.z = (cos_radians(a)) + 0.5f;
+	//fogColour.x = 0.2f;//(cos_radians(a)) + 0.5f;
+	//fogColour.y = 0.2f;//(cos_radians(a)) + 0.5f;
+	//fogColour.z = 0.2f;//(cos_radians(a)) + 0.5f;
+	//
+	//if (fogColour.x > 1.0f) fogColour.x = 1.0f;
+	//else if (fogColour.x < 0.1f) fogColour.x = 0.1f;
+	//
+	//
+	//if (fogColour.y > 1.0f) fogColour.y = 1.0f;
+	//else if (fogColour.y < 0.1f) fogColour.y = 0.1f;
+	//
+	//
+	//if (fogColour.z > 1.0f) fogColour.z = 1.0f;
+	//else if (fogColour.z < 0.1f) fogColour.z = 0.1f;
+	//
+	// ambientStrength = glm::vec3(fogColour.x, fogColour.y, fogColour.z);
+	//
+	//cout << fogColour.x << " " << fogColour.y << " " << fogColour.z << endl;
+	//
+	//a += 60.0f * Util::Pi() / 180.0f;   
 
-	if (fogColour.x > 1.0f) fogColour.x = 1.0f;
-	else if (fogColour.x < 0.1f) fogColour.x = 0.1f;
-
-
-	if (fogColour.y > 1.0f) fogColour.y = 1.0f;
-	else if (fogColour.y < 0.1f) fogColour.y = 0.1f;
-
-
-	if (fogColour.z > 1.0f) fogColour.z = 1.0f;
-	else if (fogColour.z < 0.1f) fogColour.z = 0.1f;
-
-	ambientStrength = glm::vec3(fogColour.x, fogColour.y, fogColour.z);
-
-	cout << fogColour.x << " " << fogColour.y << " " << fogColour.z << endl;
-
-	a += 60.0f * Util::Pi() / 180.0f;   
-
-	TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", glm::vec4(fogColour.x, fogColour.y, fogColour.z, 1.0f));
-	TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);
+	//TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", glm::vec4(fogColour.x, fogColour.y, fogColour.z, 1.0f));
+	//TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);
 
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -80,11 +80,11 @@ void GUI::draw(std::vector <Light*> l)
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f), 0);
 	ImGui::ColorEdit3("Background colour", (float*)&clear_color); // Edit 3 floats representing a color
 	float ambient[3] = { ambientStrength.x, ambientStrength.y, ambientStrength.z };
-	//if (ImGui::SliderFloat3("Ambient Lighting", ambient, 0.0f, 1.0f, "%.1f"))
-	//{
-	//	ambientStrength = glm::vec3(ambient[0], ambient[1], ambient[2]);
-	//	TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);
-	//}
+	if (ImGui::SliderFloat3("Ambient Lighting", ambient, 0.0f, 1.0f, "%.1f"))
+	{
+		ambientStrength = glm::vec3(ambient[0], ambient[1], ambient[2]);
+		TheShaderManager::Instance()->SetUniform3f(core_program, "ambient", ambientStrength);
+	}
 
 	ImGui::PushItemWidth(150.0f);
 	ImGui::SliderInt("Max FPS", &fps, 1.0f, 60.0f);
@@ -138,16 +138,16 @@ void GUI::draw(std::vector <Light*> l)
 	float fog[3] = { fogColour.x, fogColour.y, fogColour.z };
 	
 	ImGui::Text("Sun Light: %.1f%%", fogColour.x * 100.0f);
-	//if (ImGui::SliderFloat3("Fog colour", fog, 0.0f, 1.0f, "%.1f"))
-	//{
-	//	fogColour = glm::vec4(
-	//		fog[0],
-	//		fog[1],
-	//		fog[2],
-	//		1.0f
-	//	);
-	//	TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", glm::vec4(fogColour.x, fogColour.y, fogColour.z, 1.0f));
-	//}
+	if (ImGui::SliderFloat3("Fog colour", fog, 0.0f, 1.0f, "%.1f"))
+	{
+		fogColour = glm::vec4(
+			fog[0],
+			fog[1],
+			fog[2],
+			1.0f
+		);
+		TheShaderManager::Instance()->SetUniform4f(core_program, "fog_colour", glm::vec4(fogColour.x, fogColour.y, fogColour.z, 1.0f));
+	}
 	
 	ImGui::PushItemWidth(165.0f);
 
@@ -156,6 +156,12 @@ void GUI::draw(std::vector <Light*> l)
 
 	if (ImGui::SliderFloat("Fog fall off end", &fogFallOffEnd, 0.0f, 100.0f, "%.1f"))
 		TheShaderManager::Instance()->SetUniformf(core_program, "fog_fallOffEnd", fogFallOffEnd);
+
+	ImGui::Separator();
+
+	ImGui::SliderFloat("Theta", &theta, -180.0f, +180.0f, "%.1f");
+	ImGui::SliderFloat("Pi", &pi, -180.0f, +180.0f, "%.1f");
+
 
 	ImGui::PopItemWidth();
 
@@ -169,6 +175,7 @@ void GUI::draw(std::vector <Light*> l)
 	ImGui::Text("By: Liam Blake (C) 2020 All Rights Reserved.");
 	ImGui::End();
 
+	/*
 	for (int i = 0; i < 2; i++)
 	{
 		l[i]->setColour(glm::vec3((i == 0 ? lightColour1[0] : lightColour2[0]), (i == 0 ? lightColour1[1] : lightColour2[1]), (i == 0 ? lightColour1[2] : lightColour2[2])));
@@ -191,7 +198,7 @@ void GUI::draw(std::vector <Light*> l)
 
 	}
 	ImGui::End();
-
+	*/
 
 	// Rendering
 	ImGui::Render();

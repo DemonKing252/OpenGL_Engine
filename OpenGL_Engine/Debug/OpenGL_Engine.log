@@ -1,23 +1,3 @@
-﻿  GUI.cpp
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\Util.h(25,1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\GUI.cpp(59,34): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\GUI.cpp(90,42): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\GUI.cpp(90,36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\GUI.cpp(181,20): warning C4018: '<': signed/unsigned mismatch
-  GeometryMesh.cpp
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\Util.h(25,1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  imgui.cpp
-  imgui_demo.cpp
-  imgui_draw.cpp
-  imgui_impl_glfw.cpp
-  imgui_impl_opengl3.cpp
-  imgui_widgets.cpp
-  Material.cpp
-  PointLight.cpp
-  Transform.cpp
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\Util.h(25,1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Util.cpp
-C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\OpenGL_Engine\Util.h(25,1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Vertex.cpp
-  Generating Code...
+﻿  GeometryMesh.cpp
+c:\users\demon\onedrive\documents\github\opengl_engine\opengl_engine\util.h(25): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   OpenGL_Engine.vcxproj -> C:\Users\Demon\OneDrive\Documents\GitHub\OpenGL_Engine\Debug\OpenGL_Engine.exe

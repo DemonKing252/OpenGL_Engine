@@ -93,6 +93,9 @@
     <ClCompile Include="PerlinNoise.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="VertexCore.hlsl">
@@ -173,6 +176,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ShaderManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

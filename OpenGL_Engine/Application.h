@@ -26,18 +26,19 @@ public:
 	static Application* Instance();
 
 	bool init(const char* titleName, const char* vertShader, const char* fragShader, const GLint width, const GLint height);
-	bool tick();
+	bool tick(float dt);
 
 	void update(float dt);
-	void pollEvents() const;
-	void draw();
-	void swapBuffers() const;
+	void pollEvents(float dt) const;
+	void draw(float dt);
+	void swapBuffers(float dt) const;
 
 	void clean() const;
 
 	GLFWwindow* getWindow() const;
 	GLuint getCoreProgram() const;
 	
+
 	GLuint vao, vao2;
 	GLuint tex[6];
 	Vertex* vertices;

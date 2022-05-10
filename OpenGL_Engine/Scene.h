@@ -5,6 +5,7 @@
 #include "MainHeaders.h"
 #include <vector>
 #include "RenderItem.h"
+#include "ParticleSystem.h"
 class Scene
 {
 public:
@@ -17,11 +18,19 @@ public:
 	std::vector <RenderItem*> m_vRenderItems;
 	GeometryGenerator geoGen;
 
+	GeometryMesh swingArm;
+
+	float cntr1 = 0.0f, cntr2 = 0.0f;
+	float angle = -90.0f;
+
+	std::unique_ptr<ParticleSystem3D> ParticleSystem;
+
 	Scene();
 	~Scene();
+	float t = 0.0f;
 
-	void update();
-	void draw();
+	void update(float DeltaTime);
+	void draw(float DeltaTime);
 	void setup();
 	void clean();
 

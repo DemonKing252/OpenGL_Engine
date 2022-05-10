@@ -36,4 +36,5 @@ void Util::Transform(GLuint core_program, glm::vec3 translation, glm::vec3 scale
 	
 	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "M", Model);
 	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "V", m_4x4ViewMatrix);
+	TheShaderManager::Instance()->SetUniformMatrix4x4(core_program, "P", m_4x4ProjMatrix);
 }

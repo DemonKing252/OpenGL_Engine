@@ -61,22 +61,23 @@ int main(int argc, char* argv[])
 	while (!glfwWindowShouldClose(TheApp::Instance()->getWindow()))
 	{
 		previousTime = nextFrame;
-
-		// Polling events will be respect to maximum refresh rate of the monitor
-		TheApp::Instance()->pollEvents();
-		
-		// Updating, Drawing and swapping buffers will be under control of the FPS that the user sets
-		if (TheApp::Instance()->tick())
-		{
-			TheApp::Instance()->update(deltaTime);
-			TheApp::Instance()->draw();
-
-			TheApp::Instance()->swapBuffers();
-		}
-		// Calculate the amount of time passed from the previous frame, and add that to the game timer.
 		nextFrame = clock();
 		deltaTime = (nextFrame - previousTime) / static_cast<float>(CLOCKS_PER_SEC);
 		gameTimer += deltaTime;
+
+		// Polling events will be respect to maximum refresh rate of the monitor
+		TheApp::Instance()->pollEvents(deltaTime);
+		
+		// Updating, Drawing and swapping buffers will be under control of the FPS that the user sets
+		if (TheApp::Instance()->tick(deltaTime))
+		{
+			TheApp::Instance()->update(deltaTime);
+			TheApp::Instance()->draw(deltaTime);
+
+			TheApp::Instance()->swapBuffers(deltaTime);
+		}
+		// Calculate the amount of time passed from the previous frame, and add that to the game timer.
+	
 
 	}
 	TheApp::Instance()->clean();

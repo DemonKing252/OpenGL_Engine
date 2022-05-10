@@ -225,13 +225,15 @@ bool Application::init(const char * titleName, const char * vertShader, const ch
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	
+
+
 }
 
-void Application::pollEvents()const
+void Application::pollEvents(float dt)const
 {
 	glfwPollEvents();
 }
-bool Application::tick()
+bool Application::tick(float dt)
 {
 	if (glfwGetTime() < lasttime + 1.0 / m_userInterface->fps)
 		return false;
@@ -244,7 +246,7 @@ bool Application::tick()
 void Application::update(float dt)
 {
 	m_userInterface->clearColor();
-	m_playerScene->update();
+	m_playerScene->update(dt);
 	
 	if (m_userInterface->m_bLightShouldUpdate)
 		angleDelta += 3.0f;
@@ -264,7 +266,7 @@ void Application::update(float dt)
 	// Any object within the range of 0.1-300 of the projection view can be seen on the viewport
 }
 
-void Application::draw()
+void Application::draw(float dt)
 {
 	glDisable(GL_DEPTH_TEST);
 	Util::Transform(core_program, Camera::getPosition(), glm::vec3(.5f, .5f, .5f), glm::vec3(0.f, 1.f, 0.f), 0.0f);
@@ -288,11 +290,11 @@ void Application::draw()
 
 	glEnable(GL_DEPTH_TEST);
 
-	m_playerScene->draw();
+	m_playerScene->draw(dt);
 	m_userInterface->draw(m_playerScene->m_vPointLights);
 }
 
-void Application::swapBuffers() const
+void Application::swapBuffers(float dt) const
 {
 	// Whats happening here?
 	// 1. Clear the current buffer.
@@ -324,7 +326,6 @@ GLuint Application::getCoreProgram() const
 {
 	return core_program;
 }
-
 Application::Application()
 {
 }

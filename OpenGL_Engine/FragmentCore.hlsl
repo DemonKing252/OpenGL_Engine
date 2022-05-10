@@ -36,6 +36,7 @@ uniform float fog_fallOffStart;
 uniform vec2 uvMapping;
 uniform vec3 mCameraFacing;
 uniform vec3 ambient;
+uniform vec3 col;
 uniform vec4 fog_colour;
 uniform vec4 diffAlbedo;
 
@@ -81,7 +82,7 @@ void main()
 	else if (fragStyle == 1)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(vs_color, alpha);
 	else if (fragStyle == 2)
-		fragColour = vec4(vs_color, alpha);
+		fragColour = vec4(col, alpha);
 	else if (fragStyle == 3)
 		fragColour = texture(texture0, vs_texture + uvMapping) * vec4(1,1,1, alpha);
 	else if (fragStyle == 4)

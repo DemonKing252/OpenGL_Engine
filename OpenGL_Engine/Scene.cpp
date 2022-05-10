@@ -3,14 +3,23 @@
 
 Scene::Scene()
 {
+	ParticleSystem = std::make_unique<ParticleSystem3D>();
 }
 
 Scene::~Scene()
 {
 }
 
-void Scene::update()
+void Scene::update(float DeltaTime)
 {
+	t += DeltaTime;
+	if (t >= 4.0f && t <= 5.0f)
+	{
+		t = 6.0f;
+
+		ParticleSystem->SpawnEmitter(glm::vec3(1.0f, 0.0f, 0.0f), 5, 2.0f, glm::vec3(3.0f, 5.0f, -5.0f), Axis::Z, GeometryGenerator::Mesh::CUBE);
+	}
+
 	// Orbiting lights
 	for (auto l : m_vPointLights) {
 		if (TheApp::Instance()->m_userInterface->m_bLightShouldUpdate) {
@@ -41,9 +50,60 @@ void Scene::update()
 	// Re-generate the vertex buffers of the waves respective to the new heights
 	geoGen.mGeometryMesh[GeometryGenerator::WATER_PLANE]->generateBuffers();
 
+	//cntr1 += 3.0f;
+
+	//TheApp::Instance()->m_userInterface->theta = cos_radians(cntr1);
+	//TheApp::Instance()->m_userInterface->pi = cos_radians(cntr2);
+	cntr1 += 70.0f * DeltaTime;
+	angle = 30.0f * cos_radians(cntr1) - 90.0f;
+
+	cntr2 += 60.0f * DeltaTime;
+	float x = (5.5f + cos_radians(angle) * .25f) * cos_radians(angle);
+	float z = cos_radians(cntr2)*1.f;
+	float y = (5.5f + cos_radians(angle) * .25f) * sin_radians(angle);
+
+	// swing around
+	//float x = (2.5f +cos_radians(cntr2) * .75f) * cos_radians(cntr1);
+	//float z = (2.5f +cos_radians(cntr2) * .75f) * sin_radians(cntr1);
+	//float y = -4.0f + cos_radians(cntr2) * .5f;
+
+
+	//float x = -6.0f * sin_radians(TheApp::Instance()->m_userInterface->pi) * cos_radians(TheApp::Instance()->m_userInterface->theta);
+	//float y = -6.0f * sin_radians(TheApp::Instance()->m_userInterface->pi) * sin_radians(TheApp::Instance()->m_userInterface->theta);
+	//float z = -6.0f * cos_radians(TheApp::Instance()->m_userInterface->pi);
+
+	//float x = -6.0f * sin_radians(TheApp::Instance()->m_userInterface->pi) * cos_radians(TheApp::Instance()->m_userInterface->theta);
+	//float y = -6.0f * sin_radians(TheApp::Instance()->m_userInterface->pi) * sin_radians(TheApp::Instance()->m_userInterface->theta);
+	//float z = -6.0f * cos_radians(TheApp::Instance()->m_userInterface->pi);
+
+	//0, 1, 
+	swingArm.verticies[0] = Vertex(glm::vec3(x + -0.5f, y +  -0.5f,z +  -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
+	swingArm.verticies[1] = Vertex(glm::vec3(x + 0.5f,  y + -0.5f, z + -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f));
+	swingArm.verticies[2] = Vertex(glm::vec3(x + 0.5f,  y + -0.5f, z + +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, -0.5f, +0.5f));
+	swingArm.verticies[3] = Vertex(glm::vec3(x + -0.5f, y +  -0.5f,z +  +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, -0.5f, +0.5f));
+
+
+	swingArm.verticies[8] = Vertex(glm::vec3(x + -0.5f, y + -0.5f, z + +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, +0.5f));
+	swingArm.verticies[9] = Vertex(glm::vec3(x + 0.5f, y + -0.5f, z + +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, +0.5f));
+
+
+	swingArm.verticies[12] = Vertex(glm::vec3(x + -0.5f, y + -0.5f, z + -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
+	swingArm.verticies[13] = Vertex(glm::vec3(x + 0.5f, y + -0.5f, z + -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f));//12,13
+	
+	
+	swingArm.verticies[16] = Vertex(glm::vec3(x+ +0.5f, y + -0.5f, z + -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(+0.5f, -0.5f, -0.5f));
+	swingArm.verticies[17] = Vertex(glm::vec3(x+ +0.5f, y + -0.5f, z + +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(+0.5f, -0.5f, +0.5f));//16,17
+
+	swingArm.verticies[21] = Vertex(glm::vec3(x + -0.5f, y + -0.5f, z + -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f));
+	swingArm.verticies[20] = Vertex(glm::vec3(x + -0.5f, y + -0.5f, z + +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(-0.5f, -0.5f, +0.5f));//21, 20
+	
+	swingArm.deleteBuffers();
+	swingArm.generateBuffers();
+	
+
 }
 
-void Scene::draw()
+void Scene::draw(float DeltaTime)
 {
 	TheShaderManager::Instance()->SetFragmentLightAndTextureOnly(TheApp::Instance()->getCoreProgram());
 
@@ -52,6 +112,12 @@ void Scene::draw()
 		ri->update(this);
 		ri->draw(this);
 	}
+	TheShaderManager::Instance()->SetFragmentLightAndColourOnly(TheApp::Instance()->getCoreProgram());
+	Util::Transform(TheApp::Instance()->getCoreProgram(), glm::vec3(0.0f, 9.0f, 0.0f), glm::vec3(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+	swingArm.bindVertexArrayObject();
+	glDrawElements(GL_LINE_LOOP, swingArm.getNumIndicies(), GL_UNSIGNED_INT, 0);
+
+	ParticleSystem->UpdateParticles(DeltaTime);
 }
 
 void Scene::setup()
@@ -177,6 +243,55 @@ void Scene::setup()
 	m_vRenderItems.push_back(new RenderItem(GeometryGenerator::Mesh::CAR, FragmentStyle::LIGHT_AND_COLOR_ONLY, "null", 1.0f, glm::vec3(-7.0f, 2.0f+-0.65f*1.2 - (0.9f / 2.0f), 0.0f), glm::vec3(1.0f), glm::vec3(0.0f, 1.0f, 0.0f), 0.0f));
 
 	Camera::UpdateCameraFacing(TheApp::Instance()->getWindow());
+	
+
+	swingArm.setPrimitiveType(GL_QUADS);
+	swingArm.setNumIndicies(24);
+	swingArm.setNumVertices(24);
+	swingArm.verticies = new Vertex[swingArm.getNumVertices()]
+	{
+
+		Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+
+		Vertex(glm::vec3(-0.5f, 0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, 0.5f, -0.5f)),
+		Vertex(glm::vec3(0.5f, 0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, 0.5f, -0.5f)),
+		Vertex(glm::vec3(0.5f, 0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, 0.5f, +0.5f)),
+		Vertex(glm::vec3(-0.5f, 0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f),  glm::vec3(-0.5f, 0.5f, +0.5f)),
+
+		Vertex(glm::vec3(-0.5f, -0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, +0.5f, +0.5f)),
+		Vertex(glm::vec3(-0.5f, +0.5f, +0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, +0.5f)),
+
+		Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(0.5f, -0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(0.5f, +0.5f, -0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(0.5f, +0.5f, -0.5f)),
+		Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, -0.5f)),
+
+		Vertex(glm::vec3(+0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(+0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(+0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f), glm::vec3(+0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(+0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f), glm::vec3(+0.5f, +0.5f, +0.5f)),
+		Vertex(glm::vec3(+0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(+0.5f, +0.5f, -0.5f)),
+
+		Vertex(glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), glm::vec3(-0.5f, -0.5f, -0.5f)),
+		Vertex(glm::vec3(-0.5f, -0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 0.0f),glm::vec3(-0.5f, -0.5f, +0.5f)),
+		Vertex(glm::vec3(-0.5f, +0.5f, +0.5f),  glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(1.0f, 1.0f),glm::vec3(-0.5f, +0.5f, +0.5f)),
+		Vertex(glm::vec3(-0.5f, +0.5f, -0.5f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 1.0f), glm::vec3(-0.5f, +0.5f, -0.5f)),
+
+
+	};
+	swingArm.indicies = new GLuint[swingArm.getNumIndicies()];
+
+	for (int i = 0; i < swingArm.getNumIndicies(); i++)
+	{
+		swingArm.indicies[i] = i;
+	}
+	swingArm.generateBuffers();
+
+
 }
 
 void Scene::clean()
